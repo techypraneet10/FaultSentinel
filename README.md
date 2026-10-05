@@ -6,19 +6,19 @@ Calibrated Selective Prediction for LLM-Assisted Incident Triage over System Log
 
 SentinelLog investigates a cost-aware, reliability-calibrated cascade for automated incident triage over unstructured system logs:
 - **Log Parsing**: Structural template extraction using Drain3 with regex masking and frozen training vocabulary.
-- **Anomaly Scoring**: Fast unsupervised anomaly scoring (B0 Frequency Rarity, B1 PCA Reconstruction, B1 Isolation Forest).
-- **Calibrated Selective Escalation**: Conformal prediction gating to selectively escalate high-uncertainty or ambiguous windows to expensive LLM reasoning under guaranteed coverage bounds.
+- **Anomaly Scoring**: Fast classical baselines (B0 Frequency Rarity, B1 PCA Reconstruction, B1 Isolation Forest) and lightweight sequential modeling (B2 Sequential GRU).
+- **Calibrated Selective Escalation**: Conformal prediction gating to selectively escalate high-uncertainty or ambiguous windows to expensive LLM reasoning under empirical risk control.
 - **Retrieval-Grounded Explanation**: Historical incident and runbook retrieval grounding.
 - **Faithfulness Checking**: Self-contained verification of explanation claims against source log evidence.
 
 ## Current Status
 
-**STATUS: Phase 3 — Unsupervised Anomaly Detection Baselines COMPLETE.**
+**STATUS: Phase 4 — Learned Sequential Scorer + Conformal Risk-Controlled Selective Gate COMPLETE.**
 
 > [!NOTE]
-> Phase 3 baselines (B0 Frequency, B1 PCA, B1 Isolation Forest) have been trained and evaluated strictly on TRAIN and CALIBRATION.
+> Phase 4 models (B2 Sequential GRU) and split conformal prediction gates have been trained and evaluated strictly on TRAIN and CALIBRATION.
 > The test partitions (`data/processed/*/test.jsonl`) remain strictly **FROZEN** and will not be accessed until Phase 7.
-> No Phase 4+ functionality (learned neural scoring, conformal prediction, selective prediction, LLM escalation) has been implemented yet.
+> No Phase 5+ functionality (retrieval, vector databases, LLM calls, explanation generation) has been implemented yet.
 
 ## Development Principles
 
@@ -45,27 +45,33 @@ pip install -r requirements.txt
 
 ### Run Tests
 ```powershell
-pytest -v tests
+.venv\Scripts\python.exe -m pytest -v tests
 ```
 
 ### Run Data Ingestion Pipeline (Phase 2)
 ```powershell
 # Acquire official Loghub datasets (HDFS & BGL)
-python scripts/acquire_data.py --dataset all
+.venv\Scripts\python.exe scripts/acquire_data.py --dataset all
 
 # Execute Drain3 parsing, windowing, and chronological splitting
-python -m sentinellog.ingestion.pipeline --config configs/data_pipeline.yaml
+.venv\Scripts\python.exe -m sentinellog.ingestion.pipeline --config configs/data_pipeline.yaml
 ```
 
 ### Run Baseline Anomaly Detectors (Phase 3)
 ```powershell
 # Run B0, B1 PCA, and B1 Isolation Forest on HDFS and BGL
-python -m sentinellog.scoring.baselines --config configs/baselines.yaml
+.venv\Scripts\python.exe -m sentinellog.scoring.baselines --config configs/baselines.yaml
 ```
-Results and comparison reports are serialized to `results/phase3/`.
+
+### Run Learned Sequential Scorer & Conformal Selective Gate (Phase 4)
+```powershell
+# Run B2 Sequential GRU and Split Conformal Selective Gate across alpha grid
+.venv\Scripts\python.exe -m sentinellog.scoring.phase4_runner --config configs/phase4.yaml
+```
+Results and diagnostic reports are serialized to `results/phase4/`.
 
 ### Lint / Static Validation
 ```powershell
-python -m compileall -q sentinellog tests scripts
+.venv\Scripts\python.exe -m compileall -q sentinellog tests scripts
 ```
-*(Or run `make setup`, `make test`, `make lint`, `make pipeline`, `make baselines` on platforms where Make is installed.)*
+*(Or run `make setup`, `make test`, `make lint`, `make pipeline`, `make baselines`, `make phase4` on platforms where Make is installed.)*

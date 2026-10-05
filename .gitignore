@@ -69,9 +69,12 @@ data/processed/**/*.parquet
 *.pkl
 *.pt
 results/**/model.joblib
+results/**/b2_model.pt
 !results/**/manifest.json
 !results/**/diagnostics.json
+!results/**/conformal_diagnostics.json
 !results/**/comparison_report.*
+!results/**/phase4_report.*
 !results/**/.gitkeep
 !results/README.md
 models/*

@@ -4,10 +4,10 @@
 SentinelLog — Calibrated Selective Prediction for LLM-Assisted Incident Triage over System Logs
 
 ## Current Phase
-Phase 3 — Unsupervised Anomaly Detection Baselines
+Phase 4 — Learned Sequential Scorer + Conformal Risk-Controlled Selective Gate
 
 ## Status
-COMPLETE (Phase 3 acceptance checks passed; awaiting human authorization to proceed to Phase 4)
+COMPLETE (Phase 4 acceptance checks passed; awaiting human authorization to proceed to Phase 5)
 
 ## Completed (Phase 1)
 - [x] Repository inspection
@@ -41,12 +41,25 @@ COMPLETE (Phase 3 acceptance checks passed; awaiting human authorization to proc
 - [x] Artifact management and programmatic Rule 1 test-access guard (`sentinellog/scoring/artifacts.py`)
 - [x] Standalone baseline CLI runner and comparison reporting (`sentinellog/scoring/baselines.py`, `configs/baselines.yaml`)
 - [x] Deterministic baseline experiment manifests, models, and diagnostics generated in `results/phase3/`
-- [x] Unit and integration test suite with 14 comprehensive tests (`tests/test_baselines.py`)
-- [x] Full test suite (41/41 tests passing) with clean compilation
+- [x] Unit and integration test suite with 15 comprehensive tests (`tests/test_baselines.py`)
+- [x] Full test suite (42/42 tests passing) with clean compilation
 - [x] Comprehensive baseline documentation (`docs/baselines.md`)
 
+## Completed (Phase 4)
+- [x] Sequence tokenizer with frozen TRAIN vocabulary, explicit PAD (0) and UNKNOWN (1) tokens (`sentinellog/scoring/tokenizer.py`)
+- [x] Lightweight PyTorch Sequential GRU model (< 2,000,000 parameters, actual ~20.5K params) (`sentinellog/scoring/b2_model.py`)
+- [x] Autoregressive next-template training loop with normal-only filtering and internal chronological 90/10 early stopping (`sentinellog/scoring/b2.py`)
+- [x] Sequence nonconformity score based on mean negative log-likelihood of observed transitions (`sentinellog/scoring/b2.py`)
+- [x] Finite-sample split conformal calibrator with exact order-statistic quantiles and p-values (`sentinellog/calibration/conformal.py`)
+- [x] Selective escalation gate (`AUTO-CLEAR` vs `ESCALATE`) and risk-coverage metrics (`sentinellog/calibration/gate.py`)
+- [x] Target alpha sweep ($\alpha \in \{0.01, 0.05, 0.10, 0.20\}$) evaluating coverage, selective risk, and empirical miscoverage
+- [x] Comprehensive ablations: Heuristic threshold vs Conformal (Ablation A), B1 PCA vs B2 GRU (Ablation B), Calibration sample size sensitivity (Ablation C)
+- [x] Standalone Phase 4 CLI runner and report generator (`sentinellog/scoring/phase4_runner.py`, `configs/phase4.yaml`)
+- [x] Phase 4 unit and integration test suite with 16 comprehensive tests (`tests/test_phase4.py`)
+- [x] Complete test suite passing (58/58 tests passing in 34s) on Python 3.12.4 CPU `.venv`
+- [x] Comprehensive Phase 4 documentation (`docs/phase4.md`)
+
 ## Not Completed
-- Phase 4 — Learned scorer (B2) and conformal risk calibration
 - Phase 5 — Retrieval-augmented incident explanation and faithfulness checking
 - Phase 6 — Full cascade integration and selective prediction triage
 - Phase 7 — Frozen evaluation over benchmark test sets
@@ -58,21 +71,19 @@ LOCKED (Rule 1)
 
 ## Test-set Access
 FORBIDDEN until Phase 7.
-(All Phase 3 baselines and threshold determinations were conducted exclusively on TRAIN and CALIBRATION. `test_used: false` verified across all manifests.)
+(All Phase 4 models, tokenizers, internal validation, and conformal calibrations were conducted exclusively on TRAIN and CALIBRATION. `test_used: false` verified across all manifests.)
 
 ## Last Validation
 - Date: 2026-10-05
-- Pytest: 41 passed in 22.54s (0 failed, 0 warnings)
-- Syntax/Bytecode check: `python -m compileall -q sentinellog tests scripts` (Clean, exit code 0)
-- Baseline Diagnostics on CALIBRATION (Unsupervised 95th percentile threshold):
-  - HDFS B0 Frequency: Precision = 0.7308, Recall = 0.6552, F1 = 0.6909, ROC-AUC = 0.8501, PR-AUC = 0.6128
-  - HDFS B1 PCA: Precision = 0.7308, Recall = 0.6552, F1 = 0.6909, ROC-AUC = 0.8237, PR-AUC = 0.5433
-  - HDFS B1 Isolation Forest: Precision = 0.7308, Recall = 0.6552, F1 = 0.6909, ROC-AUC = 0.8221, PR-AUC = 0.4451
-  - BGL B0 Frequency: Precision = 0.2000, Recall = 0.0278, F1 = 0.0488, ROC-AUC = 0.9089, PR-AUC = 0.7082
-  - BGL B1 PCA: Precision = 0.2000, Recall = 0.0278, F1 = 0.0488, ROC-AUC = 0.2786, PR-AUC = 0.3679
-  - BGL B1 Isolation Forest: Precision = 0.8000, Recall = 0.1111, F1 = 0.1951, ROC-AUC = 0.9390, PR-AUC = 0.8582
-- Determinism Check: Running baseline pipeline multiple times produces identical scores, thresholds, and confusion matrices.
+- Pytest: 58 passed in 33.96s (0 failed, 0 warnings)
+- Syntax/Bytecode check: `.venv\Scripts\python.exe -m compileall -q sentinellog tests scripts` (Clean, exit code 0)
+- B2 GRU Parameter Count: HDFS = 20,562 params; BGL = 20,853 params (strictly < 2,000,000)
+- Conformal Selective Gate Diagnostics (CALIBRATION split):
+  - HDFS $\alpha = 0.01$: Escalated = 0.9%, Coverage = 99.1%, Precision = 85.7%, Selective Risk = 0.0285
+  - HDFS $\alpha = 0.05$: Escalated = 4.8%, Coverage = 95.2%, Precision = 18.0%, Selective Risk = 0.0284
+  - BGL $\alpha = 0.20$: Escalated = 19.0%, Coverage = 81.0%, Precision = 68.4%, Recall = 36.1%
+- Determinism Check: Running Phase 4 pipeline multiple times yields identical model losses, scores, thresholds, and confusion matrices.
 - Rule 1 Test Guard: Programmatically verified via `guard_no_test_split` regression tests.
 
 ## Next Authorized Phase
-Phase 4 — Learned scorer (B2) and conformal risk calibration (PENDING HUMAN APPROVAL)
+Phase 5 — Retrieval-augmented incident explanation and faithfulness checking (PENDING HUMAN APPROVAL)

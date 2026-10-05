@@ -23,3 +23,6 @@ pipeline:
 
 baselines:
 	$(PYTHON) -m sentinellog.scoring.baselines --config configs/baselines.yaml
+
+phase4:
+	$(PYTHON) -m sentinellog.scoring.phase4_runner --config configs/phase4.yaml

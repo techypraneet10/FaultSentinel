@@ -1,0 +1,730 @@
+{
+  "generated_at": "2026-10-05T15:23:41.637286+00:00",
+  "note": "CALIBRATION SPLIT ONLY. TEST SPLIT FROZEN AND UNTOUCHED.",
+  "results": [
+    {
+      "dataset": "hdfs",
+      "n_train": 2450,
+      "n_calib": 814,
+      "calibrator_metadata": {
+        "n_calibration": 814,
+        "min_score": 0.018740152940154076,
+        "max_score": 3.6142609119415283,
+        "mean_score": 0.6644406002701354,
+        "median_score": 0.6557031869888306,
+        "score_direction": "higher_is_more_anomalous",
+        "conformal_convention": "finite_sample_ceil_n_plus_one"
+      },
+      "alpha_sweep": [
+        {
+          "nominal_alpha": 0.01,
+          "conformal_threshold": 1.6723480224609375,
+          "total_windows": 814,
+          "total_anomalies": 29,
+          "n_escalated": 7,
+          "n_cleared": 807,
+          "escalation_rate": 0.0085995085995086,
+          "coverage": 0.9914004914004914,
+          "confusion_matrix": {
+            "tp": 6,
+            "fp": 1,
+            "tn": 784,
+            "fn": 23
+          },
+          "escalation_precision": 0.8571428571428571,
+          "escalation_recall": 0.20689655172413793,
+          "escalation_f1": 0.33333333333333326,
+          "false_clears_count": 23,
+          "selective_risk": 0.028500619578686492,
+          "empirical_miscoverage": 0.028255528255528257,
+          "deviation_from_nominal": 0.01825552825552826
+        },
+        {
+          "nominal_alpha": 0.05,
+          "conformal_threshold": 1.1545928716659546,
+          "total_windows": 814,
+          "total_anomalies": 29,
+          "n_escalated": 39,
+          "n_cleared": 775,
+          "escalation_rate": 0.04791154791154791,
+          "coverage": 0.952088452088452,
+          "confusion_matrix": {
+            "tp": 7,
+            "fp": 32,
+            "tn": 753,
+            "fn": 22
+          },
+          "escalation_precision": 0.1794871794871795,
+          "escalation_recall": 0.2413793103448276,
+          "escalation_f1": 0.20588235294117646,
+          "false_clears_count": 22,
+          "selective_risk": 0.02838709677419355,
+          "empirical_miscoverage": 0.02702702702702703,
+          "deviation_from_nominal": -0.022972972972972974
+        },
+        {
+          "nominal_alpha": 0.1,
+          "conformal_threshold": 0.9765617847442627,
+          "total_windows": 814,
+          "total_anomalies": 29,
+          "n_escalated": 79,
+          "n_cleared": 735,
+          "escalation_rate": 0.09705159705159705,
+          "coverage": 0.902948402948403,
+          "confusion_matrix": {
+            "tp": 7,
+            "fp": 72,
+            "tn": 713,
+            "fn": 22
+          },
+          "escalation_precision": 0.08860759493670886,
+          "escalation_recall": 0.2413793103448276,
+          "escalation_f1": 0.12962962962962965,
+          "false_clears_count": 22,
+          "selective_risk": 0.029931972789115645,
+          "empirical_miscoverage": 0.02702702702702703,
+          "deviation_from_nominal": -0.07297297297297298
+        },
+        {
+          "nominal_alpha": 0.2,
+          "conformal_threshold": 0.9460925459861755,
+          "total_windows": 814,
+          "total_anomalies": 29,
+          "n_escalated": 158,
+          "n_cleared": 656,
+          "escalation_rate": 0.1941031941031941,
+          "coverage": 0.8058968058968059,
+          "confusion_matrix": {
+            "tp": 9,
+            "fp": 149,
+            "tn": 636,
+            "fn": 20
+          },
+          "escalation_precision": 0.056962025316455694,
+          "escalation_recall": 0.3103448275862069,
+          "escalation_f1": 0.09625668449197859,
+          "false_clears_count": 20,
+          "selective_risk": 0.03048780487804878,
+          "empirical_miscoverage": 0.02457002457002457,
+          "deviation_from_nominal": -0.17542997542997543
+        }
+      ],
+      "ablation_a_fixed_heuristic": {
+        "description": "B2 with Fixed Heuristic Quantile Threshold (No Conformal)",
+        "fixed_quantile": 0.95,
+        "threshold": 1.1513512194156645,
+        "tp": 7,
+        "fp": 34,
+        "fn": 22,
+        "tn": 751,
+        "precision": 0.17073170731707318,
+        "recall": 0.2413793103448276,
+        "f1": 0.2,
+        "escalation_rate": 0.05036855036855037,
+        "coverage": 0.9496314496314496,
+        "selective_risk": 0.028460543337645538
+      },
+      "ablation_b_pca_vs_b2": {
+        "description": "B1 PCA vs B2 Sequential GRU under identical conformal gate",
+        "pca_sweep": [
+          {
+            "nominal_alpha": 0.01,
+            "conformal_threshold": 0.04187606987073989,
+            "total_windows": 814,
+            "total_anomalies": 29,
+            "n_escalated": 6,
+            "n_cleared": 808,
+            "escalation_rate": 0.007371007371007371,
+            "coverage": 0.9926289926289926,
+            "confusion_matrix": {
+              "tp": 6,
+              "fp": 0,
+              "tn": 785,
+              "fn": 23
+            },
+            "escalation_precision": 1.0,
+            "escalation_recall": 0.20689655172413793,
+            "escalation_f1": 0.34285714285714286,
+            "false_clears_count": 23,
+            "selective_risk": 0.028465346534653466,
+            "empirical_miscoverage": 0.028255528255528257,
+            "deviation_from_nominal": 0.01825552825552826
+          },
+          {
+            "nominal_alpha": 0.05,
+            "conformal_threshold": 2.8066576103089844e-09,
+            "total_windows": 814,
+            "total_anomalies": 29,
+            "n_escalated": 26,
+            "n_cleared": 788,
+            "escalation_rate": 0.03194103194103194,
+            "coverage": 0.9680589680589681,
+            "confusion_matrix": {
+              "tp": 19,
+              "fp": 7,
+              "tn": 778,
+              "fn": 10
+            },
+            "escalation_precision": 0.7307692307692307,
+            "escalation_recall": 0.6551724137931034,
+            "escalation_f1": 0.6909090909090909,
+            "false_clears_count": 10,
+            "selective_risk": 0.012690355329949238,
+            "empirical_miscoverage": 0.012285012285012284,
+            "deviation_from_nominal": -0.03771498771498772
+          },
+          {
+            "nominal_alpha": 0.1,
+            "conformal_threshold": 2.8066576103089844e-09,
+            "total_windows": 814,
+            "total_anomalies": 29,
+            "n_escalated": 26,
+            "n_cleared": 788,
+            "escalation_rate": 0.03194103194103194,
+            "coverage": 0.9680589680589681,
+            "confusion_matrix": {
+              "tp": 19,
+              "fp": 7,
+              "tn": 778,
+              "fn": 10
+            },
+            "escalation_precision": 0.7307692307692307,
+            "escalation_recall": 0.6551724137931034,
+            "escalation_f1": 0.6909090909090909,
+            "false_clears_count": 10,
+            "selective_risk": 0.012690355329949238,
+            "empirical_miscoverage": 0.012285012285012284,
+            "deviation_from_nominal": -0.08771498771498772
+          },
+          {
+            "nominal_alpha": 0.2,
+            "conformal_threshold": 2.8066576103089844e-09,
+            "total_windows": 814,
+            "total_anomalies": 29,
+            "n_escalated": 26,
+            "n_cleared": 788,
+            "escalation_rate": 0.03194103194103194,
+            "coverage": 0.9680589680589681,
+            "confusion_matrix": {
+              "tp": 19,
+              "fp": 7,
+              "tn": 778,
+              "fn": 10
+            },
+            "escalation_precision": 0.7307692307692307,
+            "escalation_recall": 0.6551724137931034,
+            "escalation_f1": 0.6909090909090909,
+            "false_clears_count": 10,
+            "selective_risk": 0.012690355329949238,
+            "empirical_miscoverage": 0.012285012285012284,
+            "deviation_from_nominal": -0.18771498771498774
+          }
+        ]
+      },
+      "ablation_c_sample_size": {
+        "description": "Sensitivity of conformal threshold to chronological calibration sample size (alpha=0.05)",
+        "results": [
+          {
+            "fraction": 0.25,
+            "sample_size": 203,
+            "threshold_alpha_0_05": 0.9999544024467468,
+            "escalation_rate": 0.04433497536945813,
+            "coverage": 0.9556650246305419,
+            "selective_risk": 0.030927835051546393,
+            "empirical_miscoverage": 0.029556650246305417,
+            "deviation": -0.020443349753694585
+          },
+          {
+            "fraction": 0.5,
+            "sample_size": 407,
+            "threshold_alpha_0_05": 1.1506084203720093,
+            "escalation_rate": 0.04668304668304668,
+            "coverage": 0.9533169533169533,
+            "selective_risk": 0.03865979381443299,
+            "empirical_miscoverage": 0.036855036855036855,
+            "deviation": -0.013144963144963148
+          },
+          {
+            "fraction": 1.0,
+            "sample_size": 814,
+            "threshold_alpha_0_05": 1.1545928716659546,
+            "escalation_rate": 0.04791154791154791,
+            "coverage": 0.952088452088452,
+            "selective_risk": 0.02838709677419355,
+            "empirical_miscoverage": 0.02702702702702703,
+            "deviation": -0.022972972972972974
+          }
+        ]
+      },
+      "training_history": [
+        {
+          "epoch": 1,
+          "train_loss": 2.027811085476595,
+          "val_loss": 1.2907951474189758
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.8908209748127881,
+          "val_loss": 0.8727413862943649
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.6000498769914403,
+          "val_loss": 0.7240354716777802
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.4796752526479609,
+          "val_loss": 0.6441619396209717
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.41571319541510415,
+          "val_loss": 0.5968262255191803
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.3779746749821831,
+          "val_loss": 0.5634986311197281
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.3540623328265022,
+          "val_loss": 0.5405653938651085
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.33627116417183595,
+          "val_loss": 0.5194358974695206
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.3221232036457342,
+          "val_loss": 0.5067598447203636
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.30585574183393927,
+          "val_loss": 0.4983111619949341
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.29508283208398256,
+          "val_loss": 0.4887279346585274
+        },
+        {
+          "epoch": 12,
+          "train_loss": 0.2876103375764454,
+          "val_loss": 0.4840523228049278
+        },
+        {
+          "epoch": 13,
+          "train_loss": 0.2819376167129068,
+          "val_loss": 0.48044921457767487
+        },
+        {
+          "epoch": 14,
+          "train_loss": 0.27667999793501463,
+          "val_loss": 0.47823477536439896
+        },
+        {
+          "epoch": 15,
+          "train_loss": 0.2732757290496546,
+          "val_loss": 0.4735933095216751
+        },
+        {
+          "epoch": 16,
+          "train_loss": 0.2706032846780384,
+          "val_loss": 0.470644973218441
+        },
+        {
+          "epoch": 17,
+          "train_loss": 0.2683038330253433,
+          "val_loss": 0.47329867631196976
+        },
+        {
+          "epoch": 18,
+          "train_loss": 0.26735781746752124,
+          "val_loss": 0.4668688103556633
+        },
+        {
+          "epoch": 19,
+          "train_loss": 0.2635174836306011,
+          "val_loss": 0.4642839953303337
+        },
+        {
+          "epoch": 20,
+          "train_loss": 0.26270296512281194,
+          "val_loss": 0.46316342055797577
+        }
+      ],
+      "timing": {
+        "fit_seconds": 12.835261999998693,
+        "scoring_seconds": 0.8549117999991722,
+        "total_seconds": 13.773944999999003
+      }
+    },
+    {
+      "dataset": "bgl",
+      "n_train": 300,
+      "n_calib": 100,
+      "calibrator_metadata": {
+        "n_calibration": 100,
+        "min_score": 0.060652121901512146,
+        "max_score": 3.0237722396850586,
+        "mean_score": 0.3183280971646309,
+        "median_score": 0.060652121901512146,
+        "score_direction": "higher_is_more_anomalous",
+        "conformal_convention": "finite_sample_ceil_n_plus_one"
+      },
+      "alpha_sweep": [
+        {
+          "nominal_alpha": 0.01,
+          "conformal_threshold": 3.0237722396850586,
+          "total_windows": 100,
+          "total_anomalies": 36,
+          "n_escalated": 0,
+          "n_cleared": 100,
+          "escalation_rate": 0.0,
+          "coverage": 1.0,
+          "confusion_matrix": {
+            "tp": 0,
+            "fp": 0,
+            "tn": 64,
+            "fn": 36
+          },
+          "escalation_precision": 0.0,
+          "escalation_recall": 0.0,
+          "escalation_f1": 0.0,
+          "false_clears_count": 36,
+          "selective_risk": 0.36,
+          "empirical_miscoverage": 0.36,
+          "deviation_from_nominal": 0.35
+        },
+        {
+          "nominal_alpha": 0.05,
+          "conformal_threshold": 2.5946779251098633,
+          "total_windows": 100,
+          "total_anomalies": 36,
+          "n_escalated": 2,
+          "n_cleared": 98,
+          "escalation_rate": 0.02,
+          "coverage": 0.98,
+          "confusion_matrix": {
+            "tp": 1,
+            "fp": 1,
+            "tn": 63,
+            "fn": 35
+          },
+          "escalation_precision": 0.5,
+          "escalation_recall": 0.027777777777777776,
+          "escalation_f1": 0.05263157894736842,
+          "false_clears_count": 35,
+          "selective_risk": 0.35714285714285715,
+          "empirical_miscoverage": 0.35,
+          "deviation_from_nominal": 0.3
+        },
+        {
+          "nominal_alpha": 0.1,
+          "conformal_threshold": 0.7196482419967651,
+          "total_windows": 100,
+          "total_anomalies": 36,
+          "n_escalated": 9,
+          "n_cleared": 91,
+          "escalation_rate": 0.09,
+          "coverage": 0.91,
+          "confusion_matrix": {
+            "tp": 4,
+            "fp": 5,
+            "tn": 59,
+            "fn": 32
+          },
+          "escalation_precision": 0.4444444444444444,
+          "escalation_recall": 0.1111111111111111,
+          "escalation_f1": 0.17777777777777776,
+          "false_clears_count": 32,
+          "selective_risk": 0.3516483516483517,
+          "empirical_miscoverage": 0.32,
+          "deviation_from_nominal": 0.22
+        },
+        {
+          "nominal_alpha": 0.2,
+          "conformal_threshold": 0.18980678915977478,
+          "total_windows": 100,
+          "total_anomalies": 36,
+          "n_escalated": 19,
+          "n_cleared": 81,
+          "escalation_rate": 0.19,
+          "coverage": 0.81,
+          "confusion_matrix": {
+            "tp": 13,
+            "fp": 6,
+            "tn": 58,
+            "fn": 23
+          },
+          "escalation_precision": 0.6842105263157895,
+          "escalation_recall": 0.3611111111111111,
+          "escalation_f1": 0.4727272727272728,
+          "false_clears_count": 23,
+          "selective_risk": 0.2839506172839506,
+          "empirical_miscoverage": 0.23,
+          "deviation_from_nominal": 0.03
+        }
+      ],
+      "ablation_a_fixed_heuristic": {
+        "description": "B2 with Fixed Heuristic Quantile Threshold (No Conformal)",
+        "fixed_quantile": 0.95,
+        "threshold": 2.4503683447837825,
+        "tp": 1,
+        "fp": 4,
+        "fn": 35,
+        "tn": 60,
+        "precision": 0.2,
+        "recall": 0.027777777777777776,
+        "f1": 0.04878048780487805,
+        "escalation_rate": 0.05,
+        "coverage": 0.95,
+        "selective_risk": 0.3684210526315789
+      },
+      "ablation_b_pca_vs_b2": {
+        "description": "B1 PCA vs B2 Sequential GRU under identical conformal gate",
+        "pca_sweep": [
+          {
+            "nominal_alpha": 0.01,
+            "conformal_threshold": 1.1725611303800676,
+            "total_windows": 100,
+            "total_anomalies": 36,
+            "n_escalated": 0,
+            "n_cleared": 100,
+            "escalation_rate": 0.0,
+            "coverage": 1.0,
+            "confusion_matrix": {
+              "tp": 0,
+              "fp": 0,
+              "tn": 64,
+              "fn": 36
+            },
+            "escalation_precision": 0.0,
+            "escalation_recall": 0.0,
+            "escalation_f1": 0.0,
+            "false_clears_count": 36,
+            "selective_risk": 0.36,
+            "empirical_miscoverage": 0.36,
+            "deviation_from_nominal": 0.35
+          },
+          {
+            "nominal_alpha": 0.05,
+            "conformal_threshold": 0.9163031968649917,
+            "total_windows": 100,
+            "total_anomalies": 36,
+            "n_escalated": 4,
+            "n_cleared": 96,
+            "escalation_rate": 0.04,
+            "coverage": 0.96,
+            "confusion_matrix": {
+              "tp": 0,
+              "fp": 4,
+              "tn": 60,
+              "fn": 36
+            },
+            "escalation_precision": 0.0,
+            "escalation_recall": 0.0,
+            "escalation_f1": 0.0,
+            "false_clears_count": 36,
+            "selective_risk": 0.375,
+            "empirical_miscoverage": 0.36,
+            "deviation_from_nominal": 0.31
+          },
+          {
+            "nominal_alpha": 0.1,
+            "conformal_threshold": 0.012880636064031798,
+            "total_windows": 100,
+            "total_anomalies": 36,
+            "n_escalated": 9,
+            "n_cleared": 91,
+            "escalation_rate": 0.09,
+            "coverage": 0.91,
+            "confusion_matrix": {
+              "tp": 3,
+              "fp": 6,
+              "tn": 58,
+              "fn": 33
+            },
+            "escalation_precision": 0.3333333333333333,
+            "escalation_recall": 0.08333333333333333,
+            "escalation_f1": 0.13333333333333333,
+            "false_clears_count": 33,
+            "selective_risk": 0.3626373626373626,
+            "empirical_miscoverage": 0.33,
+            "deviation_from_nominal": 0.23
+          },
+          {
+            "nominal_alpha": 0.2,
+            "conformal_threshold": 0.00020172356825962046,
+            "total_windows": 100,
+            "total_anomalies": 36,
+            "n_escalated": 17,
+            "n_cleared": 83,
+            "escalation_rate": 0.17,
+            "coverage": 0.83,
+            "confusion_matrix": {
+              "tp": 11,
+              "fp": 6,
+              "tn": 58,
+              "fn": 25
+            },
+            "escalation_precision": 0.6470588235294118,
+            "escalation_recall": 0.3055555555555556,
+            "escalation_f1": 0.41509433962264153,
+            "false_clears_count": 25,
+            "selective_risk": 0.30120481927710846,
+            "empirical_miscoverage": 0.25,
+            "deviation_from_nominal": 0.04999999999999999
+          }
+        ]
+      },
+      "ablation_c_sample_size": {
+        "description": "Sensitivity of conformal threshold to chronological calibration sample size (alpha=0.05)",
+        "results": [
+          {
+            "fraction": 0.25,
+            "sample_size": 25,
+            "threshold_alpha_0_05": 0.35795846581459045,
+            "escalation_rate": 0.0,
+            "coverage": 1.0,
+            "selective_risk": 0.68,
+            "empirical_miscoverage": 0.68,
+            "deviation": 0.63
+          },
+          {
+            "fraction": 0.5,
+            "sample_size": 50,
+            "threshold_alpha_0_05": 2.5946779251098633,
+            "escalation_rate": 0.02,
+            "coverage": 0.98,
+            "selective_risk": 0.673469387755102,
+            "empirical_miscoverage": 0.66,
+            "deviation": 0.61
+          },
+          {
+            "fraction": 1.0,
+            "sample_size": 100,
+            "threshold_alpha_0_05": 2.5946779251098633,
+            "escalation_rate": 0.02,
+            "coverage": 0.98,
+            "selective_risk": 0.35714285714285715,
+            "empirical_miscoverage": 0.35,
+            "deviation": 0.3
+          }
+        ]
+      },
+      "training_history": [
+        {
+          "epoch": 1,
+          "train_loss": 3.040433168411255,
+          "val_loss": 2.810868740081787
+        },
+        {
+          "epoch": 2,
+          "train_loss": 2.7807060877482095,
+          "val_loss": 2.463380813598633
+        },
+        {
+          "epoch": 3,
+          "train_loss": 2.542792320251465,
+          "val_loss": 2.1094634532928467
+        },
+        {
+          "epoch": 4,
+          "train_loss": 2.3089260260264077,
+          "val_loss": 1.7631505727767944
+        },
+        {
+          "epoch": 5,
+          "train_loss": 2.0810527404149375,
+          "val_loss": 1.4355497360229492
+        },
+        {
+          "epoch": 6,
+          "train_loss": 1.8658566077550252,
+          "val_loss": 1.1382172107696533
+        },
+        {
+          "epoch": 7,
+          "train_loss": 1.6623831192652385,
+          "val_loss": 0.8811577558517456
+        },
+        {
+          "epoch": 8,
+          "train_loss": 1.469379226366679,
+          "val_loss": 0.6701257228851318
+        },
+        {
+          "epoch": 9,
+          "train_loss": 1.2974332173665364,
+          "val_loss": 0.5051211714744568
+        },
+        {
+          "epoch": 10,
+          "train_loss": 1.1400552988052368,
+          "val_loss": 0.3812427520751953
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.9979755083719889,
+          "val_loss": 0.29092735052108765
+        },
+        {
+          "epoch": 12,
+          "train_loss": 0.8697251876195272,
+          "val_loss": 0.22609616816043854
+        },
+        {
+          "epoch": 13,
+          "train_loss": 0.7557856440544128,
+          "val_loss": 0.17967422306537628
+        },
+        {
+          "epoch": 14,
+          "train_loss": 0.6537967721621195,
+          "val_loss": 0.14611709117889404
+        },
+        {
+          "epoch": 15,
+          "train_loss": 0.5654735366503397,
+          "val_loss": 0.12144028395414352
+        },
+        {
+          "epoch": 16,
+          "train_loss": 0.4897471566994985,
+          "val_loss": 0.1028856635093689
+        },
+        {
+          "epoch": 17,
+          "train_loss": 0.4265605608622233,
+          "val_loss": 0.08855240792036057
+        },
+        {
+          "epoch": 18,
+          "train_loss": 0.3741415838400523,
+          "val_loss": 0.07722148299217224
+        },
+        {
+          "epoch": 19,
+          "train_loss": 0.3316142062346141,
+          "val_loss": 0.06811489164829254
+        },
+        {
+          "epoch": 20,
+          "train_loss": 0.2954470018545787,
+          "val_loss": 0.06065211817622185
+        }
+      ],
+      "timing": {
+        "fit_seconds": 4.949250499999835,
+        "scoring_seconds": 0.5562824000007822,
+        "total_seconds": 5.528763600001184
+      }
+    }
+  ]
+}
