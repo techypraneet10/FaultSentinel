@@ -1,0 +1,52 @@
+# SentinelLog Phase 6 Configuration: Retrieval Reranking & Evidence Selection
+version: "0.6.0-phase6"
+
+# Datasets to evaluate (retrieval corpus is built strictly from TRAIN)
+datasets:
+  - hdfs
+  - bgl
+
+data_dirs:
+  hdfs: "data/processed/hdfs"
+  bgl: "data/processed/bgl"
+
+phase5_dir: "results/phase5"
+output_dir: "results/phase6"
+
+random_seed: 42
+
+# Phase 5 Retrieval Baseline
+retrieval:
+  k: 5
+  similarity_metric: "cosine"
+  corpus_split: "train"         # Mandatory Rule: TRAIN only
+  same_dataset_only: true       # Isolate HDFS and BGL
+  exclude_self: true            # Exclude query's own window ID
+  embedding_model: "template_tfidf_v1"
+
+# Phase 6 Reranking & Selection
+reranking:
+  evidence_k: 3                 # Compact evidence budget (evidence_k <= retrieval_k)
+  mmr_lambda: 0.70              # Relevance weight (0.70 relevance, 0.30 diversity)
+  diversity_mode: "mmr"         # Maximum Marginal Relevance
+  similarity_metric: "cosine"
+
+# Selective Gate Settings for Evaluation (CALIBRATION split)
+gate:
+  alpha: 0.05
+  strict: true
+
+# Research Ablation Configurations
+ablations:
+  # Ablation B: Lambda Sensitivity
+  lambdas:
+    - 1.0   # Pure relevance (no diversity penalty)
+    - 0.85  # Mild diversity penalty
+    - 0.70  # Standard default
+    - 0.50  # Balanced relevance and diversity
+    - 0.0   # Pure diversity
+  # Ablation C: Evidence Compression Budget
+  evidence_ks:
+    - 1     # Minimum single-evidence anchor
+    - 3     # Recommended default
+    - 5     # Full retrieval candidate size

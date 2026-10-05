@@ -4,10 +4,10 @@
 SentinelLog — Calibrated Selective Prediction for LLM-Assisted Incident Triage over System Logs
 
 ## Current Phase
-Phase 5 — Leakage-Safe Contextual Retrieval Infrastructure
+Phase 6 — Retrieval Reranking & Evidence Selection
 
 ## Status
-COMPLETE (Phase 5 retrieval infrastructure verified, tested, and committed; awaiting human authorization to proceed to Phase 6)
+COMPLETE (Phase 6 MMR evidence reranking and selection implemented, verified, tested, and committed; awaiting human verification)
 
 ## Completed (Phase 1)
 - [x] Repository inspection
@@ -81,9 +81,27 @@ COMPLETE (Phase 5 retrieval infrastructure verified, tested, and committed; awai
 - [x] Complete test suite passing (96/96 tests passing in 34s) on Python 3.12.4 CPU `.venv`
 - [x] Comprehensive Phase 5 documentation (`docs/phase5.md`, `results/phase5/phase5_report.md`)
 
+## Completed (Phase 6)
+- [x] Frozen Phase 5 candidate consumption: Phase 6 takes Phase 5 retrieval output ($k=5$) as candidates without mutating Phase 5 logic.
+- [x] Retrieval score preservation: Original Phase 5 retrieval scores, ranks, and chunk IDs preserved intact on all selected items.
+- [x] MMR-style evidence reranking: Maximum Marginal Relevance ($\lambda \cdot \text{rel} - (1-\lambda) \cdot \text{max\_sim}$) implemented with configurable $\lambda$ (default 0.70).
+- [x] Compact evidence budget selection: Configurable `evidence_k` (default 3) strictly enforcing $\text{evidence\_k} \le \text{retrieval\_k}$.
+- [x] Strictly deterministic tie-breaking: `selection_score` DESC $\to$ `retrieval_score` DESC $\to$ `chunk_id` ASC.
+- [x] Label leakage protection: Primary reranker and selection logic are strictly label-free; fail-closed guards prevent label exposure.
+- [x] Cascade integration (`GatedEvidencePipeline`): `AUTO-CLEAR` bypasses retrieval and selection; `ESCALATE` invokes retrieval and MMR selection.
+- [x] Controlled research ablations:
+  - Ablation A: Phase 5 Top-3 Retrieval vs Phase 5 + MMR Selection ($5 \to 3$).
+  - Ablation B: Lambda Sensitivity ($\lambda \in \{1.0, 0.85, 0.70, 0.50, 0.0\}$).
+  - Ablation C: Evidence Budget Compression ($k \in \{1, 3, 5\}$).
+- [x] Phase 6 standalone CLI runner and diagnostics generator (`sentinellog/retrieval/phase6_runner.py`, `configs/phase6.yaml`).
+- [x] Generated reproducible artifacts in `results/phase6/` (`phase6_report.md`, `phase6_report.json`, manifests, `evidence_selection.jsonl`, `reranking_diagnostics.json`).
+- [x] Phase 6 unit and integration test suite with 15 comprehensive tests (`tests/test_evidence_selection.py`).
+- [x] Full test suite passing (111/111 tests passing in 24s) on Python 3.12.4 CPU `.venv`.
+- [x] Determinism verified: Repeated execution yields identical bitwise SHA-256 hashes.
+- [x] Comprehensive Phase 6 documentation (`docs/phase6.md`).
+
 ## Not Completed
-- Phase 6 — Full cascade integration and selective prediction triage
-- Phase 7 — Frozen evaluation over benchmark test sets
+- Phase 7 — Frozen evaluation over benchmark test sets, provenance and citation verification
 - Phase 8 — Production service and API endpoint serving
 - Phase 9 — Final deployment, containerization, and reproducibility artifacts
 
@@ -92,23 +110,18 @@ LOCKED (Rule 1)
 
 ## Test-set Access
 FORBIDDEN until Phase 7.
-(All Phase 5 models, tokenizers, corpus construction, and selective retrieval evaluations were conducted exclusively on TRAIN and CALIBRATION. `test_used: false` verified across all manifests.)
+(All Phase 6 models, tokenizers, corpus construction, and selective retrieval/reranking evaluations were conducted exclusively on TRAIN and CALIBRATION. `test_used: false` verified across all manifests.)
 
 ## Last Validation
 - Date: 2026-10-05
-- Pytest: 96 passed in 33.60s (0 failed, 0 warnings across all 6 test modules)
+- Pytest: 111 passed in 23.56s (0 failed, 0 warnings across all 7 test modules)
 - Syntax/Bytecode check: `.venv\Scripts\python.exe -m compileall -q sentinellog tests scripts` (Clean, exit code 0)
-- Retrieval Corpus Sizes (TRAIN only): HDFS = 2,450 chunks; BGL = 300 chunks
-- Embedding Dimensions: HDFS = 16 dimensions; BGL = 19 dimensions
-- Gated Selective Retrieval Diagnostics (CALIBRATION split at $\alpha=0.05$):
-  - HDFS: 814 windows evaluated $\to$ 775 (95.2%) Auto-Cleared (Bypassed), 39 (4.8%) Escalated, 195 evidence chunks retrieved (0.0% self-retrieval)
-  - BGL: 100 windows evaluated $\to$ 98 (98.0%) Auto-Cleared (Bypassed), 2 (2.0%) Escalated, 10 evidence chunks retrieved (0.0% self-retrieval)
-- Determinism Check: Running Phase 5 pipeline multiple times yields identical SHA-256 artifact hashes:
-  - HDFS corpus: `b5b70fdec940e888d6b3d52ca780638dc9c7a25881657371e18c6313e4b8df49`
-  - HDFS embeddings: `0bb38c7037ce42cf7729ff2726137eaee1da582e5a4581287b799c105ae27b1d`
-  - BGL corpus: `d80e94505949fce1661a1dfff8ad5331fbe63870dc3f753d2b0fe041df44baab`
-  - BGL embeddings: `6ff0f8c81bf93944f3817a60e3d7b4fcbf4455cd2cbff6fd95ac071fb4428784`
+- Gated Selective Evidence Selection Diagnostics (CALIBRATION split at $\alpha=0.05$, $k=5 \to 3$, $\lambda=0.70$):
+  - HDFS: 814 windows evaluated $\to$ 775 (95.2%) Auto-Cleared, 39 (4.8%) Escalated, 117 evidence chunks selected (relevance = 0.9239, pairwise similarity reduced by 0.0294)
+  - BGL: 100 windows evaluated $\to$ 98 (98.0%) Auto-Cleared, 2 (2.0%) Escalated, 6 evidence chunks selected (relevance = 0.0240, pairwise similarity reduced by 0.2681)
+- Determinism Check: Running Phase 6 pipeline yields bit-for-bit identical SHA-256 artifact hashes:
+  - HDFS `evidence_selection.jsonl`: `c634b7688b2a507c9bee3a2533f91e6b00aa5c7a76e0f9086d08fc85eceef9e6`
 - Rule 1 Test Guard: Programmatically verified via `guard_no_test_split` regression tests.
 
 ## Next Authorized Phase
-Phase 6 — Full cascade integration and selective prediction triage (PENDING HUMAN APPROVAL)
+Phase 7 — Frozen evaluation over benchmark test sets, provenance and citation verification (PENDING HUMAN APPROVAL)

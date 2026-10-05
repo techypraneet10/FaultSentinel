@@ -1,0 +1,20 @@
+{
+  "dataset": "hdfs",
+  "corpus_split": "train",
+  "retrieval_k": 5,
+  "evidence_k": 3,
+  "mmr_lambda": 0.7,
+  "diversity_mode": "mmr",
+  "similarity_metric": "cosine",
+  "source_commit": "523a32da041de59e78610567edb7374370c66433",
+  "source_phase5_commit": "cd2a075bd9a67df7567ccd86865edaeace49c3c0",
+  "python_version": "3.12.4",
+  "random_seed": 42,
+  "test_used": false,
+  "calibration_used_for_fitting": false,
+  "artifact_hashes": {
+    "evidence_selection.jsonl": "c634b7688b2a507c9bee3a2533f91e6b00aa5c7a76e0f9086d08fc85eceef9e6",
+    "reranking_diagnostics.json": "80a4d4a391726f2becd0b71ba3b40c4894ca2946a290640c5df9b78363cc38e5"
+  },
+  "timestamp": "2026-10-05T17:19:31.357411+00:00"
+}

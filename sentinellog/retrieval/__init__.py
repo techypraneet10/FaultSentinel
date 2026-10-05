@@ -20,13 +20,19 @@ from sentinellog.retrieval.engine import (
     batch_cosine_similarities,
     cosine_similarity,
 )
-from sentinellog.retrieval.gated import GatedRetrievalPipeline
+from sentinellog.retrieval.gated import GatedEvidencePipeline, GatedRetrievalPipeline
 from sentinellog.retrieval.guards import (
     InvalidSplitError,
     LabelLeakageError,
     guard_no_label_in_text,
     guard_query_does_not_contain_labels,
     guard_train_split_only,
+)
+from sentinellog.retrieval.reranker import MMREvidenceReranker
+from sentinellog.retrieval.reranking_schemas import (
+    EvidenceSelectionResult,
+    GatedEvidenceResult,
+    SelectedEvidence,
 )
 from sentinellog.retrieval.schemas import (
     GatedRetrievalResult,
@@ -45,6 +51,9 @@ __all__ = [
     "RetrievalQuery",
     "RetrievedEvidence",
     "GatedRetrievalResult",
+    "SelectedEvidence",
+    "EvidenceSelectionResult",
+    "GatedEvidenceResult",
     "format_template_tokens",
     "compute_chunk_id",
     "build_retrieval_chunk",
@@ -55,5 +64,7 @@ __all__ = [
     "cosine_similarity",
     "batch_cosine_similarities",
     "IncidentRetriever",
+    "MMREvidenceReranker",
     "GatedRetrievalPipeline",
+    "GatedEvidencePipeline",
 ]

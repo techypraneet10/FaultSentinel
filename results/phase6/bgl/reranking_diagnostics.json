@@ -1,0 +1,85 @@
+{
+  "dataset": "bgl",
+  "total_windows_evaluated": 100,
+  "auto_clear_count": 98,
+  "auto_clear_rate": 0.98,
+  "escalated_count": 2,
+  "escalation_rate": 0.02,
+  "retrieval_k": 5,
+  "evidence_k": 3,
+  "mmr_lambda": 0.7,
+  "diversity_mode": "mmr",
+  "evidence_compression_ratio": 0.6,
+  "mean_candidate_similarity": 0.0265,
+  "mean_selected_similarity": 0.024,
+  "relevance_delta": -0.0025,
+  "mean_candidate_pairwise_similarity": 0.5908,
+  "mean_selected_pairwise_similarity": 0.3227,
+  "pairwise_similarity_reduction": 0.2681,
+  "candidate_total_chunks": 10,
+  "candidate_unique_chunks": 5,
+  "candidate_duplicate_rate": 0.5,
+  "candidate_unique_source_windows": 5,
+  "selected_total_chunks": 6,
+  "selected_unique_chunks": 3,
+  "selected_duplicate_rate": 0.5,
+  "selected_unique_source_windows": 3,
+  "ablations": {
+    "ablation_a": {
+      "name": "Ablation A: Phase 5 Top-3 Retrieval vs Phase 5 + MMR Evidence Selection (5 -> 3)",
+      "phase5_top3_mean_relevance": 0.0346,
+      "phase5_top3_mean_pairwise_similarity": 0.9804,
+      "mmr_top3_mean_relevance": 0.024,
+      "mmr_top3_mean_pairwise_similarity": 0.3227,
+      "pairwise_similarity_reduction": 0.6577
+    },
+    "ablation_b": {
+      "lambda_1.0": {
+        "lambda": 1.0,
+        "mean_relevance": 0.0346,
+        "mean_pairwise_similarity": 0.9804
+      },
+      "lambda_0.85": {
+        "lambda": 0.85,
+        "mean_relevance": 0.025,
+        "mean_pairwise_similarity": 0.3249
+      },
+      "lambda_0.7": {
+        "lambda": 0.7,
+        "mean_relevance": 0.024,
+        "mean_pairwise_similarity": 0.3227
+      },
+      "lambda_0.5": {
+        "lambda": 0.5,
+        "mean_relevance": 0.024,
+        "mean_pairwise_similarity": 0.3227
+      },
+      "lambda_0.0": {
+        "lambda": 0.0,
+        "mean_relevance": 0.024,
+        "mean_pairwise_similarity": 0.3227
+      }
+    },
+    "ablation_c": {
+      "k_1": {
+        "evidence_k": 1,
+        "mean_relevance": 0.0433,
+        "mean_pairwise_similarity": 0.0,
+        "compression_ratio": 0.2
+      },
+      "k_3": {
+        "evidence_k": 3,
+        "mean_relevance": 0.024,
+        "mean_pairwise_similarity": 0.3227,
+        "compression_ratio": 0.6
+      },
+      "k_5": {
+        "evidence_k": 5,
+        "mean_relevance": 0.0265,
+        "mean_pairwise_similarity": 0.5908,
+        "compression_ratio": 1.0
+      }
+    }
+  },
+  "timing_seconds": 0.498402500001248
+}

@@ -1,0 +1,20 @@
+{
+  "dataset": "bgl",
+  "corpus_split": "train",
+  "retrieval_k": 5,
+  "evidence_k": 3,
+  "mmr_lambda": 0.7,
+  "diversity_mode": "mmr",
+  "similarity_metric": "cosine",
+  "source_commit": "523a32da041de59e78610567edb7374370c66433",
+  "source_phase5_commit": "cd2a075bd9a67df7567ccd86865edaeace49c3c0",
+  "python_version": "3.12.4",
+  "random_seed": 42,
+  "test_used": false,
+  "calibration_used_for_fitting": false,
+  "artifact_hashes": {
+    "evidence_selection.jsonl": "200e9a3f34e59e9dfdb1d8e910666bae8ae20b82a8e827a2c9d55de451fbcdc2",
+    "reranking_diagnostics.json": "74b405bf827b57288f224f6bc729f926ea85a09edebdb3356ff49869771560b2"
+  },
+  "timestamp": "2026-10-05T17:19:31.948935+00:00"
+}
