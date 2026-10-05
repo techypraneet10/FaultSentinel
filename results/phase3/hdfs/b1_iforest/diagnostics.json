@@ -289,8 +289,8 @@
     "p95": 0.5610853461048544
   },
   "timing": {
-    "train_fit_seconds": 0.0938986000001023,
-    "calibration_scoring_seconds": 0.007375899998805835,
-    "total_seconds": 0.12138100000083796
+    "train_fit_seconds": 0.09982350000063889,
+    "calibration_scoring_seconds": 0.008302899999762303,
+    "total_seconds": 0.13010790000043926
   }
 }
