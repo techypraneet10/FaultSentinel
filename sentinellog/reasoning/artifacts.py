@@ -13,7 +13,7 @@ Computes SHA-256 fingerprints across all output files and enforces Rule 1 invari
 from datetime import datetime, timezone
 import json
 import os
-from typing import Any, Dict, List, Sequence
+from typing import Any, Dict, List, Optional, Sequence
 
 from sentinellog.reasoning.schemas import (
     EvidenceContribution,
