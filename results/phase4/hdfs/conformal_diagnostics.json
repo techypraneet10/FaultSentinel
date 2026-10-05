@@ -355,8 +355,8 @@
     }
   ],
   "timing": {
-    "fit_seconds": 12.835261999998693,
-    "scoring_seconds": 0.8549117999991722,
-    "total_seconds": 13.773944999999003
+    "fit_seconds": 12.065395999999964,
+    "scoring_seconds": 1.4242529000002833,
+    "total_seconds": 13.594663599998967
   }
 }

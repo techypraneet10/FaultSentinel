@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-05T15:23:41.637286+00:00",
+  "generated_at": "2026-10-05T15:25:37.173254+00:00",
   "note": "CALIBRATION SPLIT ONLY. TEST SPLIT FROZEN AND UNTOUCHED.",
   "results": [
     {
@@ -359,9 +359,9 @@
         }
       ],
       "timing": {
-        "fit_seconds": 12.835261999998693,
-        "scoring_seconds": 0.8549117999991722,
-        "total_seconds": 13.773944999999003
+        "fit_seconds": 12.065395999999964,
+        "scoring_seconds": 1.4242529000002833,
+        "total_seconds": 13.594663599998967
       }
     },
     {
@@ -721,9 +721,9 @@
         }
       ],
       "timing": {
-        "fit_seconds": 4.949250499999835,
-        "scoring_seconds": 0.5562824000007822,
-        "total_seconds": 5.528763600001184
+        "fit_seconds": 8.11516280000069,
+        "scoring_seconds": 0.976556099998561,
+        "total_seconds": 9.128995799999757
       }
     }
   ]
