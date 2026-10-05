@@ -55,29 +55,59 @@ $$k = \min\left(n, \max\left(1, \lceil (n + 1)(1 - \alpha) \rceil\right)\right)$
 $$\hat{\tau}_\alpha = s_{(k)}$$
 where $s_{(1)} \le s_{(2)} \le \dots \le s_{(n)}$ are the sorted calibration scores.
 
-### 3.2 Selective Escalation Gate
-Each window $W$ is evaluated through the decision rule:
+### 3.2 Selective Escalation Gate Decision Rule
+Each window $W$ is evaluated through the primary threshold decision rule:
 $$\text{Decision}(W) = \begin{cases} \text{ESCALATE} & \text{if } S_{B2}(W) > \hat{\tau}_\alpha \\ \text{AUTO-CLEAR} & \text{if } S_{B2}(W) \le \hat{\tau}_\alpha \end{cases}$$
 
-### 3.3 Metric Definitions
-- **Coverage (Auto-Clear Rate)**: $C = \frac{N_{clear}}{N}$ (fraction of windows resolved without downstream escalation)
+### 3.3 Conformal Guarantee vs Anomaly Risk Framing
+It is essential to distinguish two fundamentally different concepts:
+
+1. **Conformal Score-Tail / Escalation Control**:
+   The unsupervised split conformal procedure calibrates $\hat{\tau}_\alpha$ on nonconformity scores $s_1, \dots, s_n$. Under the relevant exchangeability assumption, the upper-tail probability of the nonconformity score is bounded:
+   $$P(S_{test} > \hat{\tau}_\alpha) \le \alpha \quad \iff \quad P(S_{test} \le \hat{\tau}_\alpha) \ge 1 - \alpha$$
+   This is a finite-sample guarantee on the **score tail / escalation rate** under the reference distribution.
+
+2. **Anomaly False-Negative / Incident Risk Control**:
+   **Anomaly labels are NOT used in the conformal calibration procedure.**
+   The conformal score-tail bound does **NOT** imply:
+   $$P(\text{ANOMALY AND AUTO-CLEAR}) \le \alpha$$
+   nor does it guarantee that the anomaly false-negative rate, missed-incident rate, or false discovery rate is bounded by $\alpha$.
+   Therefore, the observed anomaly false-clear rate ($FN / N_{total}$) and selective risk ($FN / N_{clear}$) are **EMPIRICAL DIAGNOSTICS**, not conformal guarantees.
+
+### 3.4 Metric Definitions
+- **Coverage (Auto-Clear Rate)**: $C = \frac{N_{clear}}{N}$ (fraction of windows auto-cleared without downstream escalation)
 - **Escalation Rate**: $R_{esc} = \frac{N_{esc}}{N} = 1 - C$
 - **False Clear (FN)**: An anomalous window erroneously classified as `AUTO-CLEAR` ($y=1$ and $\text{Decision} = \text{AUTO-CLEAR}$)
-- **Selective Risk**: Rate of false clears among auto-cleared windows:
+- **Selective Risk**: Fraction of false clears among auto-cleared windows:
   $$\text{Selective Risk} = \frac{\sum_{i=1}^N \mathbb{I}(y_i = 1 \text{ and } \text{Decision}_i = \text{AUTO-CLEAR})}{N_{clear}}$$
-- **Empirical Miscoverage**: Fraction of all windows that are missed anomalies:
-  $$\text{Empirical Miscoverage} = \frac{\sum_{i=1}^N \mathbb{I}(y_i = 1 \text{ and } \text{Decision}_i = \text{AUTO-CLEAR})}{N}$$
-- **Deviation**: $\Delta = \text{Empirical Miscoverage} - \alpha$
+- **Empirical False Clear Rate**: Fraction of all windows that are missed anomalies (formerly labeled empirical miscoverage):
+  $$\text{Empirical False Clear Rate} = \frac{\sum_{i=1}^N \mathbb{I}(y_i = 1 \text{ and } \text{Decision}_i = \text{AUTO-CLEAR})}{N}$$
+- **Deviation from Nominal Alpha**: $\Delta = \text{Empirical False Clear Rate} - \alpha$
+
+### 3.5 P-Value vs Threshold Equivalence & Tie Analysis
+The conformal p-value with conservative tie handling is defined as:
+$$p(s) = \frac{1 + \sum_{i=1}^n \mathbb{I}(s_i \ge s)}{n + 1}$$
+
+**Equivalence Theorem**:
+- **Sufficient Sample Size ($n \ge \lceil 1/\alpha \rceil - 1$, i.e., $\alpha \ge \frac{1}{n+1}$)**:
+  The strict threshold decision rule $s(x) > \hat{\tau}_\alpha$ is **provably mathematically identical** to $p(x) \le \alpha$ for all query scores $x \in \mathbb{R}$, including tied calibration values. Specifically:
+  - If $s(x) \le \hat{\tau}_\alpha$, at least $n - k + 1$ calibration points are $\ge s(x)$, so $p(x) \ge \frac{n - k + 2}{n + 1} > \alpha$. Both decide `AUTO-CLEAR`.
+  - If $s(x) > \hat{\tau}_\alpha$, at most $n - k$ calibration points are $\ge s(x)$, so $p(x) \le \frac{n - k + 1}{n + 1} \le \alpha$. Both decide `ESCALATE`.
+  - When $s(x) == \hat{\tau}_\alpha$ exactly, $s(x) > \hat{\tau}_\alpha$ is `False` and $p(x) > \alpha$, so both rules strictly agree on `AUTO-CLEAR`.
+- **Small Sample Size / Extreme Alpha Boundary ($n < 1/\alpha - 1$, i.e., $\alpha < \frac{1}{n+1}$)**:
+  The minimum possible p-value is $\frac{1}{n+1} > \alpha$, meaning $p(x) \le \alpha$ is never satisfied (0% escalation under p-values). However, the capped order-statistic threshold $k = n \implies \hat{\tau}_\alpha = s_{(n)}$ escalates points strictly exceeding the sample maximum ($s(x) > \max_i s_i$).
+- **Primary Rule Choice**:
+  SentinelLog designates the threshold decision rule ($s > \hat{\tau}_\alpha$) as the primary operational rule.
 
 ---
 
 ## 4. Empirical Results (50K Development Slice)
 
-All evaluations are conducted strictly on **CALIBRATION** ($N_{HDFS} = 814, N_{BGL} = 100$). **TEST** was not accessed.
+All evaluations are conducted strictly on **CALIBRATION** ($N_{HDFS} = 814, N_{BGL} = 100$). **TEST** was not accessed (Rule 1).
 
 ### 4.1 HDFS Target Alpha Sweep
 
-| Nominal $\alpha$ | Conformal $\hat{\tau}_\alpha$ | Escalated | Coverage | Escalation Precision | Escalation Recall | False Clears | Selective Risk | Empirical Miscoverage | Deviation |
+| Nominal $\alpha$ | Conformal $\hat{\tau}_\alpha$ | Escalated | Coverage | Escalation Precision | Escalation Recall | False Clears | Selective Risk | Empirical False Clear Rate | Deviation |
 |---|---|---|---|---|---|---|---|---|---|
 | **0.01** | 1.6723 | 7 (0.9%) | 99.1% | **0.8571** | 0.2069 | 23 | 0.0285 | 0.0283 | +0.0183 |
 | **0.05** | 1.1546 | 39 (4.8%) | 95.2% | 0.1795 | 0.2414 | 22 | 0.0284 | 0.0270 | -0.0230 |
@@ -86,12 +116,19 @@ All evaluations are conducted strictly on **CALIBRATION** ($N_{HDFS} = 814, N_{B
 
 ### 4.2 BGL Target Alpha Sweep
 
-| Nominal $\alpha$ | Conformal $\hat{\tau}_\alpha$ | Escalated | Coverage | Escalation Precision | Escalation Recall | False Clears | Selective Risk | Empirical Miscoverage | Deviation |
+| Nominal $\alpha$ | Conformal $\hat{\tau}_\alpha$ | Escalated | Coverage | Escalation Precision | Escalation Recall | False Clears | Selective Risk | Empirical False Clear Rate | Deviation |
 |---|---|---|---|---|---|---|---|---|---|
 | **0.01** | 3.0238 | 0 (0.0%) | 100.0% | 0.0000 | 0.0000 | 36 | 0.3600 | 0.3600 | +0.3500 |
 | **0.05** | 2.5947 | 2 (2.0%) | 98.0% | 0.5000 | 0.0278 | 35 | 0.3571 | 0.3500 | +0.3000 |
 | **0.10** | 0.7196 | 9 (9.0%) | 91.0% | 0.4444 | 0.1111 | 32 | 0.3516 | 0.3200 | +0.2200 |
 | **0.20** | 0.1898 | 19 (19.0%) | 81.0% | **0.6842** | **0.3611** | 23 | 0.2840 | 0.2300 | +0.0300 |
+
+### 4.3 Research Interpretation of BGL Findings
+On BGL at $\alpha = 0.05$:
+- The unsupervised conformal score-tail calibration produced a **2.0% escalation rate**, strictly respecting the nominal 5% escalation budget ($2.0\% \le 5.0\%$).
+- Meanwhile, the empirical anomaly false-clear rate was **35.0%**.
+- **Key Finding**: This demonstrates that controlling the score-tail/escalation rate does not imply anomaly false-negative control, particularly when the anomaly prevalence exceeds the escalation budget. In BGL calibration, 36% of the windows are anomalous. With an escalation budget of only 5%, at least $36\% - 5\% = 31\%$ of windows are mathematically guaranteed to be false clears, regardless of scorer quality.
+- This is NOT a failure of the conformal prediction procedure; rather, conformal score-tail calibration operated exactly as mathematically designed. Anomaly false-clear rate is an empirical diagnostic, not a conformal guarantee.
 
 ---
 
@@ -107,9 +144,9 @@ All evaluations are conducted strictly on **CALIBRATION** ($N_{HDFS} = 814, N_{B
 
 ### Ablation C: Calibration Sample Size Sensitivity ($\alpha=0.05$)
 Evaluating chronological prefixes of calibration data on HDFS:
-- 25% ($n=203$): $\hat{\tau}_{0.05} = 1.0000$, Escalation Rate = 4.4%, Selective Risk = 0.0309
-- 50% ($n=407$): $\hat{\tau}_{0.05} = 1.1506$, Escalation Rate = 4.7%, Selective Risk = 0.0387
-- 100% ($n=814$): $\hat{\tau}_{0.05} = 1.1546$, Escalation Rate = 4.8%, Selective Risk = 0.0284
+- 25% ($n=203$): $\hat{\tau}_{0.05} = 1.0000$, Escalation Rate = 4.4%, Selective Risk = 0.0309, Empirical False Clear Rate = 0.0296
+- 50% ($n=407$): $\hat{\tau}_{0.05} = 1.1506$, Escalation Rate = 4.7%, Selective Risk = 0.0387, Empirical False Clear Rate = 0.0369
+- 100% ($n=814$): $\hat{\tau}_{0.05} = 1.1546$, Escalation Rate = 4.8%, Selective Risk = 0.0284, Empirical False Clear Rate = 0.0270
 The conformal threshold stabilizes rapidly once $n \ge 400$, exhibiting robust convergence under chronological sampling.
 
 ---
@@ -118,5 +155,5 @@ The conformal threshold stabilizes rapidly once $n \ge 400$, exhibiting robust c
 
 ### Why Formal Exchangeability Guarantees Do Not Hold in Production Logs
 1. **Temporal Non-Exchangeability**: System logs exhibit strong chronological drift, concept shifts, bursty error cascades, and maintenance windows. Conformal prediction's theoretical coverage property assumes exchangeability ($P(Z_1, \dots, Z_n, Z_{n+1})$ invariant to permutation), which is strictly violated by temporal dependencies.
-2. **Calibration Anomaly Density Discrepancy**: In BGL calibration, 36% of windows are anomalous. A user requesting $\alpha = 0.05$ expects to escalate only 5% of traffic. Under a 5% budget, empirical miscoverage unavoidably reaches 35% because the true anomaly rate in that time slice exceeds the entire escalation budget.
-3. **Engineering Conclusion**: Split conformal calibration provides a rigorous, principled mechanism for tuning operating thresholds to target error budgets, but must be reported as an **empirical risk-control tool**, not an unconditional mathematical guarantee against operational false negatives.
+2. **Prevalence vs Escalation Budget**: In BGL calibration, 36% of windows are anomalous. A user requesting $\alpha = 0.05$ expects to escalate only 5% of traffic. Under a 5% budget, empirical false clear rate unavoidably reaches 35% because the true anomaly rate in that time slice exceeds the entire escalation budget.
+3. **Engineering Conclusion**: Split conformal calibration provides a rigorous, principled mechanism for tuning operating thresholds to target score-tail budgets, but must be reported as an **empirical risk-control tool**, not an unconditional mathematical guarantee against operational false negatives.

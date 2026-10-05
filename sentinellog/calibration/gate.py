@@ -1,10 +1,18 @@
 """Selective escalation gate and risk-coverage evaluation engine.
 
 Implements the selective prediction decision:
-    Score > Threshold (or Conformal p-value <= alpha) -> ESCALATE
-    Score <= Threshold (or Conformal p-value > alpha) -> AUTO-CLEAR
+    Score > Threshold -> ESCALATE
+    Score <= Threshold -> AUTO-CLEAR
 
-Evaluates coverage, selective risk, empirical miscoverage, and deviation from nominal alpha.
+Note on Decision Rule & Conformal p-values:
+    - When n >= ceil(1 / alpha) - 1, strict threshold escalation (score > tau_alpha)
+      is provably mathematically identical to conformal p-value <= alpha.
+    - When n < 1 / alpha - 1, the finite-sample p-value has a positive lower bound
+      1 / (n + 1) > alpha, so p-value <= alpha is never met; the capped threshold rule
+      escalates scores exceeding the calibration maximum.
+    - The threshold rule (Score > Threshold) is the primary decision rule throughout SentinelLog.
+
+Evaluates coverage, selective risk, empirical false clear rate, and deviation from nominal alpha.
 """
 
 from typing import Any, Dict, List, Literal, Optional, Sequence, Union
@@ -61,8 +69,18 @@ def evaluate_selective_performance(
         - Coverage (Auto-Clear Rate) = Auto-Cleared / Total
         - False Clear = Ground-truth anomalous window auto-cleared (FN)
         - Selective Risk = False Clears / Total Auto-Cleared
-        - Empirical Miscoverage = False Clears / Total Windows
-        - Deviation = Empirical Miscoverage - Nominal Alpha
+        - Empirical False Clear Rate = False Clears / Total Windows (FN / N_total)
+        - Deviation = Empirical False Clear Rate - Nominal Alpha
+
+    RESEARCH INTEGRITY & STATISTICAL INTERPRETATION GUARDRAIL:
+        Unsupervised split-conformal calibration controls the score-tail probability:
+            P(S_{test} > tau_alpha) <= alpha
+        under exchangeability. It does NOT use anomaly labels during calibration and
+        therefore does NOT guarantee:
+            P(ANOMALY AND AUTO-CLEAR) <= alpha
+        or false-negative rate <= alpha.
+        Consequently, Empirical False Clear Rate is an EMPIRICAL DIAGNOSTIC,
+        not a conformal guarantee.
     """
     scores_arr = np.asarray(scores, dtype=np.float64)
     labels_arr = np.asarray(labels, dtype=int)
@@ -93,8 +111,8 @@ def evaluate_selective_performance(
 
     # Risk metrics
     selective_risk = float(fn / n_cleared) if n_cleared > 0 else 0.0
-    empirical_miscoverage = float(fn / n_total) if n_total > 0 else 0.0
-    deviation = float(empirical_miscoverage - alpha)
+    empirical_false_clear_rate = float(fn / n_total) if n_total > 0 else 0.0
+    deviation = float(empirical_false_clear_rate - alpha)
 
     return {
         "nominal_alpha": float(alpha),
@@ -116,7 +134,8 @@ def evaluate_selective_performance(
         "escalation_f1": f1,
         "false_clears_count": fn,
         "selective_risk": selective_risk,
-        "empirical_miscoverage": empirical_miscoverage,
+        "empirical_false_clear_rate": empirical_false_clear_rate,
+        "empirical_miscoverage": empirical_false_clear_rate,  # backward compatibility alias
         "deviation_from_nominal": deviation,
     }
 

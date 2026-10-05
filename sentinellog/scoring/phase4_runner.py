@@ -172,6 +172,7 @@ def run_phase4_dataset(
             "escalation_rate": sub_perf["escalation_rate"],
             "coverage": sub_perf["coverage"],
             "selective_risk": sub_perf["selective_risk"],
+            "empirical_false_clear_rate": sub_perf["empirical_false_clear_rate"],
             "empirical_miscoverage": sub_perf["empirical_miscoverage"],
             "deviation": sub_perf["deviation_from_nominal"],
         })
@@ -283,17 +284,18 @@ def generate_phase4_report(
             f.write(f"- **Calibration Sample Size ($n$)**: {diag['n_calib']}\n\n")
 
             f.write("### Target Alpha Sweep (Split Conformal Calibration)\n\n")
-            f.write("| Nominal $\\alpha$ | Threshold $\\hat{\\tau}_\\alpha$ | Escalated | Coverage | Escalation Precision | Escalation Recall | False Clears | Selective Risk | Empirical Miscoverage | Deviation |\n")
+            f.write("| Nominal $\\alpha$ | Threshold $\\hat{\\tau}_\\alpha$ | Escalated | Coverage | Escalation Precision | Escalation Recall | False Clears | Selective Risk | Empirical False Clear Rate | Deviation |\n")
             f.write("|---|---|---|---|---|---|---|---|---|---|\n")
 
             for sw in diag["alpha_sweep"]:
                 cm = sw["confusion_matrix"]
+                efcr = sw.get("empirical_false_clear_rate", sw.get("empirical_miscoverage", 0.0))
                 f.write(
                     f"| {sw['nominal_alpha']:.2f} | {sw['conformal_threshold']:.4f} | "
                     f"{sw['n_escalated']} ({sw['escalation_rate']:.1%}) | {sw['coverage']:.1%} | "
                     f"{sw['escalation_precision']:.4f} | {sw['escalation_recall']:.4f} | "
                     f"{sw['false_clears_count']} | {sw['selective_risk']:.4f} | "
-                    f"{sw['empirical_miscoverage']:.4f} | {sw['deviation_from_nominal']:+.4f} |\n"
+                    f"{efcr:.4f} | {sw['deviation_from_nominal']:+.4f} |\n"
                 )
 
             f.write("\n### Ablation Summary\n\n")
@@ -322,13 +324,14 @@ def generate_phase4_report(
                 )
 
             f.write("\n3. **Ablation C (Calibration Size Sensitivity at $\\alpha=0.05$)**:\n\n")
-            f.write("| Fraction | Sample Size | Conformal $\\hat{\\tau}_{0.05}$ | Escalation Rate | Coverage | Selective Risk | Miscoverage |\n")
+            f.write("| Fraction | Sample Size | Conformal $\\hat{\\tau}_{0.05}$ | Escalation Rate | Coverage | Selective Risk | Empirical False Clear Rate |\n")
             f.write("|---|---|---|---|---|---|---|\n")
             for sz in diag["ablation_c_sample_size"]["results"]:
+                sz_efcr = sz.get("empirical_false_clear_rate", sz.get("empirical_miscoverage", 0.0))
                 f.write(
                     f"| {sz['fraction']:.0%} | {sz['sample_size']} | {sz['threshold_alpha_0_05']:.4f} | "
                     f"{sz['escalation_rate']:.1%} | {sz['coverage']:.1%} | "
-                    f"{sz['selective_risk']:.4f} | {sz['empirical_miscoverage']:.4f} |\n"
+                    f"{sz['selective_risk']:.4f} | {sz_efcr:.4f} |\n"
                 )
             f.write("\n---\n\n")
 

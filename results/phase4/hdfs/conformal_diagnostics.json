@@ -33,7 +33,8 @@
       "false_clears_count": 23,
       "selective_risk": 0.028500619578686492,
       "empirical_miscoverage": 0.028255528255528257,
-      "deviation_from_nominal": 0.01825552825552826
+      "deviation_from_nominal": 0.01825552825552826,
+      "empirical_false_clear_rate": 0.028255528255528257
     },
     {
       "nominal_alpha": 0.05,
@@ -56,7 +57,8 @@
       "false_clears_count": 22,
       "selective_risk": 0.02838709677419355,
       "empirical_miscoverage": 0.02702702702702703,
-      "deviation_from_nominal": -0.022972972972972974
+      "deviation_from_nominal": -0.022972972972972974,
+      "empirical_false_clear_rate": 0.02702702702702703
     },
     {
       "nominal_alpha": 0.1,
@@ -79,7 +81,8 @@
       "false_clears_count": 22,
       "selective_risk": 0.029931972789115645,
       "empirical_miscoverage": 0.02702702702702703,
-      "deviation_from_nominal": -0.07297297297297298
+      "deviation_from_nominal": -0.07297297297297298,
+      "empirical_false_clear_rate": 0.02702702702702703
     },
     {
       "nominal_alpha": 0.2,
@@ -102,7 +105,8 @@
       "false_clears_count": 20,
       "selective_risk": 0.03048780487804878,
       "empirical_miscoverage": 0.02457002457002457,
-      "deviation_from_nominal": -0.17542997542997543
+      "deviation_from_nominal": -0.17542997542997543,
+      "empirical_false_clear_rate": 0.02457002457002457
     }
   ],
   "ablation_a_fixed_heuristic": {
@@ -144,7 +148,8 @@
         "false_clears_count": 23,
         "selective_risk": 0.028465346534653466,
         "empirical_miscoverage": 0.028255528255528257,
-        "deviation_from_nominal": 0.01825552825552826
+        "deviation_from_nominal": 0.01825552825552826,
+        "empirical_false_clear_rate": 0.028255528255528257
       },
       {
         "nominal_alpha": 0.05,
@@ -167,7 +172,8 @@
         "false_clears_count": 10,
         "selective_risk": 0.012690355329949238,
         "empirical_miscoverage": 0.012285012285012284,
-        "deviation_from_nominal": -0.03771498771498772
+        "deviation_from_nominal": -0.03771498771498772,
+        "empirical_false_clear_rate": 0.012285012285012284
       },
       {
         "nominal_alpha": 0.1,
@@ -190,7 +196,8 @@
         "false_clears_count": 10,
         "selective_risk": 0.012690355329949238,
         "empirical_miscoverage": 0.012285012285012284,
-        "deviation_from_nominal": -0.08771498771498772
+        "deviation_from_nominal": -0.08771498771498772,
+        "empirical_false_clear_rate": 0.012285012285012284
       },
       {
         "nominal_alpha": 0.2,
@@ -213,7 +220,8 @@
         "false_clears_count": 10,
         "selective_risk": 0.012690355329949238,
         "empirical_miscoverage": 0.012285012285012284,
-        "deviation_from_nominal": -0.18771498771498774
+        "deviation_from_nominal": -0.18771498771498774,
+        "empirical_false_clear_rate": 0.012285012285012284
       }
     ]
   },
@@ -228,7 +236,8 @@
         "coverage": 0.9556650246305419,
         "selective_risk": 0.030927835051546393,
         "empirical_miscoverage": 0.029556650246305417,
-        "deviation": -0.020443349753694585
+        "deviation": -0.020443349753694585,
+        "empirical_false_clear_rate": 0.029556650246305417
       },
       {
         "fraction": 0.5,
@@ -238,7 +247,8 @@
         "coverage": 0.9533169533169533,
         "selective_risk": 0.03865979381443299,
         "empirical_miscoverage": 0.036855036855036855,
-        "deviation": -0.013144963144963148
+        "deviation": -0.013144963144963148,
+        "empirical_false_clear_rate": 0.036855036855036855
       },
       {
         "fraction": 1.0,
@@ -248,7 +258,8 @@
         "coverage": 0.952088452088452,
         "selective_risk": 0.02838709677419355,
         "empirical_miscoverage": 0.02702702702702703,
-        "deviation": -0.022972972972972974
+        "deviation": -0.022972972972972974,
+        "empirical_false_clear_rate": 0.02702702702702703
       }
     ]
   },

@@ -5,10 +5,24 @@ Provides finite-sample inductive conformal calibration over calibration nonconfo
 - Conformal p-value computation with explicit conservative tie handling
 - Full calibration metadata and finite-sample audit traceability
 
-IMPORTANT:
-Under temporal log data with potential non-stationarity, finite-sample guarantees
-serve as an empirical calibration framework rather than distribution-free exchangeability
-guarantees.
+IMPORTANT STATISTICAL FRAMING & CONFORMAL GUARANTEE INTERPRETATION:
+1. Conformal Score-Tail / Escalation Control:
+   The unsupervised split conformal procedure calibrates an anomaly score threshold tau_alpha
+   over calibration nonconformity scores s_1, ..., s_n. Under the relevant exchangeability
+   assumption, the upper-tail probability of the nonconformity score is bounded:
+       P(S_{test} > tau_alpha) <= alpha  (or P(S_{test} <= tau_alpha) >= 1 - alpha)
+   This bounds the probability that a random test point from the calibration distribution is escalated.
+
+2. Anomaly False-Negative / Incident Risk Control:
+   Anomaly labels are NOT used in the conformal calibration procedure.
+   Therefore, this procedure does NOT guarantee:
+       P(ANOMALY AND AUTO-CLEAR) <= alpha
+   nor does it guarantee false-negative rate <= alpha, missed-incident rate <= alpha, or FDR <= alpha.
+   The anomaly false-clear rate is an EMPIRICAL DIAGNOSTIC, not a conformal guarantee.
+
+3. Under temporal log data with potential non-stationarity, finite-sample guarantees
+   serve as an empirical calibration framework rather than distribution-free exchangeability
+   guarantees.
 """
 
 import math
@@ -31,6 +45,17 @@ class SplitConformalCalibrator:
     Conformal p-value:
         p(s) = (1 + sum_{i=1}^n I(s_i >= s)) / (n + 1)
         Small p-value <= alpha indicates significant deviation from calibration normal mass.
+
+    Threshold vs. P-Value Equivalence & Decision Rule:
+        - When n >= ceil(1 / alpha) - 1 (i.e., alpha >= 1 / (n + 1)):
+          The strict threshold decision (s > tau_alpha) is provably mathematically identical
+          to (p(s) <= alpha) for all query scores s in R, including tied calibration values.
+        - When n < 1 / alpha - 1 (i.e., alpha < 1 / (n + 1)):
+          The minimum possible p-value is 1 / (n + 1) > alpha, so p(s) <= alpha is NEVER satisfied.
+          However, the capped order-statistic threshold k_capped = n yields tau_alpha = s_{(n)},
+          escalating points with s > max(s_i).
+        The primary operational decision rule throughout SentinelLog is the threshold rule
+        (score > tau_alpha).
     """
 
     def __init__(self, calibration_scores: Optional[Sequence[float]] = None):

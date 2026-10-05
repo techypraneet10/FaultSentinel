@@ -7,7 +7,7 @@ SentinelLog — Calibrated Selective Prediction for LLM-Assisted Incident Triage
 Phase 4 — Learned Sequential Scorer + Conformal Risk-Controlled Selective Gate
 
 ## Status
-COMPLETE (Phase 4 acceptance checks passed; awaiting human authorization to proceed to Phase 5)
+COMPLETE (Phase 4 post-audit statistical interpretation corrections verified and committed; awaiting human authorization to proceed to Phase 5)
 
 ## Completed (Phase 1)
 - [x] Repository inspection
@@ -52,12 +52,19 @@ COMPLETE (Phase 4 acceptance checks passed; awaiting human authorization to proc
 - [x] Sequence nonconformity score based on mean negative log-likelihood of observed transitions (`sentinellog/scoring/b2.py`)
 - [x] Finite-sample split conformal calibrator with exact order-statistic quantiles and p-values (`sentinellog/calibration/conformal.py`)
 - [x] Selective escalation gate (`AUTO-CLEAR` vs `ESCALATE`) and risk-coverage metrics (`sentinellog/calibration/gate.py`)
-- [x] Target alpha sweep ($\alpha \in \{0.01, 0.05, 0.10, 0.20\}$) evaluating coverage, selective risk, and empirical miscoverage
+- [x] Target alpha sweep ($\alpha \in \{0.01, 0.05, 0.10, 0.20\}$) evaluating coverage, selective risk, and empirical false clear rate
 - [x] Comprehensive ablations: Heuristic threshold vs Conformal (Ablation A), B1 PCA vs B2 GRU (Ablation B), Calibration sample size sensitivity (Ablation C)
 - [x] Standalone Phase 4 CLI runner and report generator (`sentinellog/scoring/phase4_runner.py`, `configs/phase4.yaml`)
 - [x] Phase 4 unit and integration test suite with 16 comprehensive tests (`tests/test_phase4.py`)
-- [x] Complete test suite passing (58/58 tests passing in 34s) on Python 3.12.4 CPU `.venv`
-- [x] Comprehensive Phase 4 documentation (`docs/phase4.md`)
+- [x] Post-audit statistical interpretation correction:
+  - Formally distinguished Conformal Score-Tail / Escalation Control ($P(S_{test} > \hat{\tau}_\alpha) \le \alpha$) from Anomaly False-Negative Risk Control ($P(\text{ANOMALY AND AUTO-CLEAR}) \le \alpha$).
+  - Clarified that unsupervised calibration does not use anomaly labels; anomaly false-clear rate is an empirical diagnostic, not a conformal guarantee.
+  - Renamed metric to `empirical_false_clear_rate` (preserving `empirical_miscoverage` alias).
+  - Clarified BGL research finding: 2% escalation strictly respects 5% budget; 35% false-clear rate reflects 36% anomaly prevalence exceeding 5% budget.
+  - Proved mathematical equivalence between strict threshold rule ($s > \hat{\tau}_\alpha$) and p-value rule ($p(s) \le \alpha$) when $n \ge \lceil 1/\alpha \rceil - 1$, and documented boundary behavior when $n < 1/\alpha - 1$.
+  - Added 19 dedicated verification tests (`tests/test_conformal_verification.py`) covering ties, threshold equality, infinitesimals, repeated extrema, and small $n$.
+- [x] Complete test suite passing (77/77 tests passing in 31s) on Python 3.12.4 CPU `.venv`
+- [x] Comprehensive Phase 4 documentation updated (`docs/phase4.md`, `results/phase4/phase4_report.md`)
 
 ## Not Completed
 - Phase 5 — Retrieval-augmented incident explanation and faithfulness checking
@@ -75,13 +82,14 @@ FORBIDDEN until Phase 7.
 
 ## Last Validation
 - Date: 2026-10-05
-- Pytest: 58 passed in 33.96s (0 failed, 0 warnings)
+- Pytest: 77 passed in 30.82s (0 failed, 0 warnings across all 5 test modules)
 - Syntax/Bytecode check: `.venv\Scripts\python.exe -m compileall -q sentinellog tests scripts` (Clean, exit code 0)
 - B2 GRU Parameter Count: HDFS = 20,562 params; BGL = 20,853 params (strictly < 2,000,000)
 - Conformal Selective Gate Diagnostics (CALIBRATION split):
-  - HDFS $\alpha = 0.01$: Escalated = 0.9%, Coverage = 99.1%, Precision = 85.7%, Selective Risk = 0.0285
-  - HDFS $\alpha = 0.05$: Escalated = 4.8%, Coverage = 95.2%, Precision = 18.0%, Selective Risk = 0.0284
-  - BGL $\alpha = 0.20$: Escalated = 19.0%, Coverage = 81.0%, Precision = 68.4%, Recall = 36.1%
+  - HDFS $\alpha = 0.01$: Escalated = 0.9%, Coverage = 99.1%, Precision = 85.7%, Selective Risk = 0.0285, Empirical False Clear Rate = 0.0283
+  - HDFS $\alpha = 0.05$: Escalated = 4.8%, Coverage = 95.2%, Precision = 18.0%, Selective Risk = 0.0284, Empirical False Clear Rate = 0.0270
+  - BGL $\alpha = 0.05$: Escalated = 2.0%, Coverage = 98.0%, Precision = 50.0%, Selective Risk = 0.3571, Empirical False Clear Rate = 0.3500
+  - BGL $\alpha = 0.20$: Escalated = 19.0%, Coverage = 81.0%, Precision = 68.4%, Recall = 36.1%, Selective Risk = 0.2840, Empirical False Clear Rate = 0.2300
 - Determinism Check: Running Phase 4 pipeline multiple times yields identical model losses, scores, thresholds, and confusion matrices.
 - Rule 1 Test Guard: Programmatically verified via `guard_no_test_split` regression tests.
 
