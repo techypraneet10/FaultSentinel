@@ -1,0 +1,24 @@
+# SentinelLog Phase 7 Configuration: Citation & Provenance Engine
+version: "0.7.0-phase7"
+
+# Datasets to evaluate (retrieval & provenance are strictly TRAIN-only)
+datasets:
+  - hdfs
+  - bgl
+
+data_dirs:
+  hdfs: "data/processed/hdfs"
+  bgl: "data/processed/bgl"
+
+phase6_dir: "results/phase6"
+output_dir: "results/phase7"
+
+random_seed: 42
+
+# Provenance Configuration
+provenance:
+  version: "1.0"
+  strict_verification: true
+  verify_content_integrity: true
+  canonical_hash_algo: "sha256"
+  source_split: "train"         # Mandatory Rule: TRAIN only

@@ -1,0 +1,21 @@
+{
+  "dataset": "bgl",
+  "split": "train",
+  "provenance_version": "1.0",
+  "total_escalated_windows": 2,
+  "total_citation_bundles": 2,
+  "total_citations": 6,
+  "unique_citation_ids": 3,
+  "unique_chunk_count": 3,
+  "unique_source_window_count": 3,
+  "duplicate_citation_count": 3,
+  "source_resolution_success_count": 6,
+  "unresolved_count": 0,
+  "invalid_count": 0,
+  "source_resolution_success_rate": 1.0,
+  "integrity_success_rate": 1.0,
+  "all_bundles_verified": true,
+  "source_artifact_path": "data/processed/bgl/train.jsonl",
+  "source_artifact_hash": "d21c41ca02daa15416c88ee22e54c5a1b793710064c381e3bf60d62dfc008d94",
+  "timing_seconds": 0.024368099999264814
+}

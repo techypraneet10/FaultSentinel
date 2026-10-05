@@ -4,10 +4,10 @@
 SentinelLog — Calibrated Selective Prediction for LLM-Assisted Incident Triage over System Logs
 
 ## Current Phase
-Phase 6 — Retrieval Reranking & Evidence Selection
+Phase 7 — Citation & Provenance Engine
 
 ## Status
-COMPLETE (Phase 6 MMR evidence reranking and selection implemented, verified, tested, and committed; awaiting human verification)
+COMPLETE (Phase 7 citation and provenance engine verified, tested, and committed; awaiting human authorization to proceed to Phase 8)
 
 ## Completed (Phase 1)
 - [x] Repository inspection
@@ -100,28 +100,45 @@ COMPLETE (Phase 6 MMR evidence reranking and selection implemented, verified, te
 - [x] Determinism verified: Repeated execution yields identical bitwise SHA-256 hashes.
 - [x] Comprehensive Phase 6 documentation (`docs/phase6.md`).
 
+## Completed (Phase 7)
+- [x] Provenance data model: `SourceLocation`, `SourceArtifact`, `EvidenceProvenance`, `Citation`, `CitationBundle`, `VerificationResult` (`sentinellog/provenance/schemas.py`).
+- [x] Deterministic cryptographic derivations: SHA-256 content hashes, citation IDs, and bundle IDs (`sentinellog/provenance/hashing.py`).
+- [x] Canonical citation formatter: Compact, unambiguous, deterministic human-readable text representations.
+- [x] Physical source resolution: `SourceResolver` resolving exact line ranges, record counts, and block sessions from `data/processed/<dataset>/train.jsonl` (`sentinellog/provenance/resolver.py`).
+- [x] Round-trip integrity verification: `ProvenanceVerifier` validating citation IDs, content hashes, and physical artifact hashes (`sentinellog/provenance/verifier.py`).
+- [x] Gated citation pipeline integration: `GatedCitationPipeline` ensuring AUTO-CLEAR windows bypass provenance while ESCALATE windows generate verified bundles (`sentinellog/provenance/gated.py`).
+- [x] Test set protection (Rule 1): `test.jsonl` and test split accesses programmatically rejected.
+- [x] Anomaly label isolation: Anomaly labels strictly excluded from citation text, citation IDs, and content hashes.
+- [x] Phase 7 standalone CLI runner and diagnostics generator (`sentinellog/provenance/phase7_runner.py`, `configs/phase7.yaml`).
+- [x] Generated reproducible Phase 7 artifacts in `results/phase7/` (HDFS: 39 bundles / 117 citations; BGL: 2 bundles / 6 citations; 100% verified).
+- [x] Comprehensive unit and integration test suite with 18 tests (`tests/test_provenance.py`).
+- [x] Full test suite passing (129/129 tests passing in 29s) on Python 3.12.4 CPU `.venv`.
+- [x] Determinism verified: Repeated execution yields identical bitwise SHA-256 hashes.
+- [x] Comprehensive Phase 7 documentation (`docs/phase7.md`).
+
 ## Not Completed
-- Phase 7 — Frozen evaluation over benchmark test sets, provenance and citation verification
-- Phase 8 — Production service and API endpoint serving
-- Phase 9 — Final deployment, containerization, and reproducibility artifacts
+- Phase 8 — Grounded explanation generation and faithfulness checking
+- Phase 9 — Production service and API endpoint serving
+- Phase 10 — Final deployment, containerization, and reproducibility artifacts
 
 ## Test Set
 LOCKED (Rule 1)
 
 ## Test-set Access
-FORBIDDEN until Phase 7.
-(All Phase 6 models, tokenizers, corpus construction, and selective retrieval/reranking evaluations were conducted exclusively on TRAIN and CALIBRATION. `test_used: false` verified across all manifests.)
+FORBIDDEN until frozen evaluation phase.
+(All Phase 7 models, tokenizers, corpus construction, selective retrieval/reranking, and provenance evaluations were conducted exclusively on TRAIN and CALIBRATION. `test_used: false` verified across all manifests.)
 
 ## Last Validation
 - Date: 2026-10-05
-- Pytest: 111 passed in 23.56s (0 failed, 0 warnings across all 7 test modules)
+- Pytest: 129 passed in 29.15s (0 failed, 0 warnings across all 8 test modules)
 - Syntax/Bytecode check: `.venv\Scripts\python.exe -m compileall -q sentinellog tests scripts` (Clean, exit code 0)
-- Gated Selective Evidence Selection Diagnostics (CALIBRATION split at $\alpha=0.05$, $k=5 \to 3$, $\lambda=0.70$):
-  - HDFS: 814 windows evaluated $\to$ 775 (95.2%) Auto-Cleared, 39 (4.8%) Escalated, 117 evidence chunks selected (relevance = 0.9239, pairwise similarity reduced by 0.0294)
-  - BGL: 100 windows evaluated $\to$ 98 (98.0%) Auto-Cleared, 2 (2.0%) Escalated, 6 evidence chunks selected (relevance = 0.0240, pairwise similarity reduced by 0.2681)
-- Determinism Check: Running Phase 6 pipeline yields bit-for-bit identical SHA-256 artifact hashes:
-  - HDFS `evidence_selection.jsonl`: `c634b7688b2a507c9bee3a2533f91e6b00aa5c7a76e0f9086d08fc85eceef9e6`
+- Provenance Diagnostics (CALIBRATION split):
+  - HDFS: 39 bundles, 117 citations generated, 100.00% source resolution success rate, 100.00% integrity verification success rate (0 invalid, 0 unresolved)
+  - BGL: 2 bundles, 6 citations generated, 100.00% source resolution success rate, 100.00% integrity verification success rate (0 invalid, 0 unresolved)
+- Determinism Check: Running Phase 7 pipeline yields bit-for-bit identical SHA-256 artifact hashes:
+  - HDFS `citations.jsonl`: `cead5f2369368f21329087ae5e6ca4e181f7277403883aff552c0744e3e776d4`
+  - BGL `citations.jsonl`: `a104ea06f438f77a13d5e8ecf5cf248a4181f69ddf656972104cf9d15d8666b3`
 - Rule 1 Test Guard: Programmatically verified via `guard_no_test_split` regression tests.
 
 ## Next Authorized Phase
-Phase 7 — Frozen evaluation over benchmark test sets, provenance and citation verification (PENDING HUMAN APPROVAL)
+Phase 8 — Grounded explanation generation and faithfulness checking (PENDING HUMAN APPROVAL)

@@ -1,0 +1,21 @@
+{
+  "dataset": "bgl",
+  "split": "train",
+  "provenance_version": "1.0",
+  "phase5_commit": "cd2a075bd9a67df7567ccd86865edaeace49c3c0",
+  "phase6_commit": "523a32da041de59e78610567edb7374370c66433",
+  "phase7_commit": "c6097b7a3d0656320df013c7470c36d1a08bfbff",
+  "source_artifact": "data/processed/bgl/train.jsonl",
+  "source_artifact_hash": "d21c41ca02daa15416c88ee22e54c5a1b793710064c381e3bf60d62dfc008d94",
+  "citation_count": 6,
+  "bundle_count": 2,
+  "source_resolution_success_rate": 1.0,
+  "integrity_success_rate": 1.0,
+  "test_used": false,
+  "calibration_used_for_fitting": false,
+  "artifact_hashes": {
+    "citations.jsonl": "a104ea06f438f77a13d5e8ecf5cf248a4181f69ddf656972104cf9d15d8666b3",
+    "provenance_diagnostics.json": "5614177aa1f5a40b5c90b3a0c865602a82e1328d2ceafcd845558a91a0225408"
+  },
+  "timestamp": "2026-10-05T17:39:54.490052+00:00"
+}
