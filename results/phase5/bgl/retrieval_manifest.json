@@ -1,0 +1,24 @@
+{
+  "dataset": "bgl",
+  "corpus_split": "train",
+  "corpus_size": 300,
+  "embedding_model": "template_tfidf_v1",
+  "embedding_version": "1.0.0",
+  "embedding_dimension": 19,
+  "vocabulary_hash": "39171345144066497e93a9c2701624dd8e32e8a571542b5a679d5c2a3777a75b",
+  "k": 5,
+  "similarity_metric": "cosine",
+  "chunking_policy": "phase2_window_observable_template_tokens",
+  "query_policy": "escalated_window_observable_template_tokens_no_labels",
+  "filtering_policy": "train_only_same_dataset_exclude_self",
+  "source_commit": "cd2a075bd9a67df7567ccd86865edaeace49c3c0",
+  "python_version": "3.12.4",
+  "random_seed": 42,
+  "test_used": false,
+  "calibration_used_for_corpus": false,
+  "timestamp_utc": "2026-10-05T16:54:09.601802+00:00",
+  "artifact_hashes": {
+    "corpus_jsonl_sha256": "d80e94505949fce1661a1dfff8ad5331fbe63870dc3f753d2b0fe041df44baab",
+    "embeddings_npy_sha256": "6ff0f8c81bf93944f3817a60e3d7b4fcbf4455cd2cbff6fd95ac071fb4428784"
+  }
+}

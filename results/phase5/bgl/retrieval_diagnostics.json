@@ -1,0 +1,35 @@
+{
+  "dataset": "bgl",
+  "corpus_size": 300,
+  "corpus_split": "train",
+  "embedding_dimension": 19,
+  "vocabulary_hash": "39171345144066497e93a9c2701624dd8e32e8a571542b5a679d5c2a3777a75b",
+  "mean_vector_norm": 1.0,
+  "zero_vector_count": 0,
+  "evaluation_split": "calibration",
+  "total_windows_evaluated": 100,
+  "auto_clear_count": 98,
+  "auto_clear_rate": 0.98,
+  "escalated_count": 2,
+  "escalation_rate": 0.02,
+  "retrieval_k": 5,
+  "total_evidence_chunks_retrieved": 10,
+  "unique_evidence_chunks_retrieved": 5,
+  "duplicate_retrieval_rate": 0.5,
+  "self_retrieval_rate": 0.0,
+  "similarity_distribution": {
+    "min": 0.0,
+    "max": 0.04328127205371857,
+    "mean": 0.026483035087585448,
+    "median": 0.028758062049746513,
+    "p25": 0.028758062049746513,
+    "p75": 0.03161777928471565
+  },
+  "diagnostic_label_analysis": {
+    "note": "Post-hoc research diagnostic only. Labels were NOT used in query or embedding text.",
+    "anomalous_evidence_chunks": 10,
+    "total_evidence_chunks": 10,
+    "anomalous_evidence_ratio": 1.0
+  },
+  "timing_seconds": 1.3514907000007952
+}

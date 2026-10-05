@@ -1,0 +1,29 @@
+# SentinelLog Phase 5 Configuration: Leakage-Safe Contextual Retrieval Infrastructure
+version: "0.5.0-phase5"
+
+# Datasets to process (retrieval corpus is built strictly from TRAIN)
+datasets:
+  - hdfs
+  - bgl
+
+data_dirs:
+  hdfs: "data/processed/hdfs"
+  bgl: "data/processed/bgl"
+
+output_dir: "results/phase5"
+
+random_seed: 42
+
+# Retrieval Configuration
+retrieval:
+  k: 5
+  similarity_metric: "cosine"
+  corpus_split: "train"         # Mandatory Rule: TRAIN only
+  same_dataset_only: true       # Isolate HDFS and BGL
+  exclude_self: true            # Exclude query's own window ID
+  embedding_model: "template_tfidf_v1"
+
+# Selective Gate Settings for Evaluation (CALIBRATION split)
+gate:
+  alpha: 0.05
+  strict: true
