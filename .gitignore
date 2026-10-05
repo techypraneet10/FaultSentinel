@@ -1,0 +1,63 @@
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Testing & Coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Build and Distribution
+build/
+dist/
+*.egg-info/
+
+# Data: Ignore raw downloaded log files and large binary/archive files
+# but allow directories, .gitkeep, and metadata/manifests to be tracked
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/MANIFEST.md
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/MANIFEST.md
+
+# Experiment artifacts and checkpoints (not code/configs)
+results/*
+!results/.gitkeep
+!results/README.md
+models/*
+!models/.gitkeep
+checkpoints/

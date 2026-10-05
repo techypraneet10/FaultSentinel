@@ -1,0 +1,28 @@
+# SentinelLog Phase 1 Core Dependencies
+# PyTorch CPU repository
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Core Numerical & Data Processing
+numpy==2.5.3
+pandas==3.0.6
+scikit-learn==1.9.1
+
+# Machine Learning & Deep Learning (CPU-only PyTorch)
+torch==2.14.1+cpu
+
+# Log Parsing
+drain3==0.9.11
+
+# Representation & Embeddings
+sentence-transformers==6.1.0
+
+# API & Serving Scaffolding
+fastapi==0.142.2
+uvicorn==0.54.0
+pydantic==2.13.5
+
+# Configuration & Utilities
+PyYAML==6.0.3
+
+# Testing & Quality
+pytest==9.1.1
