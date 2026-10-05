@@ -64,10 +64,12 @@ class ProvenanceEngine:
         guard_train_split_only(evidence.split)
 
         # 1. Resolve exact physical source coordinates
-        artifact, location, canon_text, content_hash = self.resolver.resolve_source(
-            dataset=evidence.dataset,
-            split=evidence.split,
-            source_window_id=evidence.source_window_id,
+        artifact, location, canon_text, source_content_hash, template_content_hash = (
+            self.resolver.resolve_source(
+                dataset=evidence.dataset,
+                split=evidence.split,
+                source_window_id=evidence.source_window_id,
+            )
         )
 
         # 2. Derive deterministic citation ID
@@ -97,7 +99,9 @@ class ProvenanceEngine:
             source_window_id=evidence.source_window_id,
             source_artifact=artifact,
             source_location=location,
-            content_hash=content_hash,
+            source_content_hash=source_content_hash,
+            template_content_hash=template_content_hash,
+            content_hash=source_content_hash,
             provenance_version=self.provenance_version,
             source_commit=self.source_commit,
         )
@@ -113,9 +117,12 @@ class ProvenanceEngine:
             selected_rank=evidence.selected_rank,
             retrieval_score=evidence.retrieval_score,
             selection_score=evidence.selection_score,
-            content_hash=content_hash,
+            source_content_hash=source_content_hash,
+            template_content_hash=template_content_hash,
+            content_hash=source_content_hash,
             provenance=provenance,
         )
+
 
     def create_bundle(
         self,

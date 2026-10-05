@@ -58,7 +58,11 @@ class ProvenanceVerifier:
                 citation_id=cid,
                 status="INVALID",
                 content_hash_match=False,
-                stored_hash=citation.content_hash,
+                source_content_hash_match=False,
+                template_content_hash_match=False,
+                stored_source_hash=citation.source_content_hash,
+                stored_template_hash=citation.template_content_hash,
+                stored_hash=citation.source_content_hash,
                 recomputed_hash=None,
                 message=f"Guard violation: {str(e)}",
             )
@@ -77,24 +81,34 @@ class ProvenanceVerifier:
                 citation_id=cid,
                 status="INVALID",
                 content_hash_match=False,
-                stored_hash=citation.content_hash,
+                source_content_hash_match=False,
+                template_content_hash_match=False,
+                stored_source_hash=citation.source_content_hash,
+                stored_template_hash=citation.template_content_hash,
+                stored_hash=citation.source_content_hash,
                 recomputed_hash=None,
                 message=f"Citation ID mismatch: expected '{expected_cid}', got '{cid}'.",
             )
 
         # 3. Resolve source from physical artifact
         try:
-            artifact, location, canon_text, recomputed_hash = self.resolver.resolve_source(
-                dataset=citation.dataset,
-                split=citation.split,
-                source_window_id=citation.source_window_id,
+            artifact, location, canon_text, recomputed_source_hash, recomputed_template_hash = (
+                self.resolver.resolve_source(
+                    dataset=citation.dataset,
+                    split=citation.split,
+                    source_window_id=citation.source_window_id,
+                )
             )
         except ProvenanceResolutionError as e:
             return VerificationResult(
                 citation_id=cid,
                 status="UNRESOLVED",
                 content_hash_match=False,
-                stored_hash=citation.content_hash,
+                source_content_hash_match=False,
+                template_content_hash_match=False,
+                stored_source_hash=citation.source_content_hash,
+                stored_template_hash=citation.template_content_hash,
+                stored_hash=citation.source_content_hash,
                 recomputed_hash=None,
                 message=f"Source could not be resolved: {str(e)}",
             )
@@ -103,20 +117,49 @@ class ProvenanceVerifier:
                 citation_id=cid,
                 status="INVALID",
                 content_hash_match=False,
-                stored_hash=citation.content_hash,
+                source_content_hash_match=False,
+                template_content_hash_match=False,
+                stored_source_hash=citation.source_content_hash,
+                stored_template_hash=citation.template_content_hash,
+                stored_hash=citation.source_content_hash,
                 recomputed_hash=None,
                 message=f"Unexpected error resolving source: {str(e)}",
             )
 
-        # 4. Check Content Hash Integrity
-        if citation.content_hash != recomputed_hash:
+        # 4. Check Content Hash Integrity (Separate exact source-record and template hashes)
+        source_hash_match = (citation.source_content_hash == recomputed_source_hash)
+        template_hash_match = (citation.template_content_hash == recomputed_template_hash)
+
+        if not source_hash_match:
             return VerificationResult(
                 citation_id=cid,
                 status="INVALID",
                 content_hash_match=False,
-                stored_hash=citation.content_hash,
-                recomputed_hash=recomputed_hash,
-                message="Integrity check failed: stored content_hash does not match recomputed hash.",
+                source_content_hash_match=False,
+                template_content_hash_match=template_hash_match,
+                stored_source_hash=citation.source_content_hash,
+                recomputed_source_hash=recomputed_source_hash,
+                stored_template_hash=citation.template_content_hash,
+                recomputed_template_hash=recomputed_template_hash,
+                stored_hash=citation.source_content_hash,
+                recomputed_hash=recomputed_source_hash,
+                message="Integrity check failed: stored source_content_hash does not match recomputed hash from underlying source records.",
+            )
+
+        if not template_hash_match:
+            return VerificationResult(
+                citation_id=cid,
+                status="INVALID",
+                content_hash_match=False,
+                source_content_hash_match=True,
+                template_content_hash_match=False,
+                stored_source_hash=citation.source_content_hash,
+                recomputed_source_hash=recomputed_source_hash,
+                stored_template_hash=citation.template_content_hash,
+                recomputed_template_hash=recomputed_template_hash,
+                stored_hash=citation.template_content_hash,
+                recomputed_hash=recomputed_template_hash,
+                message="Integrity check failed: stored template_content_hash does not match recomputed hash from template tokens.",
             )
 
         # 5. Check Artifact Hash Consistency
@@ -125,8 +168,14 @@ class ProvenanceVerifier:
                 citation_id=cid,
                 status="INVALID",
                 content_hash_match=True,
-                stored_hash=citation.content_hash,
-                recomputed_hash=recomputed_hash,
+                source_content_hash_match=True,
+                template_content_hash_match=True,
+                stored_source_hash=citation.source_content_hash,
+                recomputed_source_hash=recomputed_source_hash,
+                stored_template_hash=citation.template_content_hash,
+                recomputed_template_hash=recomputed_template_hash,
+                stored_hash=citation.source_content_hash,
+                recomputed_hash=recomputed_source_hash,
                 message="Source artifact hash mismatch: physical file has been modified.",
             )
 
@@ -134,10 +183,17 @@ class ProvenanceVerifier:
             citation_id=cid,
             status="VALID",
             content_hash_match=True,
-            stored_hash=citation.content_hash,
-            recomputed_hash=recomputed_hash,
-            message="Citation successfully resolved and integrity verified.",
+            source_content_hash_match=True,
+            template_content_hash_match=True,
+            stored_source_hash=citation.source_content_hash,
+            recomputed_source_hash=recomputed_source_hash,
+            stored_template_hash=citation.template_content_hash,
+            recomputed_template_hash=recomputed_template_hash,
+            stored_hash=citation.source_content_hash,
+            recomputed_hash=recomputed_source_hash,
+            message="Citation successfully resolved and dual-hash integrity verified.",
         )
+
 
     def verify_bundle(self, bundle: CitationBundle) -> Dict[str, Any]:
         """Verify all citations within a bundle and evaluate overall integrity.

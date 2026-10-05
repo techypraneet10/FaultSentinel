@@ -63,9 +63,15 @@ class EvidenceProvenance:
     source_window_id: str
     source_artifact: SourceArtifact
     source_location: SourceLocation
-    content_hash: str  # Deterministic SHA-256 of canonical text
+    source_content_hash: str  # Deterministic SHA-256 of canonical exact underlying raw source records
+    template_content_hash: str  # Deterministic SHA-256 of normalized Drain3 template token sequence
+    content_hash: Optional[str] = None  # Backwards compatibility alias
     provenance_version: str = "1.0"
     source_commit: Optional[str] = None
+
+    def __post_init__(self):
+        if self.content_hash is None:
+            object.__setattr__(self, "content_hash", self.source_content_hash)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert provenance record to serializable dictionary."""
@@ -77,7 +83,9 @@ class EvidenceProvenance:
             "source_window_id": self.source_window_id,
             "source_artifact": self.source_artifact.to_dict(),
             "source_location": self.source_location.to_dict(),
-            "content_hash": self.content_hash,
+            "source_content_hash": self.source_content_hash,
+            "template_content_hash": self.template_content_hash,
+            "content_hash": self.content_hash or self.source_content_hash,
             "provenance_version": self.provenance_version,
             "source_commit": self.source_commit,
         }
@@ -85,6 +93,8 @@ class EvidenceProvenance:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "EvidenceProvenance":
         """Instantiate provenance record from dictionary."""
+        source_hash = data.get("source_content_hash") or data.get("content_hash", "")
+        template_hash = data.get("template_content_hash") or data.get("content_hash", "")
         return cls(
             citation_id=data["citation_id"],
             chunk_id=data["chunk_id"],
@@ -93,7 +103,9 @@ class EvidenceProvenance:
             source_window_id=data["source_window_id"],
             source_artifact=SourceArtifact.from_dict(data["source_artifact"]),
             source_location=SourceLocation.from_dict(data["source_location"]),
-            content_hash=data["content_hash"],
+            source_content_hash=source_hash,
+            template_content_hash=template_hash,
+            content_hash=data.get("content_hash", source_hash),
             provenance_version=data.get("provenance_version", "1.0"),
             source_commit=data.get("source_commit"),
         )
@@ -112,8 +124,14 @@ class Citation:
     selected_rank: int  # Phase 6 evidence rank
     retrieval_score: float  # Original Phase 5 similarity score
     selection_score: float  # Phase 6 MMR score
-    content_hash: str
+    source_content_hash: str
+    template_content_hash: str
     provenance: EvidenceProvenance
+    content_hash: Optional[str] = None
+
+    def __post_init__(self):
+        if self.content_hash is None:
+            object.__setattr__(self, "content_hash", self.source_content_hash)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert citation to serializable dictionary."""
@@ -127,13 +145,17 @@ class Citation:
             "selected_rank": self.selected_rank,
             "retrieval_score": self.retrieval_score,
             "selection_score": self.selection_score,
-            "content_hash": self.content_hash,
+            "source_content_hash": self.source_content_hash,
+            "template_content_hash": self.template_content_hash,
+            "content_hash": self.content_hash or self.source_content_hash,
             "provenance": self.provenance.to_dict(),
         }
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Citation":
         """Instantiate citation from dictionary."""
+        source_hash = data.get("source_content_hash") or data.get("content_hash", "")
+        template_hash = data.get("template_content_hash") or data.get("content_hash", "")
         return cls(
             citation_id=data["citation_id"],
             citation_text=data["citation_text"],
@@ -144,7 +166,9 @@ class Citation:
             selected_rank=data["selected_rank"],
             retrieval_score=data["retrieval_score"],
             selection_score=data["selection_score"],
-            content_hash=data["content_hash"],
+            source_content_hash=source_hash,
+            template_content_hash=template_hash,
+            content_hash=data.get("content_hash", source_hash),
             provenance=EvidenceProvenance.from_dict(data["provenance"]),
         )
 
@@ -201,6 +225,12 @@ class VerificationResult:
     citation_id: str
     status: str  # "VALID", "INVALID", or "UNRESOLVED"
     content_hash_match: bool
+    source_content_hash_match: bool = False
+    template_content_hash_match: bool = False
+    recomputed_source_hash: Optional[str] = None
+    stored_source_hash: Optional[str] = None
+    recomputed_template_hash: Optional[str] = None
+    stored_template_hash: Optional[str] = None
     recomputed_hash: Optional[str] = None
     stored_hash: Optional[str] = None
     message: str = ""
@@ -208,3 +238,4 @@ class VerificationResult:
     def to_dict(self) -> Dict[str, Any]:
         """Convert verification result to dictionary."""
         return asdict(self)
+

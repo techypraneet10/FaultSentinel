@@ -8,13 +8,46 @@ Provides:
 """
 
 import hashlib
-from typing import List, Optional, Sequence
+from typing import List, Optional, Sequence, Union
 
 from sentinellog.provenance.schemas import SourceLocation
 
 
-def compute_content_hash(text: str) -> str:
-    """Compute deterministic SHA-256 fingerprint over canonical evidence text.
+def compute_canonical_source_text(raw_records: Sequence[str]) -> str:
+    """Derive deterministic canonical representation of raw source records.
+
+    Canonical representation strips individual record strings and joins them by newline,
+    with enclosing whitespace trimmed.
+
+    Args:
+        raw_records: Sequence of raw log message strings from source records.
+
+    Returns:
+        Deterministic canonical raw source text.
+    """
+    return "\n".join(r.strip() for r in raw_records).strip()
+
+
+def compute_source_content_hash(raw_records: Union[str, Sequence[str]]) -> str:
+    """Compute deterministic SHA-256 fingerprint over canonical raw source records.
+
+    Guarantees exact source-record integrity. Does NOT depend on template tokenization.
+
+    Args:
+        raw_records: Sequence of raw log message strings or pre-canonicalized string.
+
+    Returns:
+        Hexadecimal SHA-256 string.
+    """
+    if isinstance(raw_records, str):
+        canonical_text = raw_records.strip()
+    else:
+        canonical_text = compute_canonical_source_text(raw_records)
+    return hashlib.sha256(canonical_text.encode("utf-8")).hexdigest()
+
+
+def compute_template_content_hash(text: str) -> str:
+    """Compute deterministic SHA-256 fingerprint over normalized Drain3 template token sequence.
 
     Args:
         text: Observable template token representation of chunk.
@@ -24,6 +57,18 @@ def compute_content_hash(text: str) -> str:
     """
     canonical_text = text.strip()
     return hashlib.sha256(canonical_text.encode("utf-8")).hexdigest()
+
+
+def compute_content_hash(text: str) -> str:
+    """Backwards-compatible wrapper for template content hash.
+
+    Args:
+        text: Observable template token representation of chunk.
+
+    Returns:
+        Hexadecimal SHA-256 string.
+    """
+    return compute_template_content_hash(text)
 
 
 def compute_citation_id(

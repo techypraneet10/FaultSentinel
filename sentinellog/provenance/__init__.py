@@ -5,8 +5,11 @@ from sentinellog.provenance.gated import (
 )
 from sentinellog.provenance.hashing import (
     compute_bundle_id,
+    compute_canonical_source_text,
     compute_citation_id,
     compute_content_hash,
+    compute_source_content_hash,
+    compute_template_content_hash,
     format_citation_text,
 )
 from sentinellog.provenance.resolver import ProvenanceResolutionError, SourceResolver
@@ -30,6 +33,9 @@ __all__ = [
     "Citation",
     "CitationBundle",
     "VerificationResult",
+    "compute_canonical_source_text",
+    "compute_source_content_hash",
+    "compute_template_content_hash",
     "compute_content_hash",
     "compute_citation_id",
     "compute_bundle_id",

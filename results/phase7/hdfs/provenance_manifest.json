@@ -4,7 +4,7 @@
   "provenance_version": "1.0",
   "phase5_commit": "cd2a075bd9a67df7567ccd86865edaeace49c3c0",
   "phase6_commit": "523a32da041de59e78610567edb7374370c66433",
-  "phase7_commit": "c6097b7a3d0656320df013c7470c36d1a08bfbff",
+  "phase7_commit": "d082815e6c301c3576dda813d0e5e8e4347e540e",
   "source_artifact": "data/processed/hdfs/train.jsonl",
   "source_artifact_hash": "27ba33bacaf1d09591ffbdc0784a68350f693503aeda6006a2d5440502b8506e",
   "citation_count": 117,
@@ -14,8 +14,8 @@
   "test_used": false,
   "calibration_used_for_fitting": false,
   "artifact_hashes": {
-    "citations.jsonl": "cead5f2369368f21329087ae5e6ca4e181f7277403883aff552c0744e3e776d4",
-    "provenance_diagnostics.json": "d7b6c79209d87ef200a10c6ed6fe1ce9010106358859560cbed09f78b3a30c71"
+    "citations.jsonl": "0c266005b2e1f561e8fe2726489cc365a32ac238a3048d0cdfe9355fd3e99597",
+    "provenance_diagnostics.json": "eebc77a8124232287293033dc8094ce575822145c7b393838f3a36297dabfeae"
   },
-  "timestamp": "2026-10-05T17:39:54.387237+00:00"
+  "timestamp": "2026-10-05T18:51:28.780518+00:00"
 }

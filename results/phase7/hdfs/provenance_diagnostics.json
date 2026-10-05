@@ -17,5 +17,5 @@
   "all_bundles_verified": true,
   "source_artifact_path": "data/processed/hdfs/train.jsonl",
   "source_artifact_hash": "27ba33bacaf1d09591ffbdc0784a68350f693503aeda6006a2d5440502b8506e",
-  "timing_seconds": 0.05412530000103288
+  "timing_seconds": 0.03795399999944493
 }

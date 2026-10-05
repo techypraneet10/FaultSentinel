@@ -14,11 +14,16 @@ import json
 import os
 from typing import Any, Dict, Optional, Tuple
 
-from sentinellog.provenance.hashing import compute_content_hash
+from sentinellog.provenance.hashing import (
+    compute_content_hash,
+    compute_source_content_hash,
+    compute_template_content_hash,
+)
 from sentinellog.provenance.schemas import SourceArtifact, SourceLocation
 from sentinellog.retrieval.chunking import format_template_tokens
 from sentinellog.retrieval.guards import guard_train_split_only
 from sentinellog.scoring.artifacts import compute_sha256, guard_no_test_split
+
 
 
 class ProvenanceResolutionError(Exception):
@@ -98,7 +103,7 @@ class SourceResolver:
         dataset: str,
         split: str,
         source_window_id: str,
-    ) -> Tuple[SourceArtifact, SourceLocation, str, str]:
+    ) -> Tuple[SourceArtifact, SourceLocation, str, str, str]:
         """Resolve exact source coordinates and content for a given window.
 
         Args:
@@ -111,7 +116,8 @@ class SourceResolver:
                 - SourceArtifact: metadata describing the physical source file
                 - SourceLocation: exact spatial and line coordinates
                 - canonical_text: reconstructed observable template token text
-                - content_hash: SHA-256 fingerprint of canonical text
+                - source_content_hash: SHA-256 fingerprint of canonical exact raw source records
+                - template_content_hash: SHA-256 fingerprint of normalized template tokens
 
         Raises:
             ProvenanceResolutionError: If source cannot be found or split is invalid.
@@ -145,6 +151,10 @@ class SourceResolver:
 
         template_ids = win_data.get("template_ids", [])
         canonical_text = format_template_tokens(template_ids)
-        content_hash = compute_content_hash(canonical_text)
+        raw_messages = win_data.get("raw_messages", [])
 
-        return artifact, location, canonical_text, content_hash
+        source_content_hash = compute_source_content_hash(raw_messages)
+        template_content_hash = compute_template_content_hash(canonical_text)
+
+        return artifact, location, canonical_text, source_content_hash, template_content_hash
+

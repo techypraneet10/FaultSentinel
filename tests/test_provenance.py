@@ -29,8 +29,11 @@ from sentinellog.provenance.engine import ProvenanceEngine
 from sentinellog.provenance.gated import GatedCitationPipeline
 from sentinellog.provenance.hashing import (
     compute_bundle_id,
+    compute_canonical_source_text,
     compute_citation_id,
     compute_content_hash,
+    compute_source_content_hash,
+    compute_template_content_hash,
     format_citation_text,
 )
 from sentinellog.provenance.resolver import ProvenanceResolutionError, SourceResolver
@@ -127,7 +130,9 @@ def test_citation_bundle_dataclass(sample_artifact, sample_location):
         source_window_id="win_1",
         source_artifact=sample_artifact,
         source_location=sample_location,
-        content_hash="hash_abc",
+        source_content_hash="src_hash_123",
+        template_content_hash="tmpl_hash_456",
+        content_hash="src_hash_123",
     )
     citation = Citation(
         citation_id="cit_123",
@@ -139,7 +144,9 @@ def test_citation_bundle_dataclass(sample_artifact, sample_location):
         selected_rank=1,
         retrieval_score=0.9,
         selection_score=0.9,
-        content_hash="hash_abc",
+        source_content_hash="src_hash_123",
+        template_content_hash="tmpl_hash_456",
+        content_hash="src_hash_123",
         provenance=prov,
     )
     bundle = CitationBundle(
@@ -157,7 +164,10 @@ def test_citation_bundle_dataclass(sample_artifact, sample_location):
     assert reconstructed.bundle_id == "bundle_xyz"
     assert reconstructed.evidence_count == 1
     assert reconstructed.citations[0].citation_id == "cit_123"
+    assert reconstructed.citations[0].source_content_hash == "src_hash_123"
+    assert reconstructed.citations[0].template_content_hash == "tmpl_hash_456"
     assert reconstructed.all_verified is True
+
 
 
 # -----------------------------------------------------------------------------
@@ -203,7 +213,7 @@ def test_content_hash_deterministic():
 
 def test_source_resolution_hdfs(sample_selected_evidence):
     resolver = SourceResolver()
-    artifact, location, canon_text, chash = resolver.resolve_source(
+    artifact, location, canon_text, src_hash, tmpl_hash = resolver.resolve_source(
         dataset="hdfs",
         split="train",
         source_window_id=sample_selected_evidence.source_window_id,
@@ -215,12 +225,14 @@ def test_source_resolution_hdfs(sample_selected_evidence):
     assert location.line_start == 1
     assert location.line_end == 5339
     assert location.session_id == "blk_-1608999687919862906"
-    assert len(chash) == 64
+    assert len(src_hash) == 64
+    assert len(tmpl_hash) == 64
+    assert src_hash != tmpl_hash
 
 
 def test_source_resolution_bgl():
     resolver = SourceResolver()
-    artifact, location, canon_text, chash = resolver.resolve_source(
+    artifact, location, canon_text, src_hash, tmpl_hash = resolver.resolve_source(
         dataset="bgl",
         split="train",
         source_window_id="bgl_window_0000000",
@@ -232,7 +244,9 @@ def test_source_resolution_bgl():
     assert location.line_start == 1
     assert location.line_end == 100
     assert location.session_id is None
-    assert len(chash) == 64
+    assert len(src_hash) == 64
+    assert len(tmpl_hash) == 64
+    assert src_hash != tmpl_hash
 
 
 def test_source_resolution_missing_window_fails_closed():
@@ -254,14 +268,17 @@ def test_provenance_verifier_round_trip(sample_selected_evidence):
 
     assert res.status == "VALID"
     assert res.content_hash_match is True
-    assert res.stored_hash == res.recomputed_hash
+    assert res.source_content_hash_match is True
+    assert res.template_content_hash_match is True
+    assert res.stored_source_hash == res.recomputed_source_hash
+    assert res.stored_template_hash == res.recomputed_template_hash
 
 
 def test_provenance_verifier_detects_corrupted_content_hash(sample_selected_evidence):
     engine = ProvenanceEngine()
     citation = engine.create_citation(sample_selected_evidence)
 
-    # Tamper with content_hash
+    # Tamper with source_content_hash
     tampered_citation = Citation(
         citation_id=citation.citation_id,
         citation_text=citation.citation_text,
@@ -272,7 +289,9 @@ def test_provenance_verifier_detects_corrupted_content_hash(sample_selected_evid
         selected_rank=citation.selected_rank,
         retrieval_score=citation.retrieval_score,
         selection_score=citation.selection_score,
-        content_hash="0000000000000000000000000000000000000000000000000000000000000000",  # Corrupted!
+        source_content_hash="0000000000000000000000000000000000000000000000000000000000000000",  # Corrupted!
+        template_content_hash=citation.template_content_hash,
+        content_hash="0000000000000000000000000000000000000000000000000000000000000000",
         provenance=citation.provenance,
     )
 
@@ -281,7 +300,102 @@ def test_provenance_verifier_detects_corrupted_content_hash(sample_selected_evid
 
     assert res.status == "INVALID"
     assert res.content_hash_match is False
-    assert "Integrity check failed" in res.message
+    assert res.source_content_hash_match is False
+    assert res.template_content_hash_match is True
+    assert "source_content_hash" in res.message
+
+
+def test_raw_source_mutation_regression(sample_selected_evidence):
+    """Regression check: modifying raw source records while keeping Drain3 template tokens unchanged
+
+    must cause:
+    - template_content_hash to remain unchanged (match == True)
+    - source_content_hash to change (match == False)
+    - provenance verification status to become INVALID
+    """
+    resolver = SourceResolver()
+    engine = ProvenanceEngine(resolver=resolver)
+    verifier = ProvenanceVerifier(resolver=resolver)
+
+    citation = engine.create_citation(sample_selected_evidence)
+    res_orig = verifier.verify_citation(citation)
+    assert res_orig.status == "VALID"
+    assert res_orig.source_content_hash_match is True
+    assert res_orig.template_content_hash_match is True
+
+    # Mutate raw source records in resolver's window cache while keeping template_ids untouched
+    wid = sample_selected_evidence.source_window_id
+    win_data = resolver._window_cache["hdfs"][wid]
+    orig_raw = list(win_data["raw_messages"])
+    orig_tmpl = list(win_data["template_ids"])
+
+    try:
+        # Mutate raw message content
+        win_data["raw_messages"] = [orig_raw[0] + " [MUTATED_SOURCE_RECORD]"] + orig_raw[1:]
+        # template_ids remain strictly identical
+        win_data["template_ids"] = orig_tmpl
+
+        res_mutated = verifier.verify_citation(citation)
+
+        assert res_mutated.status == "INVALID"
+        assert res_mutated.template_content_hash_match is True  # Template unchanged!
+        assert res_mutated.source_content_hash_match is False  # Source changed!
+        assert res_mutated.content_hash_match is False
+        assert "source_content_hash" in res_mutated.message
+    finally:
+        # Restore original window data
+        win_data["raw_messages"] = orig_raw
+        win_data["template_ids"] = orig_tmpl
+
+
+def test_template_mutation_regression(sample_selected_evidence):
+    """Confirm that modifying Drain3 templates while raw source records remain unchanged
+
+    causes:
+    - source_content_hash to remain unchanged (match == True)
+    - template_content_hash to change (match == False)
+    - provenance verification status to become INVALID
+    """
+    resolver = SourceResolver()
+    engine = ProvenanceEngine(resolver=resolver)
+    verifier = ProvenanceVerifier(resolver=resolver)
+
+    citation = engine.create_citation(sample_selected_evidence)
+
+    wid = sample_selected_evidence.source_window_id
+    win_data = resolver._window_cache["hdfs"][wid]
+    orig_raw = list(win_data["raw_messages"])
+    orig_tmpl = list(win_data["template_ids"])
+
+    try:
+        win_data["template_ids"] = [99999] + orig_tmpl[1:]
+        win_data["raw_messages"] = orig_raw
+
+        res_mutated = verifier.verify_citation(citation)
+
+        assert res_mutated.status == "INVALID"
+        assert res_mutated.source_content_hash_match is True  # Source unchanged!
+        assert res_mutated.template_content_hash_match is False  # Template changed!
+        assert res_mutated.content_hash_match is False
+        assert "template_content_hash" in res_mutated.message
+    finally:
+        win_data["raw_messages"] = orig_raw
+        win_data["template_ids"] = orig_tmpl
+
+
+def test_separate_hashes_distinct_and_documented(sample_selected_evidence):
+    """Confirm that source_content_hash and template_content_hash are distinct and non-empty."""
+    engine = ProvenanceEngine()
+    citation = engine.create_citation(sample_selected_evidence)
+
+    assert citation.source_content_hash is not None
+    assert citation.template_content_hash is not None
+    assert len(citation.source_content_hash) == 64
+    assert len(citation.template_content_hash) == 64
+    assert citation.source_content_hash != citation.template_content_hash
+    assert citation.provenance.source_content_hash == citation.source_content_hash
+    assert citation.provenance.template_content_hash == citation.template_content_hash
+
 
 
 # -----------------------------------------------------------------------------

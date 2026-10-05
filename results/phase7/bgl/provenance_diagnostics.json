@@ -17,5 +17,5 @@
   "all_bundles_verified": true,
   "source_artifact_path": "data/processed/bgl/train.jsonl",
   "source_artifact_hash": "d21c41ca02daa15416c88ee22e54c5a1b793710064c381e3bf60d62dfc008d94",
-  "timing_seconds": 0.024368099999264814
+  "timing_seconds": 0.017522300000564428
 }

@@ -50,21 +50,31 @@ $$\text{citation\_id} \longrightarrow \text{chunk\_id} \longrightarrow \text{sou
    - `record_count`: Number of raw log events in the window.
    - `session_id`: HDFS block ID (e.g., `blk_-1608999687919862906`) or `None` for BGL.
    - `timestamp_start` / `timestamp_end`: Epoch time boundaries.
-3. [`EvidenceProvenance`](file:///d:/FaultSentinel/sentinellog/provenance/schemas.py#L50-L94):
-   - Ties `citation_id`, `chunk_id`, `source_artifact`, `source_location`, and `content_hash` into an immutable verifiable record.
-4. [`Citation`](file:///d:/FaultSentinel/sentinellog/provenance/schemas.py#L97-L140):
-   - Holds human-readable `citation_text`, retrieval score, selection score, rank, and complete provenance.
-5. [`CitationBundle`](file:///d:/FaultSentinel/sentinellog/provenance/schemas.py#L143-L186):
+3. [`EvidenceProvenance`](file:///d:/FaultSentinel/sentinellog/provenance/schemas.py#L55-L100):
+   - Ties `citation_id`, `chunk_id`, `source_artifact`, `source_location`, `source_content_hash`, and `template_content_hash` into an immutable verifiable record.
+4. [`Citation`](file:///d:/FaultSentinel/sentinellog/provenance/schemas.py#L102-L151):
+   - Holds human-readable `citation_text`, retrieval score, selection score, rank, `source_content_hash`, `template_content_hash`, and complete provenance.
+5. [`CitationBundle`](file:///d:/FaultSentinel/sentinellog/provenance/schemas.py#L153-L196):
    - Holds the ordered citations for an escalated window with a deterministic `bundle_id`.
 
 ---
 
 ## 3. Cryptographic Derivations & Algorithms
 
-### 3.1 Content Fingerprint (`content_hash`)
-Computed deterministically via SHA-256 over the canonical observable template token text:
-$$\text{content\_hash} = \text{SHA256}(\text{canonical\_text})$$
-where `canonical_text` is the space-separated observable template token string (e.g., `"template_1 template_2"`).
+### 3.1 Dual Content Hashes (`source_content_hash` and `template_content_hash`)
+To ensure total integrity, SentinelLog separates the exact underlying source records from normalized template tokens:
+
+1. **`source_content_hash` (Source-Record Integrity Hash)**:
+   Computed deterministically via SHA-256 over the canonical string of the **exact underlying raw source records** (`raw_messages`):
+   $$\text{canonical\_source\_text} = \text{strip}\left(\bigvee_{m \in \text{raw\_messages}} \text{strip}(m)\right)$$
+   $$\text{source\_content\_hash} = \text{SHA256}(\text{canonical\_source\_text})$$
+   This guarantees that any modification to underlying raw log lines invalidates provenance, even if template IDs remain identical.
+
+2. **`template_content_hash` (Normalized Template-Token Hash)**:
+   Computed deterministically via SHA-256 over normalized Drain3 template tokens:
+   $$\text{template\_content\_hash} = \text{SHA256}(\text{canonical\_template\_text})$$
+
+Both hashes remain distinct and independently verified.
 
 ### 3.2 Deterministic Citation Identifier (`citation_id`)
 Derived via canonical serialization of the spatial and identity coordinates:
@@ -84,19 +94,21 @@ Format:
 
 ## 4. Source Resolution & Round-Trip Verification
 
-### 4.1 Resolution Engine ([`SourceResolver`](file:///d:/FaultSentinel/sentinellog/provenance/resolver.py#L27-L125))
-- Resolves any cited evidence back to its exact line coordinates in `data/processed/<dataset>/train.jsonl`.
-- Fails closed with [`ProvenanceResolutionError`](file:///d:/FaultSentinel/sentinellog/provenance/resolver.py#L21-L24) if the source window cannot be found.
+### 4.1 Resolution Engine ([`SourceResolver`](file:///d:/FaultSentinel/sentinellog/provenance/resolver.py#L29-L156))
+- Resolves any cited evidence back to its exact line coordinates and underlying raw messages in `data/processed/<dataset>/train.jsonl`.
+- Fails closed with [`ProvenanceResolutionError`](file:///d:/FaultSentinel/sentinellog/provenance/resolver.py#L24-L27) if the source window cannot be found.
 - Forbids access to test data via [`guard_no_test_split`](file:///d:/FaultSentinel/sentinellog/scoring/artifacts.py#L21-L46) and rejects non-train partitions via [`guard_train_split_only`](file:///d:/FaultSentinel/sentinellog/retrieval/guards.py#L26-L59).
 
-### 4.2 Round-Trip Integrity Verification ([`ProvenanceVerifier`](file:///d:/FaultSentinel/sentinellog/provenance/verifier.py#L28-L170))
+### 4.2 Round-Trip Integrity Verification ([`ProvenanceVerifier`](file:///d:/FaultSentinel/sentinellog/provenance/verifier.py#L28-L175))
 For every citation:
 1. Recomputes `expected_citation_id` and verifies identity match.
 2. Resolves physical source window from disk.
-3. Recomputes `content_hash` over observable template tokens.
-4. Compares stored `content_hash` against recomputed hash.
-5. Verifies physical source artifact SHA-256 against known dataset baseline.
-6. Returns `VALID`, `INVALID` (if corrupted), or `UNRESOLVED` (if missing).
+3. Recomputes `recomputed_source_hash` over exact underlying raw source records.
+4. Recomputes `recomputed_template_hash` over observable template tokens.
+5. Verifies `source_content_hash == recomputed_source_hash`. If mismatch, marks `INVALID` with `source_content_hash_match=False`.
+6. Verifies `template_content_hash == recomputed_template_hash`. If mismatch, marks `INVALID` with `template_content_hash_match=False`.
+7. Verifies physical source artifact SHA-256 against known dataset baseline.
+8. Returns `VALID`, `INVALID` (if corrupted), or `UNRESOLVED` (if missing).
 
 ---
 
