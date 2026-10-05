@@ -1,0 +1,241 @@
+{
+  "split": "CALIBRATION_ONLY",
+  "threshold_strategy": "unsupervised_quantile_0.95_strict",
+  "threshold": 0.4193211144400222,
+  "threshold_quantile": 0.95,
+  "decision_operator": ">",
+  "total_windows": 100,
+  "total_anomalies": 36,
+  "total_normals": 64,
+  "flagged_windows_count": 5,
+  "confusion_matrix": {
+    "tp": 4,
+    "fp": 1,
+    "tn": 63,
+    "fn": 32
+  },
+  "metrics": {
+    "precision": 0.8,
+    "recall": 0.1111111111111111,
+    "f1": 0.19512195121951217,
+    "specificity": 0.984375,
+    "roc_auc": 0.9390190972222222,
+    "pr_auc": 0.8581523951089169
+  },
+  "score_distribution": {
+    "all": {
+      "count": 100,
+      "min": 0.3261537504291237,
+      "max": 0.6540434688417215,
+      "mean": 0.3438415177989238,
+      "std": 0.0475254421498906,
+      "p25": 0.3261537504291237,
+      "p50": 0.3261537504291237,
+      "p75": 0.3377537307346527,
+      "p90": 0.35767988878167084,
+      "p95": 0.4193211144400222,
+      "p99": 0.5693743387280158
+    },
+    "normal": {
+      "count": 64,
+      "min": 0.3261537504291237,
+      "max": 0.4441432283779672,
+      "mean": 0.33083862523159463,
+      "std": 0.019274526145364457,
+      "p25": 0.3261537504291237,
+      "p50": 0.3261537504291237,
+      "p75": 0.3261537504291237,
+      "p90": 0.3261537504291237,
+      "p95": 0.3377537307346527,
+      "p99": 0.41912299480015325
+    },
+    "anomalous": {
+      "count": 36,
+      "min": 0.3359940909698857,
+      "max": 0.6540434688417215,
+      "mean": 0.36695777125195367,
+      "std": 0.06912799686353895,
+      "p25": 0.3359940909698857,
+      "p50": 0.3399074366842937,
+      "p75": 0.35767988878167084,
+      "p90": 0.43107895788431194,
+      "p95": 0.5102261330617326,
+      "p99": 0.6241099379934414
+    }
+  },
+  "error_analysis": {
+    "top_false_positives": [
+      {
+        "index": 50,
+        "score": 0.4441432283779672,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000350",
+        "record_count": 100,
+        "unique_templates": [
+          16
+        ]
+      }
+    ],
+    "top_false_negatives": [
+      {
+        "index": 15,
+        "score": 0.3359940909698857,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000315",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      },
+      {
+        "index": 12,
+        "score": 0.3359940909698857,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000312",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      },
+      {
+        "index": 26,
+        "score": 0.3359940909698857,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000326",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      },
+      {
+        "index": 28,
+        "score": 0.3359940909698857,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000328",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      },
+      {
+        "index": 30,
+        "score": 0.3359940909698857,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000330",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      }
+    ],
+    "highest_score_windows": [
+      {
+        "index": 40,
+        "score": 0.6540434688417215,
+        "label": true,
+        "predicted": true,
+        "window_id": "bgl_window_0000340",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          -1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          12,
+          18
+        ]
+      },
+      {
+        "index": 39,
+        "score": 0.568519094989493,
+        "label": true,
+        "predicted": true,
+        "window_id": "bgl_window_0000339",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          -1,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "index": 51,
+        "score": 0.4907951457524791,
+        "label": true,
+        "predicted": true,
+        "window_id": "bgl_window_0000351",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          3,
+          16,
+          18
+        ]
+      },
+      {
+        "index": 49,
+        "score": 0.4441432283779672,
+        "label": true,
+        "predicted": true,
+        "window_id": "bgl_window_0000349",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          -1,
+          16
+        ]
+      },
+      {
+        "index": 50,
+        "score": 0.4441432283779672,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000350",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          16
+        ]
+      }
+    ]
+  },
+  "oracle_diagnostic": {
+    "is_oracle": true,
+    "diagnostic_only": true,
+    "threshold": 0.3261537504291237,
+    "f1": 0.923076923076923,
+    "precision": 0.8571428571428571,
+    "recall": 1.0,
+    "note": "Supervised oracle calibration threshold for theoretical upper bound diagnosis only."
+  },
+  "train_score_distribution": {
+    "min": 0.3261537504291237,
+    "max": 0.7876975330124697,
+    "mean": 0.3778659081305066,
+    "std": 0.07201838861916698,
+    "p50": 0.35767988878167084,
+    "p95": 0.5438542052140555
+  },
+  "timing": {
+    "train_fit_seconds": 0.08699319999868749,
+    "calibration_scoring_seconds": 0.00679639999907522,
+    "total_seconds": 0.10981769999852986
+  }
+}

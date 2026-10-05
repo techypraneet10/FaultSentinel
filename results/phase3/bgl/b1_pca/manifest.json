@@ -1,0 +1,38 @@
+{
+  "experiment": "bgl_b1_pca",
+  "dataset": "bgl",
+  "baseline": "B1_PCA",
+  "seed": 42,
+  "data_manifest_hash": "757b21d66d22fa202a3e04400a481e35713e0ac2f64abdd4a0db23a88122cacd",
+  "processing_version": "0.3.0-phase3",
+  "git_commit": "e1dd29ea565d2ccd50f7c1fcd7a415759289ce81",
+  "timestamp_utc": "2026-10-05T15:04:30.111619+00:00",
+  "feature_config": {
+    "mode": "normalized_count"
+  },
+  "model_config": {
+    "baseline": "B1_PCA",
+    "name": "PCAScorer",
+    "feature_mode": "normalized_count",
+    "n_features": 20,
+    "k_components": 4,
+    "target_variance_ratio": 0.95,
+    "explained_variance_ratio": [
+      0.5305851655440021,
+      0.2675551047161834,
+      0.13768161734382606,
+      0.05656126142133223
+    ],
+    "cumulative_explained_variance": 0.9923831490253439,
+    "random_state": 42,
+    "score_direction": "higher_is_more_anomalous"
+  },
+  "threshold_config": {
+    "strategy": "calibration_quantile",
+    "quantile": 0.95
+  },
+  "threshold": 0.6664161802125262,
+  "train_windows": 300,
+  "calibration_windows": 100,
+  "test_used": false
+}

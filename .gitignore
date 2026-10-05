@@ -64,9 +64,15 @@ data/processed/**/*.parquet
 !data/**/data_quality_report.json
 !data/**/MANIFEST.md
 
-# Experiment artifacts and checkpoints (not code/configs)
-results/*
-!results/.gitkeep
+# Experiment artifacts and checkpoints (ignore binaries, track manifests and reports)
+*.joblib
+*.pkl
+*.pt
+results/**/model.joblib
+!results/**/manifest.json
+!results/**/diagnostics.json
+!results/**/comparison_report.*
+!results/**/.gitkeep
 !results/README.md
 models/*
 !models/.gitkeep

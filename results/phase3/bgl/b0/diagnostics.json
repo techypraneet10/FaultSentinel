@@ -1,0 +1,265 @@
+{
+  "split": "CALIBRATION_ONLY",
+  "threshold_strategy": "unsupervised_quantile_0.95_strict",
+  "threshold": 8.113997967061437,
+  "threshold_quantile": 0.95,
+  "decision_operator": ">",
+  "total_windows": 100,
+  "total_anomalies": 36,
+  "total_normals": 64,
+  "flagged_windows_count": 5,
+  "confusion_matrix": {
+    "tp": 1,
+    "fp": 4,
+    "tn": 60,
+    "fn": 35
+  },
+  "metrics": {
+    "precision": 0.2,
+    "recall": 0.027777777777777776,
+    "f1": 0.048780487804878044,
+    "specificity": 0.9375,
+    "roc_auc": 0.9088541666666666,
+    "pr_auc": 0.7082143552501832
+  },
+  "score_distribution": {
+    "all": {
+      "count": 100,
+      "min": 0.5940286237784638,
+      "max": 10.30961910518747,
+      "mean": 1.326940502956512,
+      "std": 2.2388160123118706,
+      "p25": 0.5940286237784638,
+      "p50": 0.5940286237784638,
+      "p75": 0.6815896718126174,
+      "p90": 1.5827979038032507,
+      "p95": 8.113997967061437,
+      "p99": 10.30961910518747
+    },
+    "normal": {
+      "count": 64,
+      "min": 0.5940286237784638,
+      "max": 10.30961910518747,
+      "mean": 1.3112472968562705,
+      "std": 2.3934651910438163,
+      "p25": 0.5940286237784638,
+      "p50": 0.5940286237784638,
+      "p75": 0.5940286237784638,
+      "p90": 0.5940286237784638,
+      "p95": 8.13965299442451,
+      "p99": 10.30961910518747
+    },
+    "anomalous": {
+      "count": 36,
+      "min": 0.6378091477955404,
+      "max": 8.44197821445168,
+      "mean": 1.354839536023609,
+      "std": 1.9332664603632215,
+      "p25": 0.6378091477955405,
+      "p50": 0.6815896718126174,
+      "p75": 0.7253701958296944,
+      "p90": 2.3756155290693104,
+      "p95": 6.9764632092948045,
+      "p99": 8.075515525661263
+    }
+  },
+  "error_analysis": {
+    "top_false_positives": [
+      {
+        "index": 46,
+        "score": 10.30961910518747,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000346",
+        "record_count": 100,
+        "unique_templates": [
+          -1
+        ]
+      },
+      {
+        "index": 48,
+        "score": 10.30961910518747,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000348",
+        "record_count": 100,
+        "unique_templates": [
+          -1
+        ]
+      },
+      {
+        "index": 47,
+        "score": 10.30961910518747,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000347",
+        "record_count": 100,
+        "unique_templates": [
+          -1
+        ]
+      },
+      {
+        "index": 53,
+        "score": 8.144463312055088,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000353",
+        "record_count": 100,
+        "unique_templates": [
+          -1,
+          3,
+          19
+        ]
+      }
+    ],
+    "top_false_negatives": [
+      {
+        "index": 25,
+        "score": 0.6378091477955404,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000325",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      },
+      {
+        "index": 10,
+        "score": 0.6378091477955404,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000310",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      },
+      {
+        "index": 13,
+        "score": 0.6378091477955404,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000313",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      },
+      {
+        "index": 28,
+        "score": 0.6378091477955405,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000328",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      },
+      {
+        "index": 30,
+        "score": 0.6378091477955405,
+        "label": true,
+        "predicted": false,
+        "window_id": "bgl_window_0000330",
+        "record_count": 100,
+        "unique_templates": [
+          3,
+          18
+        ]
+      }
+    ],
+    "highest_score_windows": [
+      {
+        "index": 46,
+        "score": 10.30961910518747,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000346",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          -1
+        ]
+      },
+      {
+        "index": 48,
+        "score": 10.30961910518747,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000348",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          -1
+        ]
+      },
+      {
+        "index": 47,
+        "score": 10.30961910518747,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000347",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          -1
+        ]
+      },
+      {
+        "index": 49,
+        "score": 8.44197821445168,
+        "label": true,
+        "predicted": true,
+        "window_id": "bgl_window_0000349",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          -1,
+          16
+        ]
+      },
+      {
+        "index": 53,
+        "score": 8.144463312055088,
+        "label": false,
+        "predicted": true,
+        "window_id": "bgl_window_0000353",
+        "record_count": 100,
+        "template_count": 100,
+        "unique_templates": [
+          -1,
+          3,
+          19
+        ]
+      }
+    ]
+  },
+  "oracle_diagnostic": {
+    "is_oracle": true,
+    "diagnostic_only": true,
+    "threshold": 0.5940286237784638,
+    "f1": 0.923076923076923,
+    "precision": 0.8571428571428571,
+    "recall": 1.0,
+    "note": "Supervised oracle calibration threshold for theoretical upper bound diagnosis only."
+  },
+  "train_score_distribution": {
+    "min": 0.5940286237784638,
+    "max": 5.029311670116027,
+    "mean": 1.347880363782855,
+    "std": 0.9059872445105082,
+    "p50": 0.725370195829695,
+    "p95": 3.1286379712400962
+  },
+  "timing": {
+    "train_fit_seconds": 0.0015497999993385747,
+    "calibration_scoring_seconds": 0.00046779999865975697,
+    "total_seconds": 0.00796230000014475
+  }
+}

@@ -1,0 +1,39 @@
+# SentinelLog Phase 3 Baselines Configuration
+version: "0.3.0-phase3"
+
+# Experiment datasets to evaluate
+datasets:
+  - hdfs
+  - bgl
+
+# Base paths (strictly train and calibration splits are used)
+data_dirs:
+  hdfs: "data/processed/hdfs"
+  bgl: "data/processed/bgl"
+
+# Output results root
+output_dir: "results/phase3"
+
+# Common parameters
+random_seed: 42
+threshold_quantile: 0.95
+
+# B0: Frequency Scorer Configuration
+b0:
+  smoothing_alpha: 1.0
+
+# B1: Feature Vectorizer Configuration
+features:
+  mode: "normalized_count"  # Options: normalized_count, log1p_count, raw_count
+
+# B1 Primary: PCA Reconstruction Error Configuration
+b1_pca:
+  variance_ratio: 0.95      # Cumulative explained variance target for component selection
+  n_components: null        # Set integer to override variance_ratio
+  random_state: 42
+
+# B1 Secondary: Isolation Forest Configuration
+b1_iforest:
+  n_estimators: 100
+  contamination: "auto"     # Unsupervised default, do NOT tune on test labels
+  random_state: 42

@@ -1,0 +1,31 @@
+{
+  "experiment": "hdfs_b1_iforest",
+  "dataset": "hdfs",
+  "baseline": "B1_IsolationForest",
+  "seed": 42,
+  "data_manifest_hash": "d4519a88030f765a7116ca555c14f3ed78cc5d6a2ee3282e83a57c5fed5103e9",
+  "processing_version": "0.3.0-phase3",
+  "git_commit": "e1dd29ea565d2ccd50f7c1fcd7a415759289ce81",
+  "timestamp_utc": "2026-10-05T15:04:29.958889+00:00",
+  "feature_config": {
+    "mode": "normalized_count"
+  },
+  "model_config": {
+    "baseline": "B1_IsolationForest",
+    "name": "IsolationForestScorer",
+    "feature_mode": "normalized_count",
+    "n_features": 17,
+    "n_estimators": 100,
+    "contamination": "auto",
+    "random_state": 42,
+    "score_direction": "higher_is_more_anomalous"
+  },
+  "threshold_config": {
+    "strategy": "calibration_quantile",
+    "quantile": 0.95
+  },
+  "threshold": 0.4353720988817087,
+  "train_windows": 2450,
+  "calibration_windows": 814,
+  "test_used": false
+}

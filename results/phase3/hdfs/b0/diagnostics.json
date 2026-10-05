@@ -1,0 +1,305 @@
+{
+  "split": "CALIBRATION_ONLY",
+  "threshold_strategy": "unsupervised_quantile_0.95_strict",
+  "threshold": 1.5773789360242954,
+  "threshold_quantile": 0.95,
+  "decision_operator": ">",
+  "total_windows": 814,
+  "total_anomalies": 29,
+  "total_normals": 785,
+  "flagged_windows_count": 26,
+  "confusion_matrix": {
+    "tp": 19,
+    "fp": 7,
+    "tn": 778,
+    "fn": 10
+  },
+  "metrics": {
+    "precision": 0.7307692307692307,
+    "recall": 0.6551724137931034,
+    "f1": 0.6909090909090909,
+    "specificity": 0.9910828025477707,
+    "roc_auc": 0.8500988359323525,
+    "pr_auc": 0.6128329603045055
+  },
+  "score_distribution": {
+    "all": {
+      "count": 814,
+      "min": 1.5773789360242942,
+      "max": 3.8181452015606543,
+      "mean": 1.6002251822859228,
+      "std": 0.19612312024400114,
+      "p25": 1.5773789360242945,
+      "p50": 1.5773789360242947,
+      "p75": 1.577378936024295,
+      "p90": 1.577378936024295,
+      "p95": 1.5773789360242954,
+      "p99": 2.0403691508186124
+    },
+    "normal": {
+      "count": 785,
+      "min": 1.5773789360242942,
+      "max": 1.776526449055089,
+      "mean": 1.5790729264558598,
+      "std": 0.017862282833482762,
+      "p25": 1.5773789360242945,
+      "p50": 1.5773789360242947,
+      "p75": 1.577378936024295,
+      "p90": 1.577378936024295,
+      "p95": 1.5773789360242954,
+      "p99": 1.5773789360242954
+    },
+    "anomalous": {
+      "count": 29,
+      "min": 1.5773789360242945,
+      "max": 3.8181452015606543,
+      "mean": 2.1727948659617686,
+      "std": 0.8550255334074166,
+      "p25": 1.577378936024295,
+      "p50": 1.7658180986489198,
+      "p75": 2.0403691508186124,
+      "p90": 3.8181452015606543,
+      "p95": 3.8181452015606543,
+      "p99": 3.8181452015606543
+    }
+  },
+  "error_analysis": {
+    "top_false_positives": [
+      {
+        "index": 69,
+        "score": 1.776526449055089,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-7628164677193243450",
+        "record_count": 14,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          13
+        ]
+      },
+      {
+        "index": 754,
+        "score": 1.76581809864892,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-6675500631553054391",
+        "record_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 397,
+        "score": 1.7658180986489198,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_8708515847259434656",
+        "record_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 137,
+        "score": 1.7658180986489198,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_2453945987891191744",
+        "record_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 696,
+        "score": 1.7658180986489198,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-2252864954347275674",
+        "record_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      }
+    ],
+    "top_false_negatives": [
+      {
+        "index": 140,
+        "score": 1.5773789360242945,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_8595953129858897576",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "index": 250,
+        "score": 1.5773789360242947,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_8362325295506522506",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "index": 291,
+        "score": 1.5773789360242947,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_7604683085433170185",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "index": 685,
+        "score": 1.5773789360242947,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_8386155670234862721",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "index": 674,
+        "score": 1.5773789360242947,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_8438877587908664763",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "highest_score_windows": [
+      {
+        "index": 581,
+        "score": 3.8181452015606543,
+        "label": true,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-4584260656075541553",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2,
+          16
+        ]
+      },
+      {
+        "index": 239,
+        "score": 3.8181452015606543,
+        "label": true,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-3048100091565287612",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2,
+          16
+        ]
+      },
+      {
+        "index": 528,
+        "score": 3.8181452015606543,
+        "label": true,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-8188730556182299562",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2,
+          16
+        ]
+      },
+      {
+        "index": 348,
+        "score": 3.8181452015606543,
+        "label": true,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_8591542202077771197",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2,
+          16
+        ]
+      },
+      {
+        "index": 745,
+        "score": 3.8181452015606543,
+        "label": true,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-4000271277927010782",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2,
+          16
+        ]
+      }
+    ]
+  },
+  "oracle_diagnostic": {
+    "is_oracle": true,
+    "diagnostic_only": true,
+    "threshold": 1.5773789360242954,
+    "f1": 0.6909090909090909,
+    "precision": 0.7307692307692307,
+    "recall": 0.6551724137931034,
+    "note": "Supervised oracle calibration threshold for theoretical upper bound diagnosis only."
+  },
+  "train_score_distribution": {
+    "min": 1.5773789360242942,
+    "max": 4.411168615305217,
+    "mean": 1.6149569919201643,
+    "std": 0.13989380530458234,
+    "p50": 1.5773789360242945,
+    "p95": 1.7765264490550885
+  },
+  "timing": {
+    "train_fit_seconds": 0.0020313000004534842,
+    "calibration_scoring_seconds": 0.0008467999996355502,
+    "total_seconds": 0.018662599999515805
+  }
+}

@@ -4,10 +4,10 @@
 SentinelLog — Calibrated Selective Prediction for LLM-Assisted Incident Triage over System Logs
 
 ## Current Phase
-Phase 2 — Data Pipeline, Versioning & Leakage-Safe Dataset Construction
+Phase 3 — Unsupervised Anomaly Detection Baselines
 
 ## Status
-COMPLETE (Phase 2 acceptance checks passed; awaiting human authorization to proceed to Phase 3)
+COMPLETE (Phase 3 acceptance checks passed; awaiting human authorization to proceed to Phase 4)
 
 ## Completed (Phase 1)
 - [x] Repository inspection
@@ -30,10 +30,22 @@ COMPLETE (Phase 2 acceptance checks passed; awaiting human authorization to proc
 - [x] Processed artifacts serialized as JSON Lines with provenance manifests (`data/processed/hdfs/`, `data/processed/bgl/`)
 - [x] Machine-readable data quality reports generated (`data_quality_report.json`)
 - [x] Comprehensive test suite covering leakage, unknown templates, and determinism (`tests/test_data_pipeline.py`)
-- [x] All 26/26 tests passing, static compilation clean, zero leakage verified
+- [x] Post-audit verified: Frozen vocabulary on train only, strict temporal timestamp inequality, and chronological subsampling.
+
+## Completed (Phase 3)
+- [x] Template count vectorizer with frozen training vocabulary and invariant UNKNOWN (-1) bin (`sentinellog/scoring/features.py`)
+- [x] B0 Frequency Scorer baseline with smoothed mean negative log-frequency surprisal (`sentinellog/scoring/b0.py`)
+- [x] B1 Primary: PCA reconstruction error anomaly detector with variance ratio component selection (`sentinellog/scoring/b1.py`)
+- [x] B1 Secondary: Isolation Forest baseline with fixed random_state (`sentinellog/scoring/b1.py`)
+- [x] Unsupervised calibration quantile thresholding and diagnostic evaluation with strict tied-score handling (`sentinellog/scoring/thresholds.py`)
+- [x] Artifact management and programmatic Rule 1 test-access guard (`sentinellog/scoring/artifacts.py`)
+- [x] Standalone baseline CLI runner and comparison reporting (`sentinellog/scoring/baselines.py`, `configs/baselines.yaml`)
+- [x] Deterministic baseline experiment manifests, models, and diagnostics generated in `results/phase3/`
+- [x] Unit and integration test suite with 14 comprehensive tests (`tests/test_baselines.py`)
+- [x] Full test suite (41/41 tests passing) with clean compilation
+- [x] Comprehensive baseline documentation (`docs/baselines.md`)
 
 ## Not Completed
-- Phase 3 — Unsupervised anomaly detection baselines (B0, B1)
 - Phase 4 — Learned scorer (B2) and conformal risk calibration
 - Phase 5 — Retrieval-augmented incident explanation and faithfulness checking
 - Phase 6 — Full cascade integration and selective prediction triage
@@ -42,22 +54,25 @@ COMPLETE (Phase 2 acceptance checks passed; awaiting human authorization to proc
 - Phase 9 — Final deployment, containerization, and reproducibility artifacts
 
 ## Test Set
-LOCKED
+LOCKED (Rule 1)
 
 ## Test-set Access
 FORBIDDEN until Phase 7.
-(Test partitions `data/processed/hdfs/test.jsonl` and `data/processed/bgl/test.jsonl` exist for structural verification only; no models or thresholds may touch them.)
+(All Phase 3 baselines and threshold determinations were conducted exclusively on TRAIN and CALIBRATION. `test_used: false` verified across all manifests.)
 
 ## Last Validation
 - Date: 2026-10-05
-- Pytest: 27 passed in 11.19s (0 failed, 0 skipped)
+- Pytest: 41 passed in 22.54s (0 failed, 0 warnings)
 - Syntax/Bytecode check: `python -m compileall -q sentinellog tests scripts` (Clean, exit code 0)
-- Ingestion pipeline execution:
-  - HDFS: 4,087 windows (Train: 2,450, Calib: 814, Test: 823). Strict timestamp boundary: max(train) = 1226243372.0 < min(calib) = 1226243373.0, max(calib) = 1226243457.0 < min(test) = 1226243458.0.
-  - BGL: 500 windows (Train: 300, Calib: 100, Test: 100). Strict timestamp boundary: max(train) = 1117959468.0 < min(calib) = 1117959471.0, max(calib) = 1117973850.0 < min(test) = 1117973853.0.
-- Template Vocabulary Integrity: Drain3 TemplateMiner fitted strictly on TRAIN sessions/windows only; vocabulary frozen before CALIBRATION and TEST parsing. Novel calibration/test templates map to UNKNOWN (-1) without altering learned clusters.
-- Data Leakage Check: `leakage_check_passed = true` (Zero window ID overlap, zero session overlap, strict chronological boundaries).
-- Determinism Check: Rerun produces 100% identical window IDs, counts, labels, and template sequences.
+- Baseline Diagnostics on CALIBRATION (Unsupervised 95th percentile threshold):
+  - HDFS B0 Frequency: Precision = 0.7308, Recall = 0.6552, F1 = 0.6909, ROC-AUC = 0.8501, PR-AUC = 0.6128
+  - HDFS B1 PCA: Precision = 0.7308, Recall = 0.6552, F1 = 0.6909, ROC-AUC = 0.8237, PR-AUC = 0.5433
+  - HDFS B1 Isolation Forest: Precision = 0.7308, Recall = 0.6552, F1 = 0.6909, ROC-AUC = 0.8221, PR-AUC = 0.4451
+  - BGL B0 Frequency: Precision = 0.2000, Recall = 0.0278, F1 = 0.0488, ROC-AUC = 0.9089, PR-AUC = 0.7082
+  - BGL B1 PCA: Precision = 0.2000, Recall = 0.0278, F1 = 0.0488, ROC-AUC = 0.2786, PR-AUC = 0.3679
+  - BGL B1 Isolation Forest: Precision = 0.8000, Recall = 0.1111, F1 = 0.1951, ROC-AUC = 0.9390, PR-AUC = 0.8582
+- Determinism Check: Running baseline pipeline multiple times produces identical scores, thresholds, and confusion matrices.
+- Rule 1 Test Guard: Programmatically verified via `guard_no_test_split` regression tests.
 
 ## Next Authorized Phase
-Phase 3 — Unsupervised anomaly detection baselines (B0, B1) (PENDING HUMAN APPROVAL)
+Phase 4 — Learned scorer (B2) and conformal risk calibration (PENDING HUMAN APPROVAL)

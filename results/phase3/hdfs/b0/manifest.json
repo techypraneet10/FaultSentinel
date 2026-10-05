@@ -1,0 +1,31 @@
+{
+  "experiment": "hdfs_b0",
+  "dataset": "hdfs",
+  "baseline": "B0_Frequency",
+  "seed": 42,
+  "data_manifest_hash": "d4519a88030f765a7116ca555c14f3ed78cc5d6a2ee3282e83a57c5fed5103e9",
+  "processing_version": "0.3.0-phase3",
+  "git_commit": "e1dd29ea565d2ccd50f7c1fcd7a415759289ce81",
+  "timestamp_utc": "2026-10-05T15:04:29.733239+00:00",
+  "feature_config": {
+    "mode": "normalized_count"
+  },
+  "model_config": {
+    "baseline": "B0",
+    "name": "FrequencyScorer",
+    "alpha": 1.0,
+    "total_tokens_train": 32637,
+    "vocabulary_size": 17,
+    "known_templates_count": 16,
+    "unknown_log_probability": -10.39372263868611,
+    "score_direction": "higher_is_more_anomalous"
+  },
+  "threshold_config": {
+    "strategy": "calibration_quantile",
+    "quantile": 0.95
+  },
+  "threshold": 1.5773789360242954,
+  "train_windows": 2450,
+  "calibration_windows": 814,
+  "test_used": false
+}

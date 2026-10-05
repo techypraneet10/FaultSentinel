@@ -1,0 +1,296 @@
+{
+  "split": "CALIBRATION_ONLY",
+  "threshold_strategy": "unsupervised_quantile_0.95_strict",
+  "threshold": 0.4353720988817087,
+  "threshold_quantile": 0.95,
+  "decision_operator": ">",
+  "total_windows": 814,
+  "total_anomalies": 29,
+  "total_normals": 785,
+  "flagged_windows_count": 26,
+  "confusion_matrix": {
+    "tp": 19,
+    "fp": 7,
+    "tn": 778,
+    "fn": 10
+  },
+  "metrics": {
+    "precision": 0.7307692307692307,
+    "recall": 0.6551724137931034,
+    "f1": 0.6909090909090909,
+    "specificity": 0.9910828025477707,
+    "roc_auc": 0.8220953217658686,
+    "pr_auc": 0.4451291916990646
+  },
+  "score_distribution": {
+    "all": {
+      "count": 814,
+      "min": 0.4353720988817087,
+      "max": 0.7329324731287492,
+      "mean": 0.44463993515098754,
+      "std": 0.051359590517193895,
+      "p25": 0.4353720988817087,
+      "p50": 0.4353720988817087,
+      "p75": 0.4353720988817087,
+      "p90": 0.4353720988817087,
+      "p95": 0.4353720988817087,
+      "p99": 0.7329324731287492
+    },
+    "normal": {
+      "count": 785,
+      "min": 0.4353720988817087,
+      "max": 0.7329324731287492,
+      "mean": 0.4378065899552187,
+      "std": 0.026286136963686067,
+      "p25": 0.4353720988817087,
+      "p50": 0.4353720988817087,
+      "p75": 0.4353720988817087,
+      "p90": 0.4353720988817087,
+      "p95": 0.4353720988817087,
+      "p99": 0.4353720988817087
+    },
+    "anomalous": {
+      "count": 29,
+      "min": 0.4353720988817087,
+      "max": 0.7329324731287492,
+      "mean": 0.6296115206226598,
+      "std": 0.14092007420424557,
+      "p25": 0.4353720988817087,
+      "p50": 0.72994322399036,
+      "p75": 0.7329324731287492,
+      "p90": 0.7329324731287492,
+      "p95": 0.7329324731287492,
+      "p99": 0.7329324731287492
+    }
+  },
+  "error_analysis": {
+    "top_false_positives": [
+      {
+        "index": 754,
+        "score": 0.7329324731287492,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-6675500631553054391",
+        "record_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 747,
+        "score": 0.7329324731287492,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_1712592270258860644",
+        "record_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 696,
+        "score": 0.7329324731287492,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-2252864954347275674",
+        "record_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 397,
+        "score": 0.7329324731287492,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_8708515847259434656",
+        "record_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 137,
+        "score": 0.7329324731287492,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_2453945987891191744",
+        "record_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      }
+    ],
+    "top_false_negatives": [
+      {
+        "index": 140,
+        "score": 0.4353720988817087,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_8595953129858897576",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "index": 184,
+        "score": 0.4353720988817087,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_8827951563980824329",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "index": 250,
+        "score": 0.4353720988817087,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_8362325295506522506",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "index": 291,
+        "score": 0.4353720988817087,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_7604683085433170185",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "index": 292,
+        "score": 0.4353720988817087,
+        "label": true,
+        "predicted": false,
+        "window_id": "hdfs_session_blk_7985524981839863080",
+        "record_count": 13,
+        "unique_templates": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "highest_score_windows": [
+      {
+        "index": 803,
+        "score": 0.7329324731287492,
+        "label": true,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-6241220582305795548",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 754,
+        "score": 0.7329324731287492,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-6675500631553054391",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 747,
+        "score": 0.7329324731287492,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_1712592270258860644",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 696,
+        "score": 0.7329324731287492,
+        "label": false,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_-2252864954347275674",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      },
+      {
+        "index": 298,
+        "score": 0.7329324731287492,
+        "label": true,
+        "predicted": true,
+        "window_id": "hdfs_session_blk_4479034282221691265",
+        "record_count": 4,
+        "template_count": 4,
+        "unique_templates": [
+          1,
+          2
+        ]
+      }
+    ]
+  },
+  "oracle_diagnostic": {
+    "is_oracle": true,
+    "diagnostic_only": true,
+    "threshold": 0.5610853461048544,
+    "f1": 0.7037037037037037,
+    "precision": 0.76,
+    "recall": 0.6551724137931034,
+    "note": "Supervised oracle calibration threshold for theoretical upper bound diagnosis only."
+  },
+  "train_score_distribution": {
+    "min": 0.4353720988817087,
+    "max": 0.7959016804480767,
+    "mean": 0.4575689887231831,
+    "std": 0.061920267741603655,
+    "p50": 0.4353720988817087,
+    "p95": 0.5610853461048544
+  },
+  "timing": {
+    "train_fit_seconds": 0.08922759999950358,
+    "calibration_scoring_seconds": 0.007267599999977392,
+    "total_seconds": 0.12391240000033577
+  }
+}

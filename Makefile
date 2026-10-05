@@ -20,3 +20,6 @@ lint:
 
 pipeline:
 	$(PYTHON) -m sentinellog.ingestion.pipeline --config configs/data_pipeline.yaml
+
+baselines:
+	$(PYTHON) -m sentinellog.scoring.baselines --config configs/baselines.yaml

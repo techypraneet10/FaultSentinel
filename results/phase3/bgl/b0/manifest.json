@@ -1,0 +1,31 @@
+{
+  "experiment": "bgl_b0",
+  "dataset": "bgl",
+  "baseline": "B0_Frequency",
+  "seed": 42,
+  "data_manifest_hash": "757b21d66d22fa202a3e04400a481e35713e0ac2f64abdd4a0db23a88122cacd",
+  "processing_version": "0.3.0-phase3",
+  "git_commit": "e1dd29ea565d2ccd50f7c1fcd7a415759289ce81",
+  "timestamp_utc": "2026-10-05T15:04:30.053850+00:00",
+  "feature_config": {
+    "mode": "normalized_count"
+  },
+  "model_config": {
+    "baseline": "B0",
+    "name": "FrequencyScorer",
+    "alpha": 1.0,
+    "total_tokens_train": 30000,
+    "vocabulary_size": 20,
+    "known_templates_count": 19,
+    "unknown_log_probability": -10.309619105187453,
+    "score_direction": "higher_is_more_anomalous"
+  },
+  "threshold_config": {
+    "strategy": "calibration_quantile",
+    "quantile": 0.95
+  },
+  "threshold": 8.113997967061437,
+  "train_windows": 300,
+  "calibration_windows": 100,
+  "test_used": false
+}

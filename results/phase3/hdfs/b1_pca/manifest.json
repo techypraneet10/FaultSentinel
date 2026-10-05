@@ -1,0 +1,37 @@
+{
+  "experiment": "hdfs_b1_pca",
+  "dataset": "hdfs",
+  "baseline": "B1_PCA",
+  "seed": 42,
+  "data_manifest_hash": "d4519a88030f765a7116ca555c14f3ed78cc5d6a2ee3282e83a57c5fed5103e9",
+  "processing_version": "0.3.0-phase3",
+  "git_commit": "e1dd29ea565d2ccd50f7c1fcd7a415759289ce81",
+  "timestamp_utc": "2026-10-05T15:04:29.798474+00:00",
+  "feature_config": {
+    "mode": "normalized_count"
+  },
+  "model_config": {
+    "baseline": "B1_PCA",
+    "name": "PCAScorer",
+    "feature_mode": "normalized_count",
+    "n_features": 17,
+    "k_components": 3,
+    "target_variance_ratio": 0.95,
+    "explained_variance_ratio": [
+      0.4325966242640916,
+      0.30105116230035933,
+      0.22750490261946846
+    ],
+    "cumulative_explained_variance": 0.9611526891839194,
+    "random_state": 42,
+    "score_direction": "higher_is_more_anomalous"
+  },
+  "threshold_config": {
+    "strategy": "calibration_quantile",
+    "quantile": 0.95
+  },
+  "threshold": 2.8066576103089844e-09,
+  "train_windows": 2450,
+  "calibration_windows": 814,
+  "test_used": false
+}
