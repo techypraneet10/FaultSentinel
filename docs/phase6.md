@@ -143,7 +143,7 @@ Phase 6 was evaluated across the escalated windows of the CALIBRATION partition 
 | 0.50 | 0.9239 | 0.9184 | 0.0240 | 0.3227 |
 | 0.00 (Pure Diversity) | 0.9239 | 0.9184 | 0.0240 | 0.3227 |
 
-*Finding*: On BGL, introducing even a mild diversity penalty ($\lambda = 0.85$ or $0.70$) drastically breaks candidate collinearity (pairwise similarity collapses from $0.9804$ to $0.3227$). On HDFS, high structural repetition across block lifecycle templates keeps pairwise similarity high, but MMR still systematically bypasses identical candidate chunks.
+*Finding*: On BGL, introducing even a mild diversity penalty ($\lambda = 0.85$ or $0.70$) drastically breaks candidate vector-space redundancy (pairwise similarity collapses from $0.9804$ to $0.3227$). At $\lambda=1.00$, the 3 selected chunks are `['8bdd5020', '5e100dd8', 'a88b671e']` with pairwise similarity $0.9804$. At $\lambda=0.85$, chunk `'003080c3'` (orthogonal with penalty $0.0$) replaces the redundant `'a88b671e'`. At $\lambda \le 0.70$, the higher diversity penalty drives MMR to select `'a88b671e'` over `'5e100dd8'`, achieving the minimum pairwise similarity of $0.3227$. On HDFS, high structural repetition across block lifecycle templates keeps pairwise similarity high, but MMR still systematically penalizes identical candidate chunks.
 
 #### Ablation C: Evidence Budget Compression
 | Budget ($k$) | HDFS Compression | HDFS Relevance | HDFS Pairwise Sim | BGL Compression | BGL Relevance | BGL Pairwise Sim |
@@ -156,16 +156,23 @@ Phase 6 was evaluated across the escalated windows of the CALIBRATION partition 
 
 ## 6. Determinism & Verification
 
-- Repeated runs produce bitwise-identical `evidence_selection.jsonl` files (SHA-256: `c634b7688b2a507c9bee3a2533f91e6b00aa5c7a76e0f9086d08fc85eceef9e6`).
+- Repeated execution of the Phase 6 pipeline produces bitwise-identical `evidence_selection.jsonl` files:
+  - HDFS `evidence_selection.jsonl`: `c634b7688b2a507c9bee3a2533f91e6b00aa5c7a76e0f9086d08fc85eceef9e6`
+  - BGL `evidence_selection.jsonl`: `200e9a3f34e59e9dfdb1d8e910666bae8ae20b82a8e827a2c9d55de451fbcdc2`
+- Diagnostic metrics content hash (excluding runtime timing) is completely invariant across runs:
+  - HDFS `reranking_diagnostics.json` content hash: `e66500a28b24419d29420dc6d86044fe1d31b298b7f39c69bb23f8429b3a0a07`
+  - BGL `reranking_diagnostics.json` content hash: `50f30c5470009382140384f41475ab10e4958ed34f9370bb287a392acdb66bdb`
 - Full test suite: **111 tests passing** across the entire SentinelLog codebase.
 - Code compilation (`compileall`): Clean across `sentinellog`, `tests`, and `scripts`.
+- Rule 1 test set protection verified: `test_used: false` recorded across all manifests.
+- Unsupervised calibration protection verified: `calibration_used_for_fitting: false` recorded across all manifests.
 
 ---
 
 ## 7. Research Limitations
 
-1. **Heuristic Diversity**: MMR is a greedy heuristic that balances vector cosine distance; it does not guarantee contextual sufficiency for an arbitrary incident.
+1. **Heuristic Vector Diversity**: MMR is a greedy heuristic that balances vector cosine distance; structural diversity in vector space does not guarantee contextual sufficiency for an arbitrary incident.
 2. **Template Representation**: TF-IDF embeddings capture template token occurrences but lack deep semantic understanding of parameter variables.
-3. **Collinearity in Log Datasets**: Standard system log datasets (especially HDFS block sessions) exhibit massive structural repetition; redundancy reduction is bounded by corpus variety.
+3. **Repetition in Log Datasets**: Standard system log datasets (especially HDFS block sessions) exhibit massive structural repetition; redundancy reduction is bounded by corpus variety.
 4. **No LLM Quality Guarantee**: Decreasing vector redundancy has not yet been evaluated on actual LLM generation or hallucination rates (deferred to later phases).
 5. **Not an Anomaly Detector**: Phase 6 evidence reranking does not alter the anomaly detection metrics or false-alarm rates established by Phase 4.
