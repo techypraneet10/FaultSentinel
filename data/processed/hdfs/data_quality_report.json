@@ -1,0 +1,43 @@
+{
+  "dataset_name": "hdfs",
+  "generated_at": "2026-10-05T14:43:51.271293+00:00",
+  "source_file_count": 2,
+  "raw_bytes": 1577982906,
+  "raw_sha256": "0783096174d7832c618337f9609e06e04abd86ddd7089b3c12b407e63bfebc52",
+  "total_raw_records": 0,
+  "successfully_parsed_records": 50000,
+  "unknown_template_records": 0,
+  "unique_template_count": 16,
+  "total_windows": 4087,
+  "train_windows": 2450,
+  "calibration_windows": 814,
+  "test_windows": 823,
+  "anomalous_windows": 123,
+  "normal_windows": 3964,
+  "missing_timestamps_count": 0,
+  "duplicate_window_ids_count": 0,
+  "leakage_check_passed": true,
+  "details": {
+    "split_summary": {
+      "train": {
+        "total_windows": 2450,
+        "anomalous_windows": 64,
+        "normal_windows": 2386
+      },
+      "calibration": {
+        "total_windows": 814,
+        "anomalous_windows": 29,
+        "normal_windows": 785
+      },
+      "test": {
+        "total_windows": 823,
+        "anomalous_windows": 30,
+        "normal_windows": 793
+      }
+    },
+    "max_records_applied": 50000,
+    "label_file_sha256": "1c711ed6c8848fc3243fb4d092f172f31d128c8a6ec7f26ebba72ab931885ed8",
+    "vocabulary_frozen_on_train": true,
+    "train_unique_templates": 16
+  }
+}

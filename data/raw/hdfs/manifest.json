@@ -1,0 +1,26 @@
+{
+  "dataset": "hdfs",
+  "source": "Loghub Zenodo 8196385 (HDFS_v1.zip)",
+  "source_url": "https://zenodo.org/records/8196385/files/HDFS_v1.zip?download=1",
+  "acquisition_timestamp": "2026-10-05T14:31:01.726294+00:00",
+  "files": {
+    "HDFS.log": {
+      "filename": "HDFS.log",
+      "path": "D:\\FaultSentinel\\data\\raw\\hdfs\\HDFS.log",
+      "size_bytes": 1577982906,
+      "sha256": "0783096174d7832c618337f9609e06e04abd86ddd7089b3c12b407e63bfebc52"
+    },
+    "anomaly_label.csv": {
+      "filename": "anomaly_label.csv",
+      "path": "D:\\FaultSentinel\\data\\raw\\hdfs\\anomaly_label.csv",
+      "size_bytes": 18637554,
+      "sha256": "1c711ed6c8848fc3243fb4d092f172f31d128c8a6ec7f26ebba72ab931885ed8"
+    },
+    "HDFS_v1.zip": {
+      "filename": "HDFS_v1.zip",
+      "path": "D:\\FaultSentinel\\data\\raw\\hdfs\\HDFS_v1.zip",
+      "size_bytes": 186645559,
+      "sha256": "04f919f2185821f23f045dca611a7586429bdabc601bd7b43f30005f8e289b01"
+    }
+  }
+}

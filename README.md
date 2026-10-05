@@ -13,10 +13,12 @@ SentinelLog investigates a cost-aware, reliability-calibrated cascade for automa
 
 ## Current Status
 
-**STATUS: Phase 1 — Repository Foundation & Environment Scaffold.**
+**STATUS: Phase 2 — Data Pipeline, Versioning & Leakage-Safe Dataset Construction.**
 
 > [!NOTE]
-> No model training, evaluation, benchmark scoring, or production service has been executed yet. All components exist strictly as verified architectural scaffolding at this stage.
+> Phase 2 data ingestion, Drain3 log parsing, session/fixed windowing, and leakage-safe chronological partitioning are complete.
+> The test partitions (`data/processed/*/test.jsonl`) are strictly **FROZEN** and will not be accessed until Phase 7.
+> No anomaly detection models (Phase 3) or calibrations (Phase 4) have been implemented yet.
 
 ## Development Principles
 
@@ -46,8 +48,17 @@ pip install -r requirements.txt
 pytest
 ```
 
+### Run Data Ingestion Pipeline
+```powershell
+# Acquire official Loghub datasets (HDFS & BGL)
+python scripts/acquire_data.py --dataset all
+
+# Execute Drain3 parsing, windowing, and chronological splitting
+python -m sentinellog.ingestion.pipeline --config configs/data_pipeline.yaml
+```
+
 ### Lint / Static Validation
 ```powershell
-python -m py_compile sentinellog\__init__.py
+python -m compileall -q sentinellog tests scripts
 ```
-*(Or run `make setup`, `make test`, `make lint` on platforms where Make is installed.)*
+*(Or run `make setup`, `make test`, `make lint`, `make pipeline` on platforms where Make is installed.)*

@@ -45,14 +45,24 @@ build/
 dist/
 *.egg-info/
 
-# Data: Ignore raw downloaded log files and large binary/archive files
-# but allow directories, .gitkeep, and metadata/manifests to be tracked
-data/raw/*
-!data/raw/.gitkeep
-!data/raw/MANIFEST.md
-data/processed/*
-!data/processed/.gitkeep
-!data/processed/MANIFEST.md
+# Data: Ignore raw downloaded log files and large binary/archive/processed artifacts
+# but allow directories, .gitkeep, metadata, manifests, and reports to be tracked
+data/raw/*/*.log
+data/raw/*/*.zip
+data/raw/*/*.tar.gz
+data/raw/*/*.csv
+data/raw/**/*.log
+data/raw/**/*.zip
+data/raw/**/*.tar.gz
+data/raw/**/*.csv
+data/processed/*/*.jsonl
+data/processed/*/*.parquet
+data/processed/**/*.jsonl
+data/processed/**/*.parquet
+!data/**/.gitkeep
+!data/**/manifest.json
+!data/**/data_quality_report.json
+!data/**/MANIFEST.md
 
 # Experiment artifacts and checkpoints (not code/configs)
 results/*

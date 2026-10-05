@@ -1,0 +1,39 @@
+# SentinelLog Phase 2 Data Pipeline Configuration
+version: "0.2.0-phase2"
+
+# Datasets to process
+datasets:
+  - hdfs
+  - bgl
+
+# Directory roots
+raw_dir: "data/raw"
+processed_dir: "data/processed"
+
+# Automatic download of official Loghub archives if not found locally
+auto_download: true
+
+# Drain3 Template Mining Configuration
+parser:
+  sim_th: 0.5
+  depth: 4
+  max_children: 100
+
+# Windowing parameters
+windowing:
+  hdfs_mode: "session"       # Grouped by block ID
+  bgl_window_size: 100       # Fixed-size sequential windows
+  min_window_size: 1
+
+# Chronological partition ratios (must sum to 1.0)
+split:
+  train_ratio: 0.60
+  calib_ratio: 0.20
+  test_ratio: 0.20
+
+# Deterministic subsampling (set null/omit to run full dataset)
+# Full datasets: HDFS has ~11M lines, BGL has ~4.7M lines.
+# Default to 50,000 sequential records for deterministic, fast development execution.
+subsample:
+  hdfs_max_records: 50000
+  bgl_max_records: 50000

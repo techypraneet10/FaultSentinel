@@ -1,0 +1,41 @@
+{
+  "dataset_name": "bgl",
+  "generated_at": "2026-10-05T14:43:55.574545+00:00",
+  "source_file_count": 1,
+  "raw_bytes": 743185031,
+  "raw_sha256": "666130b15ef44eb32fd02bd053e6c6e007c37696b5e7e8b9d8e45b729876a5d2",
+  "total_raw_records": 0,
+  "successfully_parsed_records": 49483,
+  "unknown_template_records": 517,
+  "unique_template_count": 19,
+  "total_windows": 500,
+  "train_windows": 300,
+  "calibration_windows": 100,
+  "test_windows": 100,
+  "anomalous_windows": 154,
+  "normal_windows": 346,
+  "missing_timestamps_count": 0,
+  "duplicate_window_ids_count": 0,
+  "leakage_check_passed": true,
+  "details": {
+    "split_summary": {
+      "train": {
+        "total_windows": 300,
+        "anomalous_windows": 118,
+        "normal_windows": 182
+      },
+      "calibration": {
+        "total_windows": 100,
+        "anomalous_windows": 36,
+        "normal_windows": 64
+      },
+      "test": {
+        "total_windows": 100,
+        "anomalous_windows": 0,
+        "normal_windows": 100
+      }
+    },
+    "window_size": 100,
+    "max_records_applied": 50000
+  }
+}

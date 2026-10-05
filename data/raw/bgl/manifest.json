@@ -1,0 +1,20 @@
+{
+  "dataset": "bgl",
+  "source": "Loghub Zenodo 8196385 (BGL.zip)",
+  "source_url": "https://zenodo.org/records/8196385/files/BGL.zip?download=1",
+  "acquisition_timestamp": "2026-10-05T14:32:04.103237+00:00",
+  "files": {
+    "BGL.log": {
+      "filename": "BGL.log",
+      "path": "D:\\FaultSentinel\\data\\raw\\bgl\\BGL.log",
+      "size_bytes": 743185031,
+      "sha256": "666130b15ef44eb32fd02bd053e6c6e007c37696b5e7e8b9d8e45b729876a5d2"
+    },
+    "BGL.zip": {
+      "filename": "BGL.zip",
+      "path": "D:\\FaultSentinel\\data\\raw\\bgl\\BGL.zip",
+      "size_bytes": 57489019,
+      "sha256": "d67fd82a711aea0157a9b83175892c6ee60e384a2ddf5bc51f39118453816da8"
+    }
+  }
+}

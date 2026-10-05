@@ -1,0 +1,26 @@
+{
+  "dataset_name": "hdfs",
+  "source_url": "https://zenodo.org/records/8196385/files/HDFS_v1.zip?download=1",
+  "acquisition_timestamp": "2026-10-05T14:43:51.314125+00:00",
+  "raw_filename": "HDFS.log",
+  "raw_file_size_bytes": 1577982906,
+  "raw_sha256": "0783096174d7832c618337f9609e06e04abd86ddd7089b3c12b407e63bfebc52",
+  "pipeline_version": "0.2.1-phase2-freeze",
+  "parser_config_version": "drain3-v1-sim0.5-depth4-frozen",
+  "windowing_config": {
+    "type": "session",
+    "key": "block_id"
+  },
+  "split_config": {
+    "train_ratio": 0.6,
+    "calib_ratio": 0.2,
+    "test_ratio": 0.2
+  },
+  "counts": {
+    "total_windows": 4087,
+    "train": 2450,
+    "calibration": 814,
+    "test": 823
+  },
+  "notes": "HDFS session-based windowing with train-only vocabulary fitting and frozen calib/test matching."
+}

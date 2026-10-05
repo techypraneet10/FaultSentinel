@@ -1,0 +1,26 @@
+{
+  "dataset_name": "bgl",
+  "source_url": "https://zenodo.org/records/8196385/files/BGL.zip?download=1",
+  "acquisition_timestamp": "2026-10-05T14:43:55.575540+00:00",
+  "raw_filename": "BGL.log",
+  "raw_file_size_bytes": 743185031,
+  "raw_sha256": "666130b15ef44eb32fd02bd053e6c6e007c37696b5e7e8b9d8e45b729876a5d2",
+  "pipeline_version": "0.2.0-phase2",
+  "parser_config_version": "drain3-v1-sim0.5-depth4",
+  "windowing_config": {
+    "type": "fixed",
+    "window_size": 100
+  },
+  "split_config": {
+    "train_ratio": 0.6,
+    "calib_ratio": 0.2,
+    "test_ratio": 0.2
+  },
+  "counts": {
+    "total_windows": 500,
+    "train": 300,
+    "calibration": 100,
+    "test": 100
+  },
+  "notes": "BGL fixed-size windowing (W=100) with chronological 60/20/20 partition."
+}
