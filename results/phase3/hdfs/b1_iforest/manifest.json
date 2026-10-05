@@ -5,8 +5,8 @@
   "seed": 42,
   "data_manifest_hash": "d4519a88030f765a7116ca555c14f3ed78cc5d6a2ee3282e83a57c5fed5103e9",
   "processing_version": "0.3.0-phase3",
-  "git_commit": "e1dd29ea565d2ccd50f7c1fcd7a415759289ce81",
-  "timestamp_utc": "2026-10-05T15:04:29.958889+00:00",
+  "git_commit": "6bb622725100f28be3f77ef7dbd96e4f32c09851",
+  "timestamp_utc": "2026-10-05T15:09:45.504004+00:00",
   "feature_config": {
     "mode": "normalized_count"
   },
