@@ -4,10 +4,53 @@
 SentinelLog — Calibrated Selective Prediction for LLM-Assisted Incident Triage over System Logs
 
 ## Current Phase
-Phase 7 — Citation & Provenance Engine
+Phase 8 — Deterministic Incident Reasoning Engine
 
 ## Status
-COMPLETE (Phase 7 citation and provenance engine verified, tested, and committed; awaiting human authorization to proceed to Phase 8)
+COMPLETE (Phase 8 deterministic incident reasoning engine verified, tested, and committed; awaiting human authorization to proceed to Phase 9)
+
+## Completed (Phase 8)
+- [x] Dedicated reasoning package created (`sentinellog/reasoning/`).
+- [x] Typed deterministic schemas: `IncidentAssessment`, `IncidentSignal`, `IncidentRule`, `EvidenceContribution`, `ReasoningTrace`, `ReasoningResult`, `ReasoningSummary` (`sentinellog/reasoning/schemas.py`).
+- [x] Four-tier decision taxonomy: `NORMAL`, `SUSPICIOUS`, `INCIDENT`, `INSUFFICIENT_EVIDENCE`.
+- [x] Four-tier severity taxonomy: `LOW`, `MEDIUM`, `HIGH`, `CRITICAL`.
+- [x] Deterministic signal extraction: Anomaly score strength, baseline agreement, sequential-model agreement, escalation state, evidence count/relevance/diversity, repetition density, unknown template presence, temporal concentration, provenance validity, evidence sufficiency (`sentinellog/reasoning/signals.py`).
+- [x] Evidence contribution classification: `SUPPORTING`, `CONTEXTUAL`, `CONTRADICTING`, `INSUFFICIENT` (`sentinellog/reasoning/aggregation.py`).
+- [x] Explicit conflict detection (`CONF-001`, `CONF-002`, `CONF-003`) and signal agreement computation.
+- [x] Strict provenance gate: verified Phase 7 dual-hashes required before reasoning; fails closed to `provenance_invalid` without silent fallback (`sentinellog/reasoning/validation.py`).
+- [x] Deterministic rule engine with documented 7-tier priority precedence (`sentinellog/reasoning/rules.py`).
+- [x] Deterministic reasoning confidence / support strength calculation with conflict and insufficiency penalties (`sentinellog/reasoning/confidence.py`).
+- [x] Centralized, hashed configuration (`configs/phase8.yaml`).
+- [x] Deterministic ablations implemented: single strongest signal (A), relevance only (B), conflict ignored (C), sufficiency disabled (D).
+- [x] Phase 8 standalone CLI runner and report generator (`sentinellog/reasoning/phase8_runner.py`).
+- [x] Generated reproducible Phase 8 artifacts in `results/phase8/` (HDFS: 39 assessments, BGL: 2 assessments; 100% bitwise deterministic).
+- [x] Comprehensive test suite with 35 new tests (`tests/test_reasoning.py`).
+- [x] Full test suite passing (167/167 tests passing in ~20s) with clean compilation (`python -m compileall`).
+- [x] Comprehensive Phase 8 documentation (`docs/phase8.md`).
+
+## Not Completed
+- Phase 9 — LLM-Assisted Explanation Generation & Operator Briefing
+- Phase 10 — Production Service, API Serving & Deployment
+
+## Test Set
+LOCKED (Rule 1)
+
+## Test-set Access
+FORBIDDEN until frozen evaluation phase.
+(All Phase 8 models, tokenizers, corpus construction, selective retrieval/reranking, provenance evaluations, and reasoning assessments were conducted exclusively on TRAIN and CALIBRATION. `test_used: false` verified across all manifests.)
+
+## Last Validation
+- Date: 2026-10-06
+- Pytest: 167 passed in 19.76s (0 failed, 0 warnings across all 9 test modules)
+- Syntax/Bytecode check: `python -m compileall sentinellog tests` (Clean, exit code 0)
+- Reasoning Diagnostics (CALIBRATION split):
+  - HDFS: 39 assessments (`INCIDENT`: 33, `SUSPICIOUS`: 6; `HIGH`: 27, `CRITICAL`: 6, `LOW`: 6; 100.0% verified provenance)
+  - BGL: 2 assessments (`INSUFFICIENT_EVIDENCE`: 2; `LOW`: 2; 100.0% verified provenance, 100.0% conflict rate flagging uncorroborated rare anomaly)
+- Determinism Check: Running Phase 8 pipeline yields bit-for-bit identical SHA-256 artifact hashes across all 8 output files.
+- Rule 1 Test Guard: Programmatically verified via `guard_no_test_split` regression tests.
+
+## Next Authorized Phase
+Phase 9 — LLM-Assisted Explanation Generation & Operator Briefing (PENDING HUMAN APPROVAL)
 
 ## Completed (Phase 1)
 - [x] Repository inspection

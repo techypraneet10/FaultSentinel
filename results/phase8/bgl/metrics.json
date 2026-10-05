@@ -1,0 +1,27 @@
+{
+  "dataset": "bgl",
+  "split": "calibration",
+  "engine_version": "0.8.0",
+  "configuration_hash": "57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea",
+  "total_assessed": 2,
+  "decision_distribution": {
+    "INSUFFICIENT_EVIDENCE": 2
+  },
+  "severity_distribution": {
+    "LOW": 2
+  },
+  "sufficiency_distribution": {
+    "INSUFFICIENT": 2
+  },
+  "provenance_status_distribution": {
+    "VERIFIED": 2
+  },
+  "conflict_count": 4,
+  "conflict_rate": 1.0,
+  "average_evidence_count": 3.0,
+  "average_evidence_relevance": 0.024,
+  "average_confidence": 0.05,
+  "rule_firing_frequencies": {
+    "RULE-SUFF-001": 2
+  }
+}

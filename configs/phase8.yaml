@@ -1,0 +1,50 @@
+# SentinelLog Phase 8: Deterministic Incident Reasoning Engine Configuration
+
+engine:
+  version: "0.8.0"
+  random_seed: 42
+
+provenance_gate:
+  strict: true
+  require_all_verified: true
+  allowed_splits:
+    - "calibration"
+    - "train"
+
+signal_thresholds:
+  anomaly_high: 1.20
+  anomaly_medium: 0.50
+  relevance_high: 0.70
+  relevance_medium: 0.40
+  diversity_min: 0.30
+  agreement_threshold: 0.25
+
+evidence_sufficiency:
+  min_evidence_count: 1
+  min_sufficient_evidence_count: 2
+  min_mean_relevance: 0.50
+  min_diversity: 0.20
+
+contributions:
+  supporting_relevance_threshold: 0.70
+  contextual_relevance_threshold: 0.40
+  max_redundancy_penalty: 0.60
+
+severity_rules:
+  critical_anomaly_threshold: 2.50
+  high_relevance_threshold: 0.80
+
+confidence:
+  weights:
+    signal_agreement: 0.30
+    evidence_relevance: 0.30
+    evidence_diversity: 0.20
+    provenance_validity: 0.20
+  conflict_penalty: 0.25
+  insufficient_penalty: 0.40
+
+paths:
+  phase6_dir: "results/phase6"
+  phase7_dir: "results/phase7"
+  output_dir: "results/phase8"
+  data_root: "data/processed"

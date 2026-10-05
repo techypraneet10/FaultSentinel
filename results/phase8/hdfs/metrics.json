@@ -1,0 +1,31 @@
+{
+  "dataset": "hdfs",
+  "split": "calibration",
+  "engine_version": "0.8.0",
+  "configuration_hash": "57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea",
+  "total_assessed": 39,
+  "decision_distribution": {
+    "INCIDENT": 33,
+    "SUSPICIOUS": 6
+  },
+  "severity_distribution": {
+    "HIGH": 27,
+    "CRITICAL": 6,
+    "LOW": 6
+  },
+  "sufficiency_distribution": {
+    "SUFFICIENT": 39
+  },
+  "provenance_status_distribution": {
+    "VERIFIED": 39
+  },
+  "conflict_count": 0,
+  "conflict_rate": 0.0,
+  "average_evidence_count": 3.0,
+  "average_evidence_relevance": 0.9239,
+  "average_confidence": 0.9043,
+  "rule_firing_frequencies": {
+    "RULE-INC-001": 33,
+    "RULE-SUSP-001": 6
+  }
+}

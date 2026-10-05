@@ -1,0 +1,25 @@
+{
+  "dataset": "bgl",
+  "split": "calibration",
+  "engine_version": "0.8.0",
+  "configuration_hash": "57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea",
+  "git_commit": "b65ec6bda58e0e8f947582c6faf85660f384da83",
+  "phase6_commit": "523a32da041de59e78610567edb7374370c66433",
+  "phase7_commit": "d082815e6c301c3576dda813d0e5e8e4347e540e",
+  "total_windows_assessed": 2,
+  "test_used": false,
+  "calibration_used_for_fitting": false,
+  "input_artifact_hashes": {
+    "results/phase7/bgl/citations.jsonl": "29124ad3609c41682430115481a36b282ed06630cd5e3b68c3005862f7750fd1",
+    "results/phase6/bgl/evidence_selection.jsonl": "200e9a3f34e59e9dfdb1d8e910666bae8ae20b82a8e827a2c9d55de451fbcdc2",
+    "data/processed/bgl/train.jsonl": "d21c41ca02daa15416c88ee22e54c5a1b793710064c381e3bf60d62dfc008d94",
+    "data/processed/bgl/calibration.jsonl": "f08c001f4e83b221c0b692eac6d5feb23ef0b144bd05edef716dd0bd931089c0"
+  },
+  "artifact_hashes": {
+    "assessments.jsonl": "314d1a6dafe64688df40b0c3757d73dc766b81e0733a27e793c8a1f05eff0208",
+    "reasoning_traces.jsonl": "261d7a61dd1a3ffa9d26deb2180e37cfae7908eaba6ce5bfaecd236e11d6b9b2",
+    "evidence_contributions.jsonl": "f77cdde50ac8183b26bcf0220e42be353a643768a7b3c0b2a2b3ffbd226ffaf5",
+    "metrics.json": "2c0380e5a5a89ab283bb56d82810b150fb1ec0d7afe758b43e0d573d1274d064"
+  },
+  "timestamp": "2026-10-05T19:15:20.637213+00:00"
+}

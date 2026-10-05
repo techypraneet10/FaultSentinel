@@ -1,0 +1,51 @@
+# Phase 8 Summary Report: Deterministic Incident Reasoning Engine
+
+- **Execution Timestamp**: 2026-10-05T19:15:20.251163+00:00
+- **Git Commit**: `b65ec6bda58e0e8f947582c6faf85660f384da83`
+- **Configuration Hash**: `57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea`
+- **Rule 1 Enforced (Test Used)**: `False`
+
+## Dataset: HDFS
+
+- **Total Windows Assessed**: 39
+- **Decision Distribution**: `{'INCIDENT': 33, 'SUSPICIOUS': 6}`
+- **Severity Distribution**: `{'HIGH': 27, 'CRITICAL': 6, 'LOW': 6}`
+- **Sufficiency Distribution**: `{'SUFFICIENT': 39}`
+- **Provenance Status Distribution**: `{'VERIFIED': 39}`
+- **Conflict Rate**: 0.0%
+- **Average Evidence Count**: 3.00
+- **Average Evidence Relevance**: 0.9239
+- **Average Confidence (Support Strength)**: 0.9043
+- **Rule Firing Frequencies**: `{'RULE-INC-001': 33, 'RULE-SUSP-001': 6}`
+
+### Ablation Sensitivity Diagnostics
+
+- **single_strongest_signal**: Decisions={'INCIDENT': 33, 'SUSPICIOUS': 6}, Severities={'HIGH': 27, 'CRITICAL': 6, 'LOW': 6}, AvgConf=0.9043
+- **relevance_only**: Decisions={'INCIDENT': 33, 'SUSPICIOUS': 6}, Severities={'HIGH': 27, 'CRITICAL': 6, 'LOW': 6}, AvgConf=0.9043
+- **conflict_ignored**: Decisions={'INCIDENT': 33, 'SUSPICIOUS': 6}, Severities={'HIGH': 27, 'CRITICAL': 6, 'LOW': 6}, AvgConf=0.9043
+- **sufficiency_disabled**: Decisions={'INCIDENT': 33, 'SUSPICIOUS': 6}, Severities={'HIGH': 27, 'CRITICAL': 6, 'LOW': 6}, AvgConf=0.9043
+
+---
+
+## Dataset: BGL
+
+- **Total Windows Assessed**: 2
+- **Decision Distribution**: `{'INSUFFICIENT_EVIDENCE': 2}`
+- **Severity Distribution**: `{'LOW': 2}`
+- **Sufficiency Distribution**: `{'INSUFFICIENT': 2}`
+- **Provenance Status Distribution**: `{'VERIFIED': 2}`
+- **Conflict Rate**: 100.0%
+- **Average Evidence Count**: 3.00
+- **Average Evidence Relevance**: 0.0240
+- **Average Confidence (Support Strength)**: 0.0500
+- **Rule Firing Frequencies**: `{'RULE-SUFF-001': 2}`
+
+### Ablation Sensitivity Diagnostics
+
+- **single_strongest_signal**: Decisions={'INSUFFICIENT_EVIDENCE': 2}, Severities={'LOW': 2}, AvgConf=0.0500
+- **relevance_only**: Decisions={'INSUFFICIENT_EVIDENCE': 2}, Severities={'LOW': 2}, AvgConf=0.0500
+- **conflict_ignored**: Decisions={'INSUFFICIENT_EVIDENCE': 2}, Severities={'LOW': 2}, AvgConf=0.2873
+- **sufficiency_disabled**: Decisions={'SUSPICIOUS': 2}, Severities={'MEDIUM': 2}, AvgConf=0.3173
+
+---
+
