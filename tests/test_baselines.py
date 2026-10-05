@@ -131,6 +131,16 @@ def test_b0_training_uses_train_only(synthetic_windows):
     assert UNKNOWN_TEMPLATE_ID in scorer.log_probabilities_
 
 
+def test_b0_smoothing_probabilities_sum_to_one(synthetic_windows):
+    """Test that smoothed probabilities over all categorical support bins sum to 1.0."""
+    train_w, _ = synthetic_windows
+    scorer = FrequencyScorer(alpha=1.0).fit(train_w)
+
+    probs = [np.exp(log_p) for log_p in scorer.log_probabilities_.values()]
+    total_prob = sum(probs)
+    np.testing.assert_almost_equal(total_prob, 1.0, decimal=10)
+
+
 def test_b0_frequency_calculation_deterministic(synthetic_windows):
     """Test that B0 frequency calculations produce identical values across calls."""
     train_w, calib_w = synthetic_windows

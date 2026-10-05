@@ -18,15 +18,19 @@ All models are trained strictly without labels on **TRAIN**, evaluated for thres
 
 ### 1.1 B0 — Simple Frequency/Rarity Baseline
 
-Let $\mathcal{V}_{train}$ be the set of template identifiers mined from the training split, plus an explicit bin for unknown/unseen templates $\text{UNKNOWN} = -1$.
+Let $\mathcal{V}_{train}^{known}$ be the set of distinct template identifiers mined from the training split (excluding UNKNOWN). The total support of the categorical event distribution has cardinality $K = |\mathcal{V}_{train}^{known}| + 1$, where the $+1$ accounts for the explicit unmapped/unknown template bin $\text{UNKNOWN} = -1$.
 
 Let $C_{train}(t)$ denote the total occurrences of template $t$ in the training windows, and $N_{train} = \sum_{t} C_{train}(t)$ be the total token count. Using Laplace smoothing with parameter $\alpha > 0$ (default $\alpha = 1.0$):
 
-$$P_{train}(t) = \frac{C_{train}(t) + \alpha}{N_{train} + \alpha (|\mathcal{V}_{train}| + 1)}$$
+$$P_{train}(t) = \frac{C_{train}(t) + \alpha}{N_{train} + \alpha K} = \frac{C_{train}(t) + \alpha}{N_{train} + \alpha (|\mathcal{V}_{train}^{known}| + 1)}$$
 
-For any template $t \notin \mathcal{V}_{train}$ (or $t = -1$), it maps to the $\text{UNKNOWN}$ bin:
+For any template $t \notin \mathcal{V}_{train}^{known}$ (or $t = -1$), it maps to the $\text{UNKNOWN}$ bin:
 
-$$P_{train}(\text{UNKNOWN}) = \frac{C_{train}(-1) + \alpha}{N_{train} + \alpha (|\mathcal{V}_{train}| + 1)}$$
+$$P_{train}(\text{UNKNOWN}) = \frac{C_{train}(-1) + \alpha}{N_{train} + \alpha K}$$
+
+This guarantees proper normalization:
+
+$$\sum_{t \in \mathcal{V}_{train}^{known} \cup \{-1\}} P_{train}(t) = 1.0$$
 
 The rarity (surprisal) of an individual template event is its negative log-probability:
 

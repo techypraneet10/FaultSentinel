@@ -15,11 +15,15 @@ class FrequencyScorer:
     """Unsupervised frequency baseline (B0) based on template rarity.
 
     Mathematical Formulation:
-        Let V_train be the set of distinct templates observed in TRAIN, plus UNKNOWN (-1).
-        Let C_train(t) be the total token count of template t in TRAIN.
+        Let V_train_known be the set of distinct known templates observed in TRAIN (excluding UNKNOWN).
+        Let K = |V_train_known| + 1 be the total categorical bins including UNKNOWN (-1).
+        Let C_train(t) be the token count of template t in TRAIN (0 for unseen/UNKNOWN if not in TRAIN).
         Let N_train = sum_t C_train(t) be total tokens in TRAIN.
         With additive smoothing parameter alpha > 0:
-            P_train(t) = (C_train(t) + alpha) / (N_train + alpha * (|V_train| + 1))
+            Denominator = N_train + alpha * K = N_train + alpha * (|V_train_known| + 1)
+            P_train(t) = (C_train(t) + alpha) / Denominator
+
+        This guarantees sum_{t in V_train_known U {-1}} P_train(t) = 1.0.
 
         For a window W = (t_1, t_2, ..., t_L) with L = record_count:
             rarity(t_i) = -log P_train(t_i)
