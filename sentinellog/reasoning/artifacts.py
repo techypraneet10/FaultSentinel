@@ -10,7 +10,6 @@ Serializes deterministic Phase 8 reasoning outputs:
 Computes SHA-256 fingerprints across all output files and enforces Rule 1 invariants.
 """
 
-from datetime import datetime, timezone
 import json
 import os
 from typing import Any, Dict, List, Optional, Sequence
@@ -60,7 +59,7 @@ def save_reasoning_artifacts(
     assessments_path = os.path.join(ds_dir, "assessments.jsonl")
     with open(assessments_path, "w", encoding="utf-8") as f:
         for r in results:
-            f.write(json.dumps(r.assessment.to_dict()) + "\n")
+            f.write(json.dumps(r.assessment.to_dict(), sort_keys=True) + "\n")
 
     # 2. reasoning_traces.jsonl
     traces_path = os.path.join(ds_dir, "reasoning_traces.jsonl")
@@ -72,7 +71,7 @@ def save_reasoning_artifacts(
                 "split": r.assessment.split,
                 "trace": r.assessment.reasoning_trace.to_dict(),
             }
-            f.write(json.dumps(trace_dict) + "\n")
+            f.write(json.dumps(trace_dict, sort_keys=True) + "\n")
 
     # 3. evidence_contributions.jsonl
     contributions_path = os.path.join(ds_dir, "evidence_contributions.jsonl")
@@ -84,12 +83,12 @@ def save_reasoning_artifacts(
                     "dataset": r.assessment.dataset,
                     "contribution": c.to_dict(),
                 }
-                f.write(json.dumps(c_dict) + "\n")
+                f.write(json.dumps(c_dict, sort_keys=True) + "\n")
 
     # 4. metrics.json
     metrics_path = os.path.join(ds_dir, "metrics.json")
     with open(metrics_path, "w", encoding="utf-8") as f:
-        json.dump(summary.to_dict(), f, indent=2)
+        json.dump(summary.to_dict(), f, indent=2, sort_keys=True)
 
     # Compute hashes of outputs
     artifact_hashes = {
@@ -113,12 +112,11 @@ def save_reasoning_artifacts(
         "calibration_used_for_fitting": False,
         "input_artifact_hashes": input_artifact_hashes or {},
         "artifact_hashes": artifact_hashes,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
     manifest_path = os.path.join(ds_dir, "manifest.json")
     with open(manifest_path, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, indent=2)
+        json.dump(manifest, f, indent=2, sort_keys=True)
 
     artifact_hashes["manifest.json"] = compute_sha256(manifest_path)
     return artifact_hashes

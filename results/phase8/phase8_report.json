@@ -1,178 +1,183 @@
 {
-  "phase": 8,
-  "title": "SentinelLog Phase 8: Deterministic Incident Reasoning Engine",
-  "timestamp": "2026-10-05T19:15:20.251163+00:00",
-  "source_commit": "b65ec6bda58e0e8f947582c6faf85660f384da83",
   "configuration_hash": "57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea",
-  "test_used": false,
   "datasets": {
-    "hdfs": {
-      "dataset": "hdfs",
-      "summary": {
-        "dataset": "hdfs",
-        "split": "calibration",
-        "engine_version": "0.8.0",
-        "configuration_hash": "57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea",
-        "total_assessed": 39,
-        "decision_distribution": {
-          "INCIDENT": 33,
-          "SUSPICIOUS": 6
-        },
-        "severity_distribution": {
-          "HIGH": 27,
-          "CRITICAL": 6,
-          "LOW": 6
-        },
-        "sufficiency_distribution": {
-          "SUFFICIENT": 39
-        },
-        "provenance_status_distribution": {
-          "VERIFIED": 39
-        },
-        "conflict_count": 0,
-        "conflict_rate": 0.0,
-        "average_evidence_count": 3.0,
-        "average_evidence_relevance": 0.9239,
-        "average_confidence": 0.9043,
-        "rule_firing_frequencies": {
-          "RULE-INC-001": 33,
-          "RULE-SUSP-001": 6
-        }
-      },
-      "ablations": {
-        "single_strongest_signal": {
-          "decisions": {
-            "INCIDENT": 33,
-            "SUSPICIOUS": 6
-          },
-          "severities": {
-            "HIGH": 27,
-            "CRITICAL": 6,
-            "LOW": 6
-          },
-          "avg_confidence": 0.9043
-        },
-        "relevance_only": {
-          "decisions": {
-            "INCIDENT": 33,
-            "SUSPICIOUS": 6
-          },
-          "severities": {
-            "HIGH": 27,
-            "CRITICAL": 6,
-            "LOW": 6
-          },
-          "avg_confidence": 0.9043
-        },
-        "conflict_ignored": {
-          "decisions": {
-            "INCIDENT": 33,
-            "SUSPICIOUS": 6
-          },
-          "severities": {
-            "HIGH": 27,
-            "CRITICAL": 6,
-            "LOW": 6
-          },
-          "avg_confidence": 0.9043
-        },
-        "sufficiency_disabled": {
-          "decisions": {
-            "INCIDENT": 33,
-            "SUSPICIOUS": 6
-          },
-          "severities": {
-            "HIGH": 27,
-            "CRITICAL": 6,
-            "LOW": 6
-          },
-          "avg_confidence": 0.9043
-        }
-      },
-      "artifact_hashes": {
-        "assessments.jsonl": "271398375e0405d9bc4e8283a4ca39a14b27ec10156cc120bf0b2baffd6f39fc",
-        "reasoning_traces.jsonl": "36310dd0337b3b132f65853793e5140710b089e39a18938897e976cfd59dc27b",
-        "evidence_contributions.jsonl": "ade1ac198634c1998d0a4b5e03dd9936e6d2024d7c8aa318a96d7bdc5cce9f8e",
-        "metrics.json": "c22256d5dab5caacefeba0660e235a2a3f481be9317ac190ae11b478f173aaff",
-        "manifest.json": "9860c18df0933be59d65e76036da67fa25890e8e2e6f4445e63692ccd7a56585"
-      },
-      "timing_seconds": 0.00938519999908749
-    },
     "bgl": {
-      "dataset": "bgl",
-      "summary": {
-        "dataset": "bgl",
-        "split": "calibration",
-        "engine_version": "0.8.0",
-        "configuration_hash": "57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea",
-        "total_assessed": 2,
-        "decision_distribution": {
-          "INSUFFICIENT_EVIDENCE": 2
-        },
-        "severity_distribution": {
-          "LOW": 2
-        },
-        "sufficiency_distribution": {
-          "INSUFFICIENT": 2
-        },
-        "provenance_status_distribution": {
-          "VERIFIED": 2
-        },
-        "conflict_count": 4,
-        "conflict_rate": 1.0,
-        "average_evidence_count": 3.0,
-        "average_evidence_relevance": 0.024,
-        "average_confidence": 0.05,
-        "rule_firing_frequencies": {
-          "RULE-SUFF-001": 2
-        }
-      },
       "ablations": {
-        "single_strongest_signal": {
+        "conflict_ignored": {
+          "avg_confidence": 0.2873,
           "decisions": {
             "INSUFFICIENT_EVIDENCE": 2
           },
           "severities": {
             "LOW": 2
-          },
-          "avg_confidence": 0.05
+          }
         },
         "relevance_only": {
+          "avg_confidence": 0.05,
           "decisions": {
             "INSUFFICIENT_EVIDENCE": 2
           },
           "severities": {
             "LOW": 2
-          },
-          "avg_confidence": 0.05
+          }
         },
-        "conflict_ignored": {
+        "single_strongest_signal": {
+          "avg_confidence": 0.05,
           "decisions": {
             "INSUFFICIENT_EVIDENCE": 2
           },
           "severities": {
             "LOW": 2
-          },
-          "avg_confidence": 0.2873
+          }
         },
         "sufficiency_disabled": {
+          "avg_confidence": 0.3173,
           "decisions": {
             "SUSPICIOUS": 2
           },
           "severities": {
             "MEDIUM": 2
-          },
-          "avg_confidence": 0.3173
+          }
         }
       },
       "artifact_hashes": {
-        "assessments.jsonl": "314d1a6dafe64688df40b0c3757d73dc766b81e0733a27e793c8a1f05eff0208",
-        "reasoning_traces.jsonl": "261d7a61dd1a3ffa9d26deb2180e37cfae7908eaba6ce5bfaecd236e11d6b9b2",
-        "evidence_contributions.jsonl": "f77cdde50ac8183b26bcf0220e42be353a643768a7b3c0b2a2b3ffbd226ffaf5",
-        "metrics.json": "2c0380e5a5a89ab283bb56d82810b150fb1ec0d7afe758b43e0d573d1274d064",
-        "manifest.json": "162f7b015b271d248e5c4b2a4b86cef3551cbce3dfa1975073327b0cc44dab42"
+        "assessments.jsonl": "116638bbac895a80403f237fe46415688a39eaa23b8b9b4f3bf71cbd3f960ac8",
+        "evidence_contributions.jsonl": "80d2906aed663cf93831b46d8a8b19cad29f8122eeb401b5e8050c82b928e223",
+        "manifest.json": "2a6c04237265b226bfc070213c341679d49ad686c6a8f08a602d5fd76ac5eb99",
+        "metrics.json": "545763679f16934e2c73ddbb2400d15cd75b8b8042d8ade2036f13b8b16cca4e",
+        "reasoning_traces.jsonl": "551f3ca876fa3f8a634036e25eda598d2076e6cdc93cb20c099e0270b4c6b8ca"
       },
-      "timing_seconds": 0.0008620999979029875
+      "dataset": "bgl",
+      "summary": {
+        "average_confidence": 0.05,
+        "average_evidence_count": 3.0,
+        "average_evidence_relevance": 0.024,
+        "configuration_hash": "57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea",
+        "conflict_count": 4,
+        "conflict_rate": 1.0,
+        "dataset": "bgl",
+        "decision_distribution": {
+          "INSUFFICIENT_EVIDENCE": 2
+        },
+        "engine_version": "0.8.0",
+        "provenance_status_distribution": {
+          "VERIFIED": 2
+        },
+        "rule_firing_frequencies": {
+          "RULE-SUFF-001": 2
+        },
+        "severity_distribution": {
+          "LOW": 2
+        },
+        "split": "calibration",
+        "sufficiency_distribution": {
+          "INSUFFICIENT": 2
+        },
+        "total_assessed": 2
+      }
+    },
+    "hdfs": {
+      "ablations": {
+        "conflict_ignored": {
+          "avg_confidence": 0.9043,
+          "decisions": {
+            "INCIDENT": 33,
+            "SUSPICIOUS": 6
+          },
+          "severities": {
+            "CRITICAL": 6,
+            "HIGH": 27,
+            "LOW": 6
+          }
+        },
+        "relevance_only": {
+          "avg_confidence": 0.9043,
+          "decisions": {
+            "INCIDENT": 33,
+            "SUSPICIOUS": 6
+          },
+          "severities": {
+            "CRITICAL": 6,
+            "HIGH": 27,
+            "LOW": 6
+          }
+        },
+        "single_strongest_signal": {
+          "avg_confidence": 0.9043,
+          "decisions": {
+            "INCIDENT": 33,
+            "SUSPICIOUS": 6
+          },
+          "severities": {
+            "CRITICAL": 6,
+            "HIGH": 27,
+            "LOW": 6
+          }
+        },
+        "sufficiency_disabled": {
+          "avg_confidence": 0.9043,
+          "decisions": {
+            "INCIDENT": 33,
+            "SUSPICIOUS": 6
+          },
+          "severities": {
+            "CRITICAL": 6,
+            "HIGH": 27,
+            "LOW": 6
+          }
+        }
+      },
+      "artifact_hashes": {
+        "assessments.jsonl": "bebcfc52f67252394da8d97268d7559d0f18ca1fe0a975bb6c22e27dfe9931bf",
+        "evidence_contributions.jsonl": "2d7a74d99d778e0ea5cfb9d390f3061242af1ad2ed305ae19ea77c05505659ea",
+        "manifest.json": "7b5f849d84fa9a8bf825f107dbd376d9c32d4f5e75b42625a33b7de603ea7900",
+        "metrics.json": "e06ca9fc6508a98dfab1fc654394b4a64af3bea72d5f090f26ac5f813da66906",
+        "reasoning_traces.jsonl": "d8846aceb211008c4201b21157ad34aa1df8fe78e10e802bd29969e67795b8f0"
+      },
+      "dataset": "hdfs",
+      "summary": {
+        "average_confidence": 0.9043,
+        "average_evidence_count": 3.0,
+        "average_evidence_relevance": 0.9239,
+        "configuration_hash": "57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea",
+        "conflict_count": 0,
+        "conflict_rate": 0.0,
+        "dataset": "hdfs",
+        "decision_distribution": {
+          "INCIDENT": 33,
+          "SUSPICIOUS": 6
+        },
+        "engine_version": "0.8.0",
+        "provenance_status_distribution": {
+          "VERIFIED": 39
+        },
+        "rule_firing_frequencies": {
+          "RULE-INC-001": 33,
+          "RULE-SUSP-001": 6
+        },
+        "severity_distribution": {
+          "CRITICAL": 6,
+          "HIGH": 27,
+          "LOW": 6
+        },
+        "split": "calibration",
+        "sufficiency_distribution": {
+          "SUFFICIENT": 39
+        },
+        "total_assessed": 39
+      }
     }
-  }
+  },
+  "phase": 8,
+  "runtime_metadata": {
+    "execution_timestamp": "2026-10-05T19:41:19.049320+00:00",
+    "execution_timing_seconds": {
+      "bgl": 0.000866,
+      "hdfs": 0.008331
+    },
+    "python_version": "3.12.4"
+  },
+  "source_commit": "973da9d3367a8d9975790bd94e12e0d8b01f3b23",
+  "test_used": false,
+  "title": "SentinelLog Phase 8: Deterministic Incident Reasoning Engine"
 }

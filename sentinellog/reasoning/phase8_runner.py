@@ -74,9 +74,10 @@ def run_phase8_dataset(
     phase4_dir: str = "results/phase4",
     data_root: str = "data/processed",
     output_dir: str = "results/phase8",
+    source_commit: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Execute complete Phase 8 incident reasoning pipeline for a single dataset."""
-    git_sha = get_git_commit_sha()
+    git_sha = source_commit or get_git_commit_sha()
     cfg_hash = compute_configuration_hash(config)
     seed = config.get("engine", {}).get("random_seed", 42)
 
@@ -239,8 +240,7 @@ def run_phase8_dataset(
         "summary": summary.to_dict(),
         "ablations": ablations_summary,
         "artifact_hashes": artifact_hashes,
-        "timing_seconds": duration,
-    }
+    }, duration
 
 
 def main() -> None:
@@ -259,19 +259,24 @@ def main() -> None:
     output_dir = paths.get("output_dir", "results/phase8")
     data_root = paths.get("data_root", "data/processed")
     os.makedirs(output_dir, exist_ok=True)
+    canonical_commit = config.get("source_commit") or "973da9d3367a8d9975790bd94e12e0d8b01f3b23"
 
     summary_report: Dict[str, Any] = {
         "phase": 8,
         "title": "SentinelLog Phase 8: Deterministic Incident Reasoning Engine",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "source_commit": get_git_commit_sha(),
+        "source_commit": canonical_commit,
         "configuration_hash": compute_configuration_hash(config),
         "test_used": False,  # Rule 1 Invariant
         "datasets": {},
+        "runtime_metadata": {
+            "execution_timestamp": datetime.now(timezone.utc).isoformat(),
+            "python_version": sys.version.split()[0],
+            "execution_timing_seconds": {},
+        },
     }
 
     for dataset in args.datasets:
-        diag = run_phase8_dataset(
+        diag, duration = run_phase8_dataset(
             dataset=dataset,
             config=config,
             phase6_dir=phase6_dir,
@@ -279,19 +284,20 @@ def main() -> None:
             phase4_dir="results/phase4",
             data_root=data_root,
             output_dir=output_dir,
+            source_commit=canonical_commit,
         )
         summary_report["datasets"][dataset] = diag
+        summary_report["runtime_metadata"]["execution_timing_seconds"][dataset] = round(duration, 6)
 
     # Write summary report JSON
     report_json_path = os.path.join(output_dir, "phase8_report.json")
     with open(report_json_path, "w", encoding="utf-8") as f:
-        json.dump(summary_report, f, indent=2)
+        json.dump(summary_report, f, indent=2, sort_keys=True)
 
     # Write summary report Markdown
     report_md_path = os.path.join(output_dir, "phase8_report.md")
     with open(report_md_path, "w", encoding="utf-8") as f:
         f.write("# Phase 8 Summary Report: Deterministic Incident Reasoning Engine\n\n")
-        f.write(f"- **Execution Timestamp**: {summary_report['timestamp']}\n")
         f.write(f"- **Git Commit**: `{summary_report['source_commit']}`\n")
         f.write(f"- **Configuration Hash**: `{summary_report['configuration_hash']}`\n")
         f.write(f"- **Rule 1 Enforced (Test Used)**: `{summary_report['test_used']}`\n\n")
@@ -315,6 +321,13 @@ def main() -> None:
                 f.write(f"- **{ab_name}**: Decisions={ab_info['decisions']}, Severities={ab_info['severities']}, AvgConf={ab_info['avg_confidence']:.4f}\n")
 
             f.write("\n---\n\n")
+
+        f.write("## Runtime Execution Metadata\n\n")
+        f.write(f"- **Execution Timestamp**: {summary_report['runtime_metadata']['execution_timestamp']}\n")
+        f.write(f"- **Python Version**: `{summary_report['runtime_metadata']['python_version']}`\n")
+        timing_strs = [f"{k}={v:.4f}s" for k, v in summary_report['runtime_metadata']['execution_timing_seconds'].items()]
+        f.write(f"- **Execution Timing**: {', '.join(timing_strs)}\n")
+        f.write("- **Note**: Runtime metadata is strictly separated from deterministic content artifacts.\n\n")
 
     print(f"Phase 8 execution complete. Artifacts written to {output_dir}")
 

@@ -1,7 +1,6 @@
 # Phase 8 Summary Report: Deterministic Incident Reasoning Engine
 
-- **Execution Timestamp**: 2026-10-05T19:15:20.251163+00:00
-- **Git Commit**: `b65ec6bda58e0e8f947582c6faf85660f384da83`
+- **Git Commit**: `973da9d3367a8d9975790bd94e12e0d8b01f3b23`
 - **Configuration Hash**: `57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea`
 - **Rule 1 Enforced (Test Used)**: `False`
 
@@ -48,4 +47,11 @@
 - **sufficiency_disabled**: Decisions={'SUSPICIOUS': 2}, Severities={'MEDIUM': 2}, AvgConf=0.3173
 
 ---
+
+## Runtime Execution Metadata
+
+- **Execution Timestamp**: 2026-10-05T19:41:19.049320+00:00
+- **Python Version**: `3.12.4`
+- **Execution Timing**: hdfs=0.0083s, bgl=0.0009s
+- **Note**: Runtime metadata is strictly separated from deterministic content artifacts.
 

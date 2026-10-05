@@ -1,25 +1,24 @@
 {
-  "dataset": "hdfs",
-  "split": "calibration",
-  "engine_version": "0.8.0",
+  "artifact_hashes": {
+    "assessments.jsonl": "bebcfc52f67252394da8d97268d7559d0f18ca1fe0a975bb6c22e27dfe9931bf",
+    "evidence_contributions.jsonl": "2d7a74d99d778e0ea5cfb9d390f3061242af1ad2ed305ae19ea77c05505659ea",
+    "metrics.json": "e06ca9fc6508a98dfab1fc654394b4a64af3bea72d5f090f26ac5f813da66906",
+    "reasoning_traces.jsonl": "d8846aceb211008c4201b21157ad34aa1df8fe78e10e802bd29969e67795b8f0"
+  },
+  "calibration_used_for_fitting": false,
   "configuration_hash": "57e370a7c64a9172e20819307b621b4531e8be8a5f09125296fa3becdee602ea",
-  "git_commit": "b65ec6bda58e0e8f947582c6faf85660f384da83",
+  "dataset": "hdfs",
+  "engine_version": "0.8.0",
+  "git_commit": "973da9d3367a8d9975790bd94e12e0d8b01f3b23",
+  "input_artifact_hashes": {
+    "data/processed/hdfs/calibration.jsonl": "6cedcb835410cb959bd4bf6fd67489d81f87a27457cb18713f649e98937eee20",
+    "data/processed/hdfs/train.jsonl": "27ba33bacaf1d09591ffbdc0784a68350f693503aeda6006a2d5440502b8506e",
+    "results/phase6/hdfs/evidence_selection.jsonl": "c634b7688b2a507c9bee3a2533f91e6b00aa5c7a76e0f9086d08fc85eceef9e6",
+    "results/phase7/hdfs/citations.jsonl": "0c266005b2e1f561e8fe2726489cc365a32ac238a3048d0cdfe9355fd3e99597"
+  },
   "phase6_commit": "523a32da041de59e78610567edb7374370c66433",
   "phase7_commit": "d082815e6c301c3576dda813d0e5e8e4347e540e",
-  "total_windows_assessed": 39,
+  "split": "calibration",
   "test_used": false,
-  "calibration_used_for_fitting": false,
-  "input_artifact_hashes": {
-    "results/phase7/hdfs/citations.jsonl": "0c266005b2e1f561e8fe2726489cc365a32ac238a3048d0cdfe9355fd3e99597",
-    "results/phase6/hdfs/evidence_selection.jsonl": "c634b7688b2a507c9bee3a2533f91e6b00aa5c7a76e0f9086d08fc85eceef9e6",
-    "data/processed/hdfs/train.jsonl": "27ba33bacaf1d09591ffbdc0784a68350f693503aeda6006a2d5440502b8506e",
-    "data/processed/hdfs/calibration.jsonl": "6cedcb835410cb959bd4bf6fd67489d81f87a27457cb18713f649e98937eee20"
-  },
-  "artifact_hashes": {
-    "assessments.jsonl": "271398375e0405d9bc4e8283a4ca39a14b27ec10156cc120bf0b2baffd6f39fc",
-    "reasoning_traces.jsonl": "36310dd0337b3b132f65853793e5140710b089e39a18938897e976cfd59dc27b",
-    "evidence_contributions.jsonl": "ade1ac198634c1998d0a4b5e03dd9936e6d2024d7c8aa318a96d7bdc5cce9f8e",
-    "metrics.json": "c22256d5dab5caacefeba0660e235a2a3f481be9317ac190ae11b478f173aaff"
-  },
-  "timestamp": "2026-10-05T19:15:20.497296+00:00"
+  "total_windows_assessed": 39
 }
