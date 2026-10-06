@@ -21,9 +21,9 @@
       },
       "ablation_e_b2_vs_b1": {
         "b1_escalated_count": 0,
-        "b1_precision_escalated": 0.0,
+        "b1_precision_escalated": null,
         "b2_escalated_count": 0,
-        "b2_precision_escalated": 0.0,
+        "b2_precision_escalated": null,
         "description": "B2 Sequential GRU vs B1 PCA gating input"
       },
       "ablation_f_selective_vs_every_window": {
@@ -40,32 +40,32 @@
             0.03699349820698568
           ],
           "precision_95_ci": [
-            0.0,
-            0.0
+            null,
+            null
           ],
           "recall_95_ci": [
-            0.0,
-            0.0
+            null,
+            null
           ]
         },
         "expensive_calls": 0,
         "metrics": {
           "accuracy": 1.0,
           "empirical_false_clear_rate": 0.0,
-          "f1": 0.0,
+          "f1": null,
           "fn": 0,
-          "fnr": 0.0,
+          "fnr": null,
           "fp": 0,
           "fpr": 0.0,
-          "precision": 0.0,
-          "recall": 0.0,
+          "precision": null,
+          "recall": null,
           "tn": 100,
           "total": 100,
           "tp": 0
         },
         "name": "B0_Frequency",
-        "pr_auc": 0.0,
-        "roc_auc": 0.5,
+        "pr_auc": null,
+        "roc_auc": null,
         "threshold": 8.113998
       },
       "b1_iforest": {
@@ -79,28 +79,28 @@
             0.6576197724933469
           ],
           "recall_95_ci": [
-            0.0,
-            0.0
+            null,
+            null
           ]
         },
         "expensive_calls": 0,
         "metrics": {
           "accuracy": 0.98,
           "empirical_false_clear_rate": 0.0,
-          "f1": 0.0,
+          "f1": null,
           "fn": 0,
-          "fnr": 0.0,
+          "fnr": null,
           "fp": 2,
           "fpr": 0.02,
           "precision": 0.0,
-          "recall": 0.0,
+          "recall": null,
           "tn": 98,
           "total": 100,
           "tp": 0
         },
         "name": "B1_IsolationForest",
-        "pr_auc": 0.0,
-        "roc_auc": 0.5,
+        "pr_auc": null,
+        "roc_auc": null,
         "threshold": 0.419321
       },
       "b1_pca": {
@@ -110,32 +110,32 @@
             0.03699349820698568
           ],
           "precision_95_ci": [
-            0.0,
-            0.0
+            null,
+            null
           ],
           "recall_95_ci": [
-            0.0,
-            0.0
+            null,
+            null
           ]
         },
         "expensive_calls": 0,
         "metrics": {
           "accuracy": 1.0,
           "empirical_false_clear_rate": 0.0,
-          "f1": 0.0,
+          "f1": null,
           "fn": 0,
-          "fnr": 0.0,
+          "fnr": null,
           "fp": 0,
           "fpr": 0.0,
-          "precision": 0.0,
-          "recall": 0.0,
+          "precision": null,
+          "recall": null,
           "tn": 100,
           "total": 100,
           "tp": 0
         },
         "name": "B1_PCA",
-        "pr_auc": 0.0,
-        "roc_auc": 0.5,
+        "pr_auc": null,
+        "roc_auc": null,
         "threshold": 0.666416
       },
       "b2": {
@@ -145,32 +145,32 @@
             0.03699349820698568
           ],
           "precision_95_ci": [
-            0.0,
-            0.0
+            null,
+            null
           ],
           "recall_95_ci": [
-            0.0,
-            0.0
+            null,
+            null
           ]
         },
         "expensive_calls": 0,
         "metrics": {
           "accuracy": 1.0,
           "empirical_false_clear_rate": 0.0,
-          "f1": 0.0,
+          "f1": null,
           "fn": 0,
-          "fnr": 0.0,
+          "fnr": null,
           "fp": 0,
           "fpr": 0.0,
-          "precision": 0.0,
-          "recall": 0.0,
+          "precision": null,
+          "recall": null,
           "tn": 100,
           "total": 100,
           "tp": 0
         },
         "name": "B2_SequentialGRU",
-        "pr_auc": 0.0,
-        "roc_auc": 0.5,
+        "pr_auc": null,
+        "roc_auc": null,
         "threshold": 2.5946779251098633
       },
       "b3": {
@@ -188,13 +188,13 @@
         "metrics": {
           "accuracy": 1.0,
           "empirical_false_clear_rate": 0.0,
-          "f1": 0.0,
+          "f1": null,
           "fn": 0,
-          "fnr": 0.0,
+          "fnr": null,
           "fp": 0,
           "fpr": 0.0,
-          "precision": 0.0,
-          "recall": 0.0,
+          "precision": null,
+          "recall": null,
           "tn": 100,
           "total": 100,
           "tp": 0
@@ -281,13 +281,13 @@
       "classification_metrics": {
         "accuracy": 1.0,
         "empirical_false_clear_rate": 0.0,
-        "f1": 0.0,
+        "f1": null,
         "fn": 0,
-        "fnr": 0.0,
+        "fnr": null,
         "fp": 0,
         "fpr": 0.0,
-        "precision": 0.0,
-        "recall": 0.0,
+        "precision": null,
+        "recall": null,
         "tn": 100,
         "total": 100,
         "tp": 0
@@ -298,12 +298,12 @@
           0.03699349820698568
         ],
         "precision_95_ci": [
-          0.0,
-          0.0
+          null,
+          null
         ],
         "recall_95_ci": [
-          0.0,
-          0.0
+          null,
+          null
         ]
       },
       "conformal_alpha": 0.05,
@@ -327,8 +327,8 @@
         "empirical_false_clear_rate": 0.0,
         "escalated_windows": 0,
         "escalation_rate": 0.0,
-        "precision_escalated": 0.0,
-        "recall_escalated": 0.0,
+        "precision_escalated": null,
+        "recall_escalated": null,
         "selective_risk": 0.0,
         "total_windows": 100
       },
@@ -481,13 +481,26 @@
         "effect_sizes": {
           "delta_false_clear_rate": 0.0,
           "delta_fpr": 0.0,
-          "delta_precision": 0.0,
-          "delta_recall": 0.0,
+          "delta_precision": null,
+          "delta_recall": null,
           "expensive_call_reduction_ratio": 0.0
         },
         "mcnemar": {
+          "accuracy_discordant": {
+            "b_a_correct_b_incorrect": 0,
+            "c_a_incorrect_b_correct": 0,
+            "p_value": 1.0,
+            "statistic": 0.0
+          },
           "b": 0,
           "c": 0,
+          "contingency_table": {
+            "neg_a_neg_b": 100,
+            "neg_a_pos_b": 0,
+            "pos_a_neg_b": 0,
+            "pos_a_pos_b": 0,
+            "total": 100
+          },
           "p_value": 1.0,
           "significant_at_05": false,
           "statistic": 0.0
@@ -497,13 +510,26 @@
         "effect_sizes": {
           "delta_false_clear_rate": 0.0,
           "delta_fpr": 0.0,
-          "delta_precision": 0.0,
-          "delta_recall": 0.0,
+          "delta_precision": null,
+          "delta_recall": null,
           "expensive_call_reduction_ratio": 0.0
         },
         "mcnemar": {
+          "accuracy_discordant": {
+            "b_a_correct_b_incorrect": 0,
+            "c_a_incorrect_b_correct": 0,
+            "p_value": 1.0,
+            "statistic": 0.0
+          },
           "b": 0,
           "c": 0,
+          "contingency_table": {
+            "neg_a_neg_b": 100,
+            "neg_a_pos_b": 0,
+            "pos_a_neg_b": 0,
+            "pos_a_pos_b": 0,
+            "total": 100
+          },
           "p_value": 1.0,
           "significant_at_05": false,
           "statistic": 0.0
@@ -515,8 +541,21 @@
           "relative_cost_reduction_ratio": 0.9821428571428571
         },
         "mcnemar": {
+          "accuracy_discordant": {
+            "b_a_correct_b_incorrect": 0,
+            "c_a_incorrect_b_correct": 0,
+            "p_value": 1.0,
+            "statistic": 0.0
+          },
           "b": 0,
           "c": 0,
+          "contingency_table": {
+            "neg_a_neg_b": 100,
+            "neg_a_pos_b": 0,
+            "pos_a_neg_b": 0,
+            "pos_a_pos_b": 0,
+            "total": 100
+          },
           "p_value": 1.0,
           "significant_at_05": false,
           "statistic": 0.0
@@ -1025,11 +1064,24 @@
           "expensive_call_reduction_ratio": 0.0
         },
         "mcnemar": {
-          "b": 385,
-          "c": 46,
-          "p_value": 1.3489909951216216e-59,
+          "accuracy_discordant": {
+            "b_a_correct_b_incorrect": 46,
+            "c_a_incorrect_b_correct": 385,
+            "p_value": 1.3489909951216216e-59,
+            "statistic": 265.0672853828306
+          },
+          "b": 400,
+          "c": 31,
+          "contingency_table": {
+            "neg_a_neg_b": 380,
+            "neg_a_pos_b": 31,
+            "pos_a_neg_b": 400,
+            "pos_a_pos_b": 12,
+            "total": 823
+          },
+          "p_value": 2.6447333511150967e-70,
           "significant_at_05": true,
-          "statistic": 265.0672853828306
+          "statistic": 314.2088167053364
         }
       },
       "vs_b1_pca": {
@@ -1041,11 +1093,24 @@
           "expensive_call_reduction_ratio": 0.0
         },
         "mcnemar": {
-          "b": 762,
-          "c": 18,
-          "p_value": 6.156214167001635e-156,
+          "accuracy_discordant": {
+            "b_a_correct_b_incorrect": 18,
+            "c_a_incorrect_b_correct": 762,
+            "p_value": 6.156214167001635e-156,
+            "statistic": 707.7551282051282
+          },
+          "b": 780,
+          "c": 0,
+          "contingency_table": {
+            "neg_a_neg_b": 0,
+            "neg_a_pos_b": 0,
+            "pos_a_neg_b": 780,
+            "pos_a_pos_b": 43,
+            "total": 823
+          },
+          "p_value": 3.2738713936488503e-171,
           "significant_at_05": true,
-          "statistic": 707.7551282051282
+          "statistic": 778.001282051282
         }
       },
       "vs_b3": {
@@ -1054,8 +1119,21 @@
           "relative_cost_reduction_ratio": 0.9308279812532546
         },
         "mcnemar": {
+          "accuracy_discordant": {
+            "b_a_correct_b_incorrect": 0,
+            "c_a_incorrect_b_correct": 0,
+            "p_value": 1.0,
+            "statistic": 0.0
+          },
           "b": 0,
           "c": 0,
+          "contingency_table": {
+            "neg_a_neg_b": 780,
+            "neg_a_pos_b": 0,
+            "pos_a_neg_b": 0,
+            "pos_a_pos_b": 43,
+            "total": 823
+          },
           "p_value": 1.0,
           "significant_at_05": false,
           "statistic": 0.0

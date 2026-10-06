@@ -1,13 +1,13 @@
 {
   "accuracy": 0.98,
   "empirical_false_clear_rate": 0.0,
-  "f1": 0.0,
+  "f1": null,
   "fn": 0,
-  "fnr": 0.0,
+  "fnr": null,
   "fp": 2,
   "fpr": 0.02,
   "precision": 0.0,
-  "recall": 0.0,
+  "recall": null,
   "tn": 98,
   "total": 100,
   "tp": 0

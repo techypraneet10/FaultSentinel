@@ -6,7 +6,9 @@
     "phase12_metrics.json",
     "precision_comparison_hdfs.svg",
     "llm_call_reduction.svg",
-    "precision_coverage_hdfs.svg"
+    "precision_coverage_hdfs.svg",
+    "hdfs_predictions.json",
+    "bgl_predictions.json"
   ],
   "name": "Evaluation & Benchmarking",
   "phase": 12,

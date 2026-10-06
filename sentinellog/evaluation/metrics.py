@@ -12,25 +12,25 @@ Strictly follows research definitions:
 """
 
 from dataclasses import asdict, dataclass
-from typing import Any, Dict, Sequence, Union
+from typing import Any, Dict, Optional, Sequence, Union
 import numpy as np
 from sklearn.metrics import auc, precision_recall_curve, roc_auc_score
 
 
 @dataclass(frozen=True)
 class ClassificationMetrics:
-    """Standard binary classification metrics."""
+    """Standard binary classification metrics with explicit None for undefined values."""
 
     tp: int
     tn: int
     fp: int
     fn: int
     total: int
-    precision: float
-    recall: float
-    f1: float
-    fpr: float
-    fnr: float
+    precision: Optional[float]
+    recall: Optional[float]
+    f1: Optional[float]
+    fpr: Optional[float]
+    fnr: Optional[float]
     accuracy: float
     empirical_false_clear_rate: float
 
@@ -50,9 +50,9 @@ class SelectiveMetrics:
     anomalies_escalated: int
     anomalies_cleared: int
     empirical_false_clear_rate: float
-    selective_risk: float
-    precision_escalated: float
-    recall_escalated: float
+    selective_risk: Optional[float]
+    precision_escalated: Optional[float]
+    recall_escalated: Optional[float]
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -63,6 +63,16 @@ def compute_classification_metrics(
     y_pred: Sequence[int],
 ) -> ClassificationMetrics:
     """Compute binary classification metrics from ground-truth and predictions.
+
+    Handles zero-positive ground truth explicitly:
+    - precision is:
+        0.0 when predicted positives > 0 and TP == 0
+        undefined (None) when predicted positives == 0
+    - recall is:
+        undefined (None) when actual ground-truth positives (TP + FN) == 0
+    - f1 is:
+        undefined (None) when actual positives == 0 or precision/recall is None
+        0.0 when actual positives > 0, predicted positives > 0, and TP == 0
 
     Args:
         y_true: Binary ground-truth labels (0 for normal, 1 for anomaly).
@@ -85,11 +95,37 @@ def compute_classification_metrics(
     fn = int(np.sum((yp == 0) & (yt == 1)))
     total = len(yt)
 
-    precision = float(tp / (tp + fp)) if (tp + fp) > 0 else 0.0
-    recall = float(tp / (tp + fn)) if (tp + fn) > 0 else 0.0
-    f1 = float(2 * precision * recall / (precision + recall)) if (precision + recall) > 0 else 0.0
-    fpr = float(fp / (fp + tn)) if (fp + tn) > 0 else 0.0
-    fnr = float(fn / (fn + tp)) if (fn + tp) > 0 else 0.0
+    predicted_positives = tp + fp
+    actual_positives = tp + fn
+    actual_negatives = fp + tn
+
+    # Precision
+    if predicted_positives > 0:
+        precision: Optional[float] = float(tp / predicted_positives)
+    else:
+        precision = None
+
+    # Recall
+    if actual_positives > 0:
+        recall: Optional[float] = float(tp / actual_positives)
+    else:
+        recall = None
+
+    # F1
+    if (
+        actual_positives > 0
+        and precision is not None
+        and recall is not None
+        and (precision + recall) > 0
+    ):
+        f1: Optional[float] = float(2.0 * precision * recall / (precision + recall))
+    elif actual_positives > 0 and predicted_positives > 0 and tp == 0:
+        f1 = 0.0
+    else:
+        f1 = None
+
+    fpr: Optional[float] = float(fp / actual_negatives) if actual_negatives > 0 else None
+    fnr: Optional[float] = float(fn / actual_positives) if actual_positives > 0 else None
     accuracy = float((tp + tn) / total) if total > 0 else 0.0
     empirical_false_clear_rate = float(fn / total) if total > 0 else 0.0
 
@@ -148,11 +184,11 @@ def compute_selective_metrics(
     anomalies_cleared = int(np.sum((~is_escalated) & (yt == 1)))
 
     empirical_false_clear_rate = float(anomalies_cleared / total)
-    selective_risk = float(anomalies_cleared / n_cleared) if n_cleared > 0 else 0.0
+    selective_risk = float(anomalies_cleared / n_cleared) if n_cleared > 0 else None
 
-    precision_escalated = float(anomalies_escalated / n_escalated) if n_escalated > 0 else 0.0
+    precision_escalated = float(anomalies_escalated / n_escalated) if n_escalated > 0 else None
     total_anomalies = int(np.sum(yt == 1))
-    recall_escalated = float(anomalies_escalated / total_anomalies) if total_anomalies > 0 else 0.0
+    recall_escalated = float(anomalies_escalated / total_anomalies) if total_anomalies > 0 else None
 
     return SelectiveMetrics(
         total_windows=total,
@@ -169,40 +205,45 @@ def compute_selective_metrics(
     )
 
 
-def compute_pr_auc(y_true: Sequence[int], scores: Sequence[float]) -> float:
+def compute_pr_auc(y_true: Sequence[int], scores: Sequence[float]) -> Optional[float]:
     """Compute Precision-Recall AUC from continuous scores.
+
+    Returns None if only one class exists in y_true (e.g. zero anomalies).
 
     Args:
         y_true: Binary ground-truth labels.
         scores: Continuous anomaly scores.
 
     Returns:
-        PR-AUC score [0.0, 1.0].
+        PR-AUC score [0.0, 1.0] or None if undefined.
     """
     yt = np.asarray(y_true, dtype=int)
     sc = np.asarray(scores, dtype=np.float64)
 
     if len(np.unique(yt)) < 2:
-        return 0.0
+        return None
 
     precision, recall, _ = precision_recall_curve(yt, sc)
     return float(auc(recall, precision))
 
 
-def compute_roc_auc(y_true: Sequence[int], scores: Sequence[float]) -> float:
+def compute_roc_auc(y_true: Sequence[int], scores: Sequence[float]) -> Optional[float]:
     """Compute ROC-AUC from continuous scores.
+
+    Returns None if only one class exists in y_true (e.g. zero anomalies).
 
     Args:
         y_true: Binary ground-truth labels.
         scores: Continuous anomaly scores.
 
     Returns:
-        ROC-AUC score [0.0, 1.0].
+        ROC-AUC score [0.0, 1.0] or None if undefined.
     """
     yt = np.asarray(y_true, dtype=int)
     sc = np.asarray(scores, dtype=np.float64)
 
     if len(np.unique(yt)) < 2:
-        return 0.5
+        return None
 
     return float(roc_auc_score(yt, sc))
+

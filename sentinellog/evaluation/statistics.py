@@ -13,10 +13,10 @@ import numpy as np
 
 
 def wilson_score_interval(
-    k: int,
-    n: int,
+    k: Optional[int],
+    n: Optional[int],
     confidence: float = 0.95,
-) -> Tuple[float, float]:
+) -> Tuple[Optional[float], Optional[float]]:
     """Compute Wilson score interval for a binomial proportion.
 
     Formula:
@@ -24,15 +24,15 @@ def wilson_score_interval(
         half_width = z * sqrt(p(1-p)/n + z^2 / (4n^2)) / (1 + z^2 / n)
 
     Args:
-        k: Number of successes / positives.
-        n: Total number of trials / samples.
+        k: Number of successes / positives (or None if undefined).
+        n: Total number of trials / samples (or None if undefined).
         confidence: Confidence level (default: 0.95 -> z ~ 1.96).
 
     Returns:
-        (lower_bound, upper_bound) clamped to [0.0, 1.0].
+        (lower_bound, upper_bound) clamped to [0.0, 1.0], or (None, None) if undefined.
     """
-    if n <= 0:
-        return (0.0, 0.0)
+    if k is None or n is None or n <= 0:
+        return (None, None)
 
     # Standard two-tailed normal quantiles
     z_map = {
@@ -107,81 +107,113 @@ def bootstrap_ci(
 
 
 def mcnemar_test(
-    y_true: Sequence[int],
     y_pred_a: Sequence[int],
     y_pred_b: Sequence[int],
+    y_true: Optional[Sequence[int]] = None,
     continuity_correction: bool = True,
 ) -> Dict[str, Any]:
-    """Perform McNemar's paired test for differences in binary classification error.
+    """Perform McNemar's paired test between two models across paired windows.
 
-    Constructs 2x2 contingency table:
-        b: Model A correct, Model B incorrect
-        c: Model A incorrect, Model B correct
+    Constructs the exact 2x2 paired contingency table:
+        pos_a_pos_b: Model A+, Model B+
+        pos_a_neg_b: Model A+, Model B- (b)
+        neg_a_pos_b: Model A-, Model B+ (c)
+        neg_a_neg_b: Model A-, Model B-
+
+    The discordant cells are:
+        b = pos_a_neg_b (Model A positive, Model B negative)
+        c = neg_a_pos_b (Model A negative, Model B positive)
 
     Statistic with Edwards continuity correction:
         chi2 = (|b - c| - 1)^2 / (b + c)
-        p-value computed from chi-square distribution with 1 degree of freedom.
+        p-value = erfc(sqrt(chi2 / 2)) from exact chi-square distribution (df=1).
 
     Args:
-        y_true: Ground truth labels.
-        y_pred_a: Predictions from Model A.
-        y_pred_b: Predictions from Model B.
-        continuity_correction: Apply Edwards continuity correction.
+        y_pred_a: Binary predictions from Model A (e.g. B0).
+        y_pred_b: Binary predictions from Model B (e.g. SentinelLog).
+        y_true: Optional ground truth labels to also compute accuracy discordance.
+        continuity_correction: Apply Edwards continuity correction (default: True).
 
     Returns:
-        Dict with b, c, chi2_statistic, p_value, significant.
+        Dict with contingency_table, b, c, statistic, p_value, significant_at_05,
+        and optionally accuracy_discordant.
     """
-    yt = np.asarray(y_true, dtype=int)
     pa = np.asarray(y_pred_a, dtype=int)
     pb = np.asarray(y_pred_b, dtype=int)
 
-    if not (len(yt) == len(pa) == len(pb)):
-        raise ValueError("Length mismatch among inputs to McNemar's test.")
+    if len(pa) != len(pb):
+        raise ValueError(f"Length mismatch: len(y_pred_a)={len(pa)} != len(y_pred_b)={len(pb)}")
 
-    corr_a = (pa == yt)
-    corr_b = (pb == yt)
+    pos_a_pos_b = int(np.sum((pa == 1) & (pb == 1)))
+    pos_a_neg_b = int(np.sum((pa == 1) & (pb == 0)))
+    neg_a_pos_b = int(np.sum((pa == 0) & (pb == 1)))
+    neg_a_neg_b = int(np.sum((pa == 0) & (pb == 0)))
+    total = len(pa)
 
-    # b: A correct, B incorrect
-    b = int(np.sum(corr_a & (~corr_b)))
-    # c: A incorrect, B correct
-    c = int(np.sum((~corr_a) & corr_b))
-
+    b = pos_a_neg_b
+    c = neg_a_pos_b
     total_discordant = b + c
+
     if total_discordant == 0:
-        return {
-            "b": b,
-            "c": c,
-            "statistic": 0.0,
-            "p_value": 1.0,
-            "significant_at_05": False,
-        }
-
-    diff = abs(b - c)
-    if continuity_correction:
-        numerator = (max(0.0, diff - 1.0)) ** 2
+        stat = 0.0
+        p_value = 1.0
     else:
-        numerator = diff**2
+        diff = abs(b - c)
+        if continuity_correction:
+            numerator = (max(0.0, diff - 1.0)) ** 2
+        else:
+            numerator = diff**2
+        stat = float(numerator / total_discordant)
+        p_value = float(math.erfc(math.sqrt(stat / 2.0)))
 
-    stat = float(numerator / total_discordant)
-
-    # p-value via regularized gamma / chi2 cdf approximation
-    # For df=1, p = erfc(sqrt(stat / 2))
-    p_value = float(math.erfc(math.sqrt(stat / 2.0)))
+    accuracy_discordant = None
+    if y_true is not None:
+        yt = np.asarray(y_true, dtype=int)
+        if len(yt) == len(pa):
+            corr_a = (pa == yt)
+            corr_b = (pb == yt)
+            acc_b = int(np.sum(corr_a & (~corr_b)))
+            acc_c = int(np.sum((~corr_a) & corr_b))
+            acc_total = acc_b + acc_c
+            if acc_total > 0:
+                acc_diff = abs(acc_b - acc_c)
+                acc_num = (max(0.0, acc_diff - 1.0)) ** 2 if continuity_correction else acc_diff**2
+                acc_stat = float(acc_num / acc_total)
+                acc_p = float(math.erfc(math.sqrt(acc_stat / 2.0)))
+            else:
+                acc_stat = 0.0
+                acc_p = 1.0
+            accuracy_discordant = {
+                "b_a_correct_b_incorrect": acc_b,
+                "c_a_incorrect_b_correct": acc_c,
+                "statistic": acc_stat,
+                "p_value": acc_p,
+            }
 
     return {
+        "contingency_table": {
+            "pos_a_pos_b": pos_a_pos_b,
+            "pos_a_neg_b": pos_a_neg_b,
+            "neg_a_pos_b": neg_a_pos_b,
+            "neg_a_neg_b": neg_a_neg_b,
+            "total": total,
+        },
         "b": b,
         "c": c,
         "statistic": stat,
         "p_value": p_value,
         "significant_at_05": (p_value < 0.05),
+        "accuracy_discordant": accuracy_discordant,
     }
 
 
 def compute_effect_sizes(
-    baseline_metrics: Dict[str, float],
-    proposed_metrics: Dict[str, float],
-) -> Dict[str, float]:
+    baseline_metrics: Dict[str, Any],
+    proposed_metrics: Dict[str, Any],
+) -> Dict[str, Any]:
     """Compute absolute and relative effect sizes between baseline and proposed system.
+
+    Handles None values gracefully for undefined metrics.
 
     Args:
         baseline_metrics: Dict of baseline performance numbers.
@@ -190,27 +222,31 @@ def compute_effect_sizes(
     Returns:
         Dict of effect sizes.
     """
-    prec_base = baseline_metrics.get("precision", 0.0)
-    prec_prop = proposed_metrics.get("precision", 0.0)
+    prec_base = baseline_metrics.get("precision")
+    prec_prop = proposed_metrics.get("precision")
+    delta_prec = float(prec_prop - prec_base) if (prec_prop is not None and prec_base is not None) else None
 
-    rec_base = baseline_metrics.get("recall", 0.0)
-    rec_prop = proposed_metrics.get("recall", 0.0)
+    rec_base = baseline_metrics.get("recall")
+    rec_prop = proposed_metrics.get("recall")
+    delta_rec = float(rec_prop - rec_base) if (rec_prop is not None and rec_base is not None) else None
 
-    fpr_base = baseline_metrics.get("fpr", 0.0)
-    fpr_prop = proposed_metrics.get("fpr", 0.0)
+    fpr_base = baseline_metrics.get("fpr")
+    fpr_prop = proposed_metrics.get("fpr")
+    delta_fpr = float(fpr_prop - fpr_base) if (fpr_prop is not None and fpr_base is not None) else None
 
     fcr_base = baseline_metrics.get("empirical_false_clear_rate", 0.0)
     fcr_prop = proposed_metrics.get("empirical_false_clear_rate", 0.0)
+    delta_fcr = float(fcr_prop - fcr_base) if (fcr_prop is not None and fcr_base is not None) else None
 
     exp_base = baseline_metrics.get("expensive_calls", 0.0)
     exp_prop = proposed_metrics.get("expensive_calls", 0.0)
+    exp_red = float((exp_base - exp_prop) / exp_base) if exp_base > 0 else 0.0
 
     return {
-        "delta_precision": float(prec_prop - prec_base),
-        "delta_recall": float(rec_prop - rec_base),
-        "delta_fpr": float(fpr_prop - fpr_base),
-        "delta_false_clear_rate": float(fcr_prop - fcr_base),
-        "expensive_call_reduction_ratio": float(
-            (exp_base - exp_prop) / exp_base if exp_base > 0 else 0.0
-        ),
+        "delta_precision": delta_prec,
+        "delta_recall": delta_rec,
+        "delta_fpr": delta_fpr,
+        "delta_false_clear_rate": delta_fcr,
+        "expensive_call_reduction_ratio": exp_red,
     }
+

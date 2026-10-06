@@ -95,9 +95,19 @@ def test_classification_metrics_all_negative():
     m = compute_classification_metrics(y_true, y_pred)
     assert m.tn == 3
     assert m.tp == 0
-    assert m.precision == 0.0
-    assert m.recall == 0.0
+    assert m.precision is None
+    assert m.recall is None
+    assert m.f1 is None
     assert m.accuracy == 1.0
+
+
+def test_classification_metrics_zero_prevalence_predicted_positive():
+    y_true = [0, 0, 0]
+    y_pred = [1, 0, 0]
+    m = compute_classification_metrics(y_true, y_pred)
+    assert m.precision == 0.0  # predicted positives > 0, TP = 0
+    assert m.recall is None  # no ground-truth positives
+    assert m.f1 is None
 
 
 def test_classification_metrics_all_positive_predictions():
@@ -130,9 +140,9 @@ def test_classification_metrics_zero_division_safety():
     y_true = [0, 0]
     y_pred = [0, 0]
     m = compute_classification_metrics(y_true, y_pred)
-    assert m.precision == 0.0
-    assert m.recall == 0.0
-    assert m.f1 == 0.0
+    assert m.precision is None
+    assert m.recall is None
+    assert m.f1 is None
 
 
 def test_classification_metrics_length_mismatch_raises():
@@ -201,6 +211,7 @@ def test_pr_auc_calculation_synthetic():
     y_true = [1, 1, 0, 0]
     scores = [0.9, 0.8, 0.2, 0.1]
     pr = compute_pr_auc(y_true, scores)
+    assert pr is not None
     assert 0.9 <= pr <= 1.0
 
 
@@ -212,8 +223,8 @@ def test_roc_auc_calculation_synthetic():
 
 
 def test_auc_single_class_edge_cases():
-    assert compute_pr_auc([0, 0, 0], [0.1, 0.2, 0.3]) == 0.0
-    assert compute_roc_auc([0, 0, 0], [0.1, 0.2, 0.3]) == 0.5
+    assert compute_pr_auc([0, 0, 0], [0.1, 0.2, 0.3]) is None
+    assert compute_roc_auc([0, 0, 0], [0.1, 0.2, 0.3]) is None
 
 
 # ---------------------------------------------------------------------------
@@ -240,7 +251,8 @@ def test_wilson_score_interval_all_events():
 
 
 def test_wilson_score_interval_invalid_n():
-    assert wilson_score_interval(0, 0) == (0.0, 0.0)
+    assert wilson_score_interval(0, 0) == (None, None)
+    assert wilson_score_interval(None, 100) == (None, None)
 
 
 def test_bootstrap_ci_determinism():
@@ -252,23 +264,26 @@ def test_bootstrap_ci_determinism():
 
 
 def test_mcnemar_test_identical_classifiers():
-    y_true = [1, 0, 1, 0]
     y_pred = [1, 0, 1, 0]
-    res = mcnemar_test(y_true, y_pred, y_pred)
+    res = mcnemar_test(y_pred, y_pred)
     assert res["b"] == 0
     assert res["c"] == 0
     assert res["p_value"] == 1.0
+    assert res["contingency_table"]["pos_a_neg_b"] == 0
+    assert res["contingency_table"]["neg_a_pos_b"] == 0
 
 
 def test_mcnemar_test_discordant_pairs():
     y_true = [1, 1, 1, 1, 0, 0]
-    y_pred_a = [1, 1, 1, 1, 0, 0]  # perfect
-    y_pred_b = [0, 0, 0, 0, 1, 1]  # all wrong
-    res = mcnemar_test(y_true, y_pred_a, y_pred_b)
-    assert res["b"] == 6
-    assert res["c"] == 0
-    assert res["p_value"] < 0.05
-    assert res["significant_at_05"] is True
+    y_pred_a = [1, 1, 1, 1, 0, 0]
+    y_pred_b = [0, 0, 0, 0, 1, 1]
+    res = mcnemar_test(y_pred_a, y_pred_b, y_true=y_true)
+    assert res["b"] == 4
+    assert res["c"] == 2
+    assert res["contingency_table"]["pos_a_neg_b"] == 4
+    assert res["contingency_table"]["neg_a_pos_b"] == 2
+    assert res["accuracy_discordant"]["b_a_correct_b_incorrect"] == 6
+    assert res["accuracy_discordant"]["c_a_incorrect_b_correct"] == 0
 
 
 def test_effect_sizes_computation():
@@ -551,3 +566,63 @@ def test_svg_line_chart_generation(tmp_path):
         content = f.read()
         assert "<svg" in content
         assert "Test Line" in content
+
+
+def test_mcnemar_contingency_table_from_saved_predictions():
+    """Regression test connecting paired 2x2 contingency table to saved predictions."""
+    evaluator = Phase12Evaluator()
+    evaluator.evaluate_dataset("hdfs")
+
+    pred_path = Path("results/phase12/hdfs_predictions.json")
+    assert pred_path.exists(), "results/phase12/hdfs_predictions.json must exist"
+
+    with open(pred_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    b0_preds = np.asarray(data["b0"], dtype=int)
+    sent_preds = np.asarray(data["sentinellog"], dtype=int)
+    y_true = np.asarray(data["y_true"], dtype=int)
+
+    # Compute contingency table directly from saved predictions
+    b0_pos = (b0_preds == 1)
+    sent_pos = (sent_preds == 1)
+
+    n11 = int(np.sum(b0_pos & sent_pos))
+    n10 = int(np.sum(b0_pos & (~sent_pos)))
+    n01 = int(np.sum((~b0_pos) & sent_pos))
+    n00 = int(np.sum((~b0_pos) & (~sent_pos)))
+
+    assert n11 == 12, f"Expected B0+ / Sentinel+ = 12, got {n11}"
+    assert n10 == 400, f"Expected B0+ / Sentinel- = 400, got {n10}"
+    assert n01 == 31, f"Expected B0- / Sentinel+ = 31, got {n01}"
+    assert n00 == 380, f"Expected B0- / Sentinel- = 380, got {n00}"
+    assert n11 + n10 + n01 + n00 == 823
+
+    # Check McNemar test outputs match exactly
+    res = mcnemar_test(b0_preds, sent_preds, y_true=y_true)
+    assert res["contingency_table"]["pos_a_pos_b"] == 12
+    assert res["contingency_table"]["pos_a_neg_b"] == 400
+    assert res["contingency_table"]["neg_a_pos_b"] == 31
+    assert res["contingency_table"]["neg_a_neg_b"] == 380
+    assert res["b"] == 400
+    assert res["c"] == 31
+    expected_stat = ((abs(400 - 31) - 1.0) ** 2) / (400 + 31)
+    assert abs(res["statistic"] - expected_stat) < 1e-4
+    assert res["p_value"] < 1e-60
+
+
+def test_bgl_zero_prevalence_metrics_undefined():
+    """Verify BGL zero-prevalence partition produces None (undefined) for recall, F1, and precision where appropriate."""
+    evaluator = Phase12Evaluator()
+    res = evaluator.evaluate_dataset("bgl")
+    b0_m = res["baselines"]["b0"]["metrics"]
+    prop_m = res["proposed"]["classification_metrics"]
+
+    assert b0_m["recall"] is None
+    assert b0_m["f1"] is None
+    assert b0_m["precision"] is None  # predicted positives == 0
+
+    assert prop_m["recall"] is None
+    assert prop_m["f1"] is None
+    assert prop_m["precision"] is None  # predicted positives == 0
+

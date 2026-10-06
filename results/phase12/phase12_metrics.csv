@@ -5,9 +5,9 @@ hdfs,B1_IsolationForest,30,793,0,0,0.0365,1.0000,0.0703,1.0000,0.0000,0
 hdfs,B2_SequentialGRU,12,31,762,18,0.2791,0.4000,0.3288,0.0391,0.0219,0
 hdfs,B3_LLM_Every_Window,12,31,762,18,0.2791,0.4000,0.3288,0.0391,0.0219,823
 hdfs,Proposed_Selective_SentinelLog,12,31,762,18,0.2791,0.4000,0.3288,0.0391,0.0219,43
-bgl,B0_Frequency,0,0,100,0,0.0000,0.0000,0.0000,0.0000,0.0000,0
-bgl,B1_PCA,0,0,100,0,0.0000,0.0000,0.0000,0.0000,0.0000,0
-bgl,B1_IsolationForest,0,2,98,0,0.0000,0.0000,0.0000,0.0200,0.0000,0
-bgl,B2_SequentialGRU,0,0,100,0,0.0000,0.0000,0.0000,0.0000,0.0000,0
-bgl,B3_LLM_Every_Window,0,0,100,0,0.0000,0.0000,0.0000,0.0000,0.0000,100
-bgl,Proposed_Selective_SentinelLog,0,0,100,0,0.0000,0.0000,0.0000,0.0000,0.0000,0
+bgl,B0_Frequency,0,0,100,0,N/A (undefined),N/A (undefined),N/A (undefined),0.0000,0.0000,0
+bgl,B1_PCA,0,0,100,0,N/A (undefined),N/A (undefined),N/A (undefined),0.0000,0.0000,0
+bgl,B1_IsolationForest,0,2,98,0,0.0000,N/A (undefined),N/A (undefined),0.0200,0.0000,0
+bgl,B2_SequentialGRU,0,0,100,0,N/A (undefined),N/A (undefined),N/A (undefined),0.0000,0.0000,0
+bgl,B3_LLM_Every_Window,0,0,100,0,N/A (undefined),N/A (undefined),N/A (undefined),0.0000,0.0000,100
+bgl,Proposed_Selective_SentinelLog,0,0,100,0,N/A (undefined),N/A (undefined),N/A (undefined),0.0000,0.0000,0

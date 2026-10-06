@@ -1,22 +1,22 @@
 {
   "runtime_metadata": {
-    "git_commit": "b6358b057f3f3f6352cce2c8cd9bca192764aa5c",
+    "git_commit": "c95eb6055bc7ce9696b6f7ec9ec75a9ce32b1cdb",
     "platform": "win32"
   },
-  "scientific_hash": "7b0bd599d9036de85bc2c9d7b7e8d28833dfe0474ebe814084a9da706b94adae",
+  "scientific_hash": "12f7ff1124a243e8e9ba51613632d1a669f7d6785e222424911eb32f2b714994",
   "scientific_payload": {
     "dataset": "bgl",
     "experiment_id": "bgl_b2_test_v1",
     "metrics": {
       "accuracy": 1.0,
       "empirical_false_clear_rate": 0.0,
-      "f1": 0.0,
+      "f1": null,
       "fn": 0,
-      "fnr": 0.0,
+      "fnr": null,
       "fp": 0,
       "fpr": 0.0,
-      "precision": 0.0,
-      "recall": 0.0,
+      "precision": null,
+      "recall": null,
       "tn": 100,
       "total": 100,
       "tp": 0

@@ -24,7 +24,9 @@ def main() -> int:
     print("[2/3] Running BGL Frozen Test Evaluation...")
     bgl_results = evaluator.evaluate_dataset("bgl")
     b_prop = bgl_results["proposed"]["classification_metrics"]
-    print(f"      BGL Proposed: Precision={b_prop['precision']:.4f}, Recall={b_prop['recall']:.4f}, Expensive Calls={bgl_results['proposed']['expensive_calls']}")
+    prec_str = f"{b_prop['precision']:.4f}" if b_prop['precision'] is not None else "N/A (undefined)"
+    rec_str = f"{b_prop['recall']:.4f}" if b_prop['recall'] is not None else "N/A (undefined)"
+    print(f"      BGL Proposed: Precision={prec_str}, Recall={rec_str}, Expensive Calls={bgl_results['proposed']['expensive_calls']}")
 
     print("[3/3] Generating Phase 12 Reports, Tables 1-10, Metrics CSV, and Figures...")
     save_phase12_artifacts(hdfs_results, bgl_results, output_dir="results/phase12")

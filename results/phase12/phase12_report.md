@@ -6,7 +6,7 @@
 
 **Verdict:** **SUPPORTED**
 
-On the evaluated HDFS benchmark, selective SentinelLog improves triage precision from **0.0365–0.0655** (baselines) to **0.2791** (Proposed), reduces false alarms by **92.0%** (31 vs 385), and eliminates **94.78%** of expensive LLM calls compared to the LLM-every-window baseline. On BGL, under low anomaly separability, the system safely abstains with `INSUFFICIENT_EVIDENCE` and triggers 0 unnecessary LLM calls.
+Under the evaluated operating conditions on the frozen HDFS test partition (α=0.05, threshold=1.1546), SentinelLog achieved 5.22% escalation coverage, 27.91% precision among escalated windows, 40.00% recall, and eliminated 94.78% of expensive LLM processing calls (43 vs 823) compared to LLM-every-window. The final raw classification metrics match underlying baseline B2, confirming that the primary measured contribution of the cascade is selective escalation, evidence grounding, and computational cost reduction rather than improved raw detection over B2. On the anomaly-free BGL test partition (0 ground truth anomalies), the system achieved 0 false alarms and 0 expensive calls, safely auto-clearing all normal windows.
 
 ---
 
@@ -39,12 +39,23 @@ On the evaluated HDFS benchmark, selective SentinelLog improves triage precision
 | **B3 LLM Every Window** | HDFS | 823 | 12 | 31 | 762 | 18 | 0.2791 | 0.4000 | 0.3288 | 0.0391 | 0.0219 | 100.00% | 823 |
 | **Proposed SentinelLog** | HDFS | 823 | **12** | **31** | **762** | **18** | **0.2791** | **0.4000** | **0.3288** | **0.0391** | **0.0219** | **5.22%** | **43** |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| **B0 Frequency** | BGL | 100 | 0 | 0 | 100 | 0 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.00% | 0 |
-| **B1 PCA** | BGL | 100 | 0 | 0 | 100 | 0 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.00% | 0 |
-| **B1 Isolation Forest** | BGL | 100 | 0 | 2 | 98 | 0 | 0.0000 | 0.0000 | 0.0000 | 0.0200 | 0.0000 | 2.00% | 0 |
-| **B2 Sequential GRU** | BGL | 100 | 0 | 0 | 100 | 0 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.00% | 0 |
-| **B3 LLM Every Window** | BGL | 100 | 0 | 0 | 100 | 0 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 100.00% | 100 |
-| **Proposed SentinelLog** | BGL | 100 | **0** | **0** | **100** | **0** | **0.0000** | **0.0000** | **0.0000** | **0.0000** | **0.0000** | **0.00%** | **0** |
+| **B0 Frequency** | BGL | 100 | 0 | 0 | 100 | 0 | N/A (undefined) | N/A (undefined) | N/A (undefined) | 0.0000 | 0.0000 | 0.00% | 0 |
+| **B1 PCA** | BGL | 100 | 0 | 0 | 100 | 0 | N/A (undefined) | N/A (undefined) | N/A (undefined) | 0.0000 | 0.0000 | 100.00% | 0 |
+| **B1 Isolation Forest** | BGL | 100 | 0 | 2 | 98 | 0 | 0.0000 | N/A (undefined) | N/A (undefined) | 0.0200 | 0.0000 | 100.00% | 0 |
+| **B2 Sequential GRU** | BGL | 100 | 0 | 0 | 100 | 0 | N/A (undefined) | N/A (undefined) | N/A (undefined) | 0.0000 | 0.0000 | 0.00% | 0 |
+| **B3 LLM Every Window** | BGL | 100 | 0 | 0 | 100 | 0 | N/A (undefined) | N/A (undefined) | N/A (undefined) | 0.0000 | 0.0000 | 100.00% | 100 |
+| **Proposed SentinelLog** | BGL | 100 | **0** | **0** | **100** | **0** | **N/A (undefined)** | **N/A (undefined)** | **N/A (undefined)** | **0.0000** | **0.0000** | **0.00%** | **0** |
+
+*Zero-Positive Ground-Truth Limitation (BGL):* The chronological BGL test partition (N=100) contains 0 ground-truth anomalies. Consequently, recall is mathematically undefined (0/0), F1 is undefined, and precision is 0.0000 when positive predictions are made (e.g. B1, B3) or undefined when zero positives are predicted (B0, B2, Proposed). This partition serves strictly as an anomaly-free safety / negative-evidence evaluation slice (evaluating false alarms and unnecessary expensive calls) and must not be used to claim recall or anomaly-detection superiority.
+
+**Equivalence Note on B2 vs Proposed Final Classification:**
+Because SentinelLog's selective gate threshold at α=0.05 is calibrated directly on B2's scores (threshold τ_0.05 = 1.1546), the final binary classification metrics on HDFS (TP=12, FP=31, TN=762, FN=18, Precision=0.2791, Recall=0.4000) for B2 and SentinelLog are identical. The measured contribution of the proposed SentinelLog cascade is therefore NOT improved raw anomaly classification over B2, but rather:
+1. Calibrated selective escalation (auto-clearing 94.78% of windows without operator burden)
+2. Historical evidence retrieval (Phase 5)
+3. MMR diversity reranking reducing redundancy by 24.6% (Phase 6)
+4. Cryptographic provenance and citation verification (Phase 7)
+5. Grounded incident explanation with 100% claim-level citation validation (Phase 9)
+6. 94.78% computational reduction in expensive LLM calls compared to LLM-every-window (Phase 12).
 
 ---
 
@@ -53,9 +64,9 @@ On the evaluated HDFS benchmark, selective SentinelLog improves triage precision
 | Dataset | Total Windows | Auto-Cleared | Escalated | Escalation Rate | Auto-Clear Rate | Anomalies Cleared (FN) | Anomalies Escalated (TP) | Empirical False Clear Rate | Selective Risk |
 |---|---|---|---|---|---|---|---|---|---|
 | **HDFS** | 823 | 780 | 43 | 5.22% | 94.78% | 18 | 12 | 2.19% | 2.31% |
-| **BGL** | 100 | 100 | 0 | 0.00% | 100.00% | 0 | 0 | 0.00% | 0.00% |
+| **BGL** | 100 | 100 | 0 | 0.00% | 100.00% | 0 | 0 | 0.00% | N/A (undefined) |
 
-*Note on Conformal Terminology:* Empirical false-clear rate is an empirical diagnostic (FN / N) and is not a theoretical finite-sample guarantee. Under exchangeability, split conformal thresholding controls the tail probability of the score distribution.
+*Empirical Selective Behavior & Escalation Control:* System logs exhibit temporal dependence and burstiness; standard exchangeability assumptions do not strictly hold. Therefore, we evaluate empirical selective behavior and empirical escalation-rate control along the coverage-risk frontier. We do NOT claim a formal anomaly-risk guarantee under temporal dependence, and we preserve the Phase 4 distinction between conformal calibration behavior and the empirical false-clear rate (FN / N).
 
 ---
 
@@ -108,16 +119,32 @@ On the evaluated HDFS benchmark, selective SentinelLog improves triage precision
 
 ---
 
-## 10. Threats to Validity & Scientific Limitations
-### TABLE 10: Limitations Matrix
-1. **Temporal Dependence**: System logs exhibit non-stationary bursts. Conformal exchangeability is approximate.
-2. **Dataset Age**: HDFS and BGL are canonical academic benchmarks; modern cloud logs exhibit different syntax.
-3. **No Fabricated Human Evaluation**: `HUMAN_EVALUATION = NOT_AVAILABLE`. No synthetic expert ratings are reported.
-4. **Deterministic Provider**: Offline mock LLM ensures scientific reproducibility but does not capture commercial API latency fluctuations.
-5. **Class Imbalance**: High imbalance in HDFS limits maximum achievable raw precision; selective triage substantially outperforms baselines.
+## 10. Statistical Hypothesis Testing (McNemar Paired Test)
+### Contingency Table Across Paired Windows (HDFS: B0 vs Proposed SentinelLog)
+Loaded directly from saved per-window predictions across the N=823 test windows:
+- **B0+ / Sentinel+**: 12
+- **B0+ / Sentinel-**: 400 (b: B0 alerted, SentinelLog auto-cleared)
+- **B0- / Sentinel+**: 31 (c: B0 cleared, SentinelLog escalated)
+- **B0- / Sentinel-**: 380
+
+- Total discordant pairs: b = 400, c = 31 (total discordant = 431)
+- Edwards-corrected chi-square statistic: χ² = (|400 - 31| - 1)² / (400 + 31) = 314.2088
+- Two-tailed p-value: p = 2.64e-70 (statistically significant at α=0.05, p < 10⁻⁶⁹)
+- Verification: The substantial reduction in false alarms and escalated volume from B0 to SentinelLog is statistically significant under paired window testing.
 
 ---
 
-## 11. Final Verdict
+## 11. Threats to Validity & Scientific Limitations
+### TABLE 10: Limitations Matrix
+1. **Temporal Dependence**: System logs exhibit non-stationary bursts. Conformal exchangeability does not strictly hold; we evaluate empirical escalation control.
+2. **Dataset Age**: HDFS and BGL are canonical academic benchmarks; modern cloud logs exhibit different syntax.
+3. **Zero Ground-Truth Anomalies on BGL Test Slice**: The BGL test partition contains 0 positive instances; metrics reflect negative-evidence safety rather than recall.
+4. **No Fabricated Human Evaluation**: `HUMAN_EVALUATION = NOT_AVAILABLE`. No synthetic expert ratings are reported.
+5. **Deterministic Provider**: Offline mock LLM ensures scientific reproducibility but does not capture commercial API latency fluctuations.
+6. **Class Imbalance**: High imbalance in HDFS limits maximum achievable raw precision.
+
+---
+
+## 12. Final Verdict
 **PHASE 12 VERDICT:** **SUPPORTED**
-Lightweight anomaly scoring combined with calibrated selective escalation and retrieval-grounded explanation dramatically improves precision-at-coverage (0.2791 vs 0.0365) and reduces expensive LLM calls by 94.78% on HDFS while safely abstaining on BGL.
+Under the evaluated operating conditions on the frozen HDFS test partition (α=0.05, threshold=1.1546), SentinelLog achieved 5.22% escalation coverage, 27.91% precision among escalated windows, 40.00% recall, and eliminated 94.78% of expensive LLM processing calls compared to LLM-every-window. The final raw classification metrics match underlying baseline B2, confirming that the primary measured contribution of the cascade is selective escalation, evidence grounding, and computational cost reduction rather than improved raw detection over B2.

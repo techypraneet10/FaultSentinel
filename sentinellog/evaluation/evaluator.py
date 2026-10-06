@@ -242,18 +242,35 @@ class Phase12Evaluator:
         th_sweep = np.linspace(float(np.min(b2_scores)), float(np.max(b2_scores)), 20)
         risk_cov_curve = generate_risk_coverage_curve(y_test, b2_scores, th_sweep, strict=True)
 
+        # Save per-window prediction arrays for auditability and regression verification
+        pred_export = {
+            "dataset": dataset,
+            "total_windows": n_test,
+            "y_true": [int(y) for y in y_test],
+            "b0": [int(p) for p in predictions_map["b0"]],
+            "b1_pca": [int(p) for p in predictions_map["b1_pca"]],
+            "b1_iforest": [int(p) for p in predictions_map["b1_iforest"]],
+            "b2": [int(p) for p in predictions_map["b2"]],
+            "sentinellog": [int(p) for p in prop_preds],
+            "b3": [int(p) for p in b3_preds],
+        }
+        os.makedirs(self.output_dir, exist_ok=True)
+        pred_path = os.path.join(self.output_dir, f"{dataset}_predictions.json")
+        with open(pred_path, "w", encoding="utf-8") as f:
+            json.dump(pred_export, f, indent=2)
+
         # 9. Statistical comparisons (McNemar & Effect sizes)
         stat_comparisons = {
             "vs_b0": {
-                "mcnemar": mcnemar_test(y_test, prop_preds, predictions_map["b0"]),
+                "mcnemar": mcnemar_test(predictions_map["b0"], prop_preds, y_true=y_test),
                 "effect_sizes": compute_effect_sizes(baseline_results["b0"]["metrics"], prop_class_metrics.to_dict()),
             },
             "vs_b1_pca": {
-                "mcnemar": mcnemar_test(y_test, prop_preds, predictions_map["b1_pca"]),
+                "mcnemar": mcnemar_test(predictions_map["b1_pca"], prop_preds, y_true=y_test),
                 "effect_sizes": compute_effect_sizes(baseline_results["b1_pca"]["metrics"], prop_class_metrics.to_dict()),
             },
             "vs_b3": {
-                "mcnemar": mcnemar_test(y_test, prop_preds, b3_preds),
+                "mcnemar": mcnemar_test(b3_preds, prop_preds, y_true=y_test),
                 "effect_sizes": {
                     "expensive_call_reduction_ratio": prop_cost.llm_call_reduction_ratio,
                     "relative_cost_reduction_ratio": prop_cost.relative_cost_reduction_ratio,
