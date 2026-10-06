@@ -1,0 +1,47 @@
+{
+  "api_version": "v1",
+  "application_version": "0.10.0",
+  "bgl_verification": {
+    "citations_returned": 3,
+    "claims_returned": 3,
+    "decision": "INSUFFICIENT_EVIDENCE",
+    "explanation_status": "GENERATED",
+    "faithfulness_status": "VERIFIED",
+    "severity": "LOW"
+  },
+  "configuration_hash": "d7adcfd11dbcc89ebdb1839bab395e773251c7c409db48c250b808cea4697eef",
+  "endpoints": [
+    "/api/v1",
+    "/api/v1/analyze",
+    "/health/live",
+    "/health/ready"
+  ],
+  "hdfs_verification": {
+    "citations_returned": 3,
+    "claims_returned": 3,
+    "decision": "INCIDENT",
+    "explanation_status": "GENERATED",
+    "faithfulness_status": "VERIFIED",
+    "severity": "HIGH"
+  },
+  "input_component_versions": {
+    "explanation_engine_version": "0.9.0",
+    "provenance_engine_version": "1.0",
+    "reasoning_engine_version": "0.8.0",
+    "serving_version": "0.10.0"
+  },
+  "security_verifications": {
+    "label_leakage_blocked": true,
+    "no_secrets_exposed": true,
+    "path_traversal_blocked": true,
+    "security_headers_present": true,
+    "test_split_protected": true
+  },
+  "smoke_test_results": {
+    "api_root": true,
+    "bgl_analysis": true,
+    "hdfs_analysis": true,
+    "health_live": true,
+    "health_ready": true
+  }
+}

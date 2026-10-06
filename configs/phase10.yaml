@@ -1,0 +1,27 @@
+# SentinelLog Phase 10 Serving Configuration
+server:
+  host: "127.0.0.1"
+  port: 8000
+  environment: "production"
+  log_level: "INFO"
+  request_timeout: 30.0
+  max_log_records: 500
+  max_log_line_length: 4096
+  max_request_bytes: 1048576  # 1 MB
+  cors_origins: []
+  api_version: "v1"
+
+pipeline:
+  data_root: "data/processed"
+  results_root: "results"
+  phase7_results: "results/phase7"
+  phase8_results: "results/phase8"
+  phase9_results: "results/phase9"
+  supported_datasets:
+    - "hdfs"
+    - "bgl"
+
+explanation:
+  provider: "mock"
+  model_name: "mock-deterministic-v1"
+  timeout_sec: 15.0
