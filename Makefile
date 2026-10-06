@@ -26,3 +26,9 @@ baselines:
 
 phase4:
 	$(PYTHON) -m sentinellog.scoring.phase4_runner --config configs/phase4.yaml
+
+frontend-test:
+	cd frontend && npm test
+
+frontend-build:
+	cd frontend && npm run build

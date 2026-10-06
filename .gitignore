@@ -43,6 +43,9 @@ logs/
 # Build and Distribution
 build/
 dist/
+frontend/dist/
+frontend/node_modules/
+node_modules/
 *.egg-info/
 
 # Data: Ignore raw downloaded log files and large binary/archive/processed artifacts

@@ -1,0 +1,59 @@
+{
+  "api_contract_version": "v1",
+  "backend_regression": {
+    "compileall": "clean",
+    "passed_tests": 261,
+    "total_tests": 261
+  },
+  "build_status": "passed",
+  "component_inventory": [
+    "Header",
+    "HealthIndicator",
+    "StatusBadge",
+    "SeverityBadge",
+    "DecisionCard",
+    "EvidenceStatus",
+    "ExplanationPanel",
+    "ClaimCard",
+    "CitationBadge",
+    "EvidenceDrawer",
+    "RequestIdDisplay",
+    "LogEditor",
+    "EmptyState",
+    "LoadingState",
+    "ErrorState",
+    "ProcessingMetadata"
+  ],
+  "frontend_version": "0.11.0",
+  "integration_verifications": {
+    "bgl_incident_prevented": true,
+    "bgl_insufficient_evidence_rendered": true,
+    "citation_inspection_drawer": true,
+    "claim_type_filtering": true,
+    "error_request_id_preserved": true,
+    "hdfs_incident_rendered": true,
+    "input_bounds_enforced": true,
+    "safe_markdown_zero_xss": true
+  },
+  "lint_status": "passed",
+  "name": "Operator Dashboard & Human Review Interface",
+  "page_inventory": [
+    "AnalyzePage",
+    "ReviewPage",
+    "ApiStatusPage",
+    "OverviewPage"
+  ],
+  "phase": 11,
+  "test_results": {
+    "collected": 50,
+    "failed": 0,
+    "passed": 50,
+    "suites": [
+      "components.test.tsx (26 tests)",
+      "markdown.test.tsx (7 tests)",
+      "pages.test.tsx (6 tests)",
+      "integration.test.tsx (11 tests)"
+    ]
+  },
+  "typecheck_status": "passed"
+}

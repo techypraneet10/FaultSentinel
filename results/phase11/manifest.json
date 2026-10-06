@@ -1,0 +1,12 @@
+{
+  "artifacts": {
+    "docs/phase11.md": "7f88cb679dca63e623c1367c87b4b0e0ffce84fb3c060fe7dae3ada2b25ff2d1",
+    "phase11_report.json": "3ccbc2bb53604d104732804a4b76305bc47e946a14a8b59f633e8c3c2dca7dd5",
+    "phase11_report.md": "b1d0b647cf81bdc11af9973b039a82977b10a5713687c5b635cde449d86e31b5"
+  },
+  "frontend_bundle": {
+    "dist/index.html": "f5dbe404bd9272b89b7a2459c248778ed80cdb373db5208120e82339e3761a4f"
+  },
+  "name": "Operator Dashboard & Human Review Interface",
+  "phase": 11
+}
