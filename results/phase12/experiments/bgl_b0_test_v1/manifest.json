@@ -1,0 +1,32 @@
+{
+  "runtime_metadata": {
+    "git_commit": "b6358b057f3f3f6352cce2c8cd9bca192764aa5c",
+    "platform": "win32"
+  },
+  "scientific_hash": "967e9d36462d0bd1a3b698f4c9fd8c44a6f2c21b005b9c0e5ec429f689f82ba0",
+  "scientific_payload": {
+    "dataset": "bgl",
+    "experiment_id": "bgl_b0_test_v1",
+    "metrics": {
+      "accuracy": 1.0,
+      "empirical_false_clear_rate": 0.0,
+      "f1": 0.0,
+      "fn": 0,
+      "fnr": 0.0,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "tn": 100,
+      "total": 100,
+      "tp": 0
+    },
+    "model_name": "B0_Frequency",
+    "parameters": {
+      "threshold": 8.113998
+    },
+    "python_version": "3.12.4",
+    "seed": 42,
+    "split": "test"
+  }
+}

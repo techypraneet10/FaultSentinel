@@ -1,0 +1,4 @@
+{
+  "dataset": "hdfs",
+  "model": "B2_SequentialGRU"
+}

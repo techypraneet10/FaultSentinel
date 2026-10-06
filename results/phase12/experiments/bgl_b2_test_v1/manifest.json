@@ -1,0 +1,32 @@
+{
+  "runtime_metadata": {
+    "git_commit": "b6358b057f3f3f6352cce2c8cd9bca192764aa5c",
+    "platform": "win32"
+  },
+  "scientific_hash": "7b0bd599d9036de85bc2c9d7b7e8d28833dfe0474ebe814084a9da706b94adae",
+  "scientific_payload": {
+    "dataset": "bgl",
+    "experiment_id": "bgl_b2_test_v1",
+    "metrics": {
+      "accuracy": 1.0,
+      "empirical_false_clear_rate": 0.0,
+      "f1": 0.0,
+      "fn": 0,
+      "fnr": 0.0,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "tn": 100,
+      "total": 100,
+      "tp": 0
+    },
+    "model_name": "B2_SequentialGRU",
+    "parameters": {
+      "threshold": 2.5946779251098633
+    },
+    "python_version": "3.12.4",
+    "seed": 42,
+    "split": "test"
+  }
+}

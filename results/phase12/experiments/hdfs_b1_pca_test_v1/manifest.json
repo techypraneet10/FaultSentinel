@@ -1,0 +1,32 @@
+{
+  "runtime_metadata": {
+    "git_commit": "b6358b057f3f3f6352cce2c8cd9bca192764aa5c",
+    "platform": "win32"
+  },
+  "scientific_hash": "8bacd85570a94527a7a4cf35b652b1719819aab4fabd5a20eafa2042a19d716f",
+  "scientific_payload": {
+    "dataset": "hdfs",
+    "experiment_id": "hdfs_b1_pca_test_v1",
+    "metrics": {
+      "accuracy": 0.03645200486026731,
+      "empirical_false_clear_rate": 0.0,
+      "f1": 0.07033997655334115,
+      "fn": 0,
+      "fnr": 0.0,
+      "fp": 793,
+      "fpr": 1.0,
+      "precision": 0.03645200486026731,
+      "recall": 1.0,
+      "tn": 0,
+      "total": 823,
+      "tp": 30
+    },
+    "model_name": "B1_PCA",
+    "parameters": {
+      "threshold": 0.0
+    },
+    "python_version": "3.12.4",
+    "seed": 42,
+    "split": "test"
+  }
+}

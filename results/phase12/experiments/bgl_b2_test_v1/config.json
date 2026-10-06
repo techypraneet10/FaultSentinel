@@ -1,0 +1,4 @@
+{
+  "dataset": "bgl",
+  "model": "B2_SequentialGRU"
+}

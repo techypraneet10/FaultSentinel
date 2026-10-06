@@ -1,0 +1,32 @@
+{
+  "runtime_metadata": {
+    "git_commit": "b6358b057f3f3f6352cce2c8cd9bca192764aa5c",
+    "platform": "win32"
+  },
+  "scientific_hash": "cb8e5bc1db55639b376f5c683a85e303cba52f77655ada27515b4ee35fb4ffc5",
+  "scientific_payload": {
+    "dataset": "bgl",
+    "experiment_id": "bgl_b3_llm_every_window_test_v1",
+    "metrics": {
+      "accuracy": 1.0,
+      "empirical_false_clear_rate": 0.0,
+      "f1": 0.0,
+      "fn": 0,
+      "fnr": 0.0,
+      "fp": 0,
+      "fpr": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "tn": 100,
+      "total": 100,
+      "tp": 0
+    },
+    "model_name": "B3_LLM_Every_Window",
+    "parameters": {
+      "expensive_calls": 100
+    },
+    "python_version": "3.12.4",
+    "seed": 42,
+    "split": "test"
+  }
+}

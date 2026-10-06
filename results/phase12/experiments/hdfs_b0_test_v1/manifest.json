@@ -1,0 +1,32 @@
+{
+  "runtime_metadata": {
+    "git_commit": "b6358b057f3f3f6352cce2c8cd9bca192764aa5c",
+    "platform": "win32"
+  },
+  "scientific_hash": "3b539d7dc64e718c702ef9f1451e2ed2c23e165cb0e115fd448bbe4b0633482d",
+  "scientific_payload": {
+    "dataset": "hdfs",
+    "experiment_id": "hdfs_b0_test_v1",
+    "metrics": {
+      "accuracy": 0.528554070473876,
+      "empirical_false_clear_rate": 0.0036452004860267314,
+      "f1": 0.12217194570135746,
+      "fn": 3,
+      "fnr": 0.1,
+      "fp": 385,
+      "fpr": 0.4854981084489281,
+      "precision": 0.06553398058252427,
+      "recall": 0.9,
+      "tn": 408,
+      "total": 823,
+      "tp": 27
+    },
+    "model_name": "B0_Frequency",
+    "parameters": {
+      "threshold": 1.577379
+    },
+    "python_version": "3.12.4",
+    "seed": 42,
+    "split": "test"
+  }
+}

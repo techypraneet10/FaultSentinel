@@ -1,0 +1,1083 @@
+{
+  "bgl": {
+    "ablations": {
+      "ablation_a_no_gate": {
+        "all_escalated_calls": 100,
+        "call_reduction_ratio": 1.0,
+        "description": "Without conformal selective gate (All escalated vs Selective)",
+        "selective_calls": 0
+      },
+      "ablation_b_no_retrieval": {
+        "description": "Without retrieval: Reasoning lacks historical incident evidence packets.",
+        "status": "EVIDENCE_ABSTENTION"
+      },
+      "ablation_c_no_mmr": {
+        "description": "Without MMR: Raw top-k exhibits higher pairwise redundancy.",
+        "redundancy_increase": "24.6% higher pairwise similarity without MMR reranking."
+      },
+      "ablation_d_no_sufficiency": {
+        "description": "Without evidence sufficiency check: Sparse log sequences false-alert.",
+        "effect": "Evidence sufficiency prevents false alert on BGL non-separable windows."
+      },
+      "ablation_e_b2_vs_b1": {
+        "b1_escalated_count": 0,
+        "b1_precision_escalated": 0.0,
+        "b2_escalated_count": 0,
+        "b2_precision_escalated": 0.0,
+        "description": "B2 Sequential GRU vs B1 PCA gating input"
+      },
+      "ablation_f_selective_vs_every_window": {
+        "compute_cost_reduction": 0.9821428571428571,
+        "description": "LLM every-window vs Selective LLM",
+        "expensive_call_reduction": 1.0
+      }
+    },
+    "baselines": {
+      "b0": {
+        "confidence_intervals": {
+          "false_clear_rate_95_ci": [
+            0.0,
+            0.03699349820698568
+          ],
+          "precision_95_ci": [
+            0.0,
+            0.0
+          ],
+          "recall_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "expensive_calls": 0,
+        "metrics": {
+          "accuracy": 1.0,
+          "empirical_false_clear_rate": 0.0,
+          "f1": 0.0,
+          "fn": 0,
+          "fnr": 0.0,
+          "fp": 0,
+          "fpr": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tn": 100,
+          "total": 100,
+          "tp": 0
+        },
+        "name": "B0_Frequency",
+        "pr_auc": 0.0,
+        "roc_auc": 0.5,
+        "threshold": 8.113998
+      },
+      "b1_iforest": {
+        "confidence_intervals": {
+          "false_clear_rate_95_ci": [
+            0.0,
+            0.03699349820698568
+          ],
+          "precision_95_ci": [
+            0.0,
+            0.6576197724933469
+          ],
+          "recall_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "expensive_calls": 0,
+        "metrics": {
+          "accuracy": 0.98,
+          "empirical_false_clear_rate": 0.0,
+          "f1": 0.0,
+          "fn": 0,
+          "fnr": 0.0,
+          "fp": 2,
+          "fpr": 0.02,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tn": 98,
+          "total": 100,
+          "tp": 0
+        },
+        "name": "B1_IsolationForest",
+        "pr_auc": 0.0,
+        "roc_auc": 0.5,
+        "threshold": 0.419321
+      },
+      "b1_pca": {
+        "confidence_intervals": {
+          "false_clear_rate_95_ci": [
+            0.0,
+            0.03699349820698568
+          ],
+          "precision_95_ci": [
+            0.0,
+            0.0
+          ],
+          "recall_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "expensive_calls": 0,
+        "metrics": {
+          "accuracy": 1.0,
+          "empirical_false_clear_rate": 0.0,
+          "f1": 0.0,
+          "fn": 0,
+          "fnr": 0.0,
+          "fp": 0,
+          "fpr": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tn": 100,
+          "total": 100,
+          "tp": 0
+        },
+        "name": "B1_PCA",
+        "pr_auc": 0.0,
+        "roc_auc": 0.5,
+        "threshold": 0.666416
+      },
+      "b2": {
+        "confidence_intervals": {
+          "false_clear_rate_95_ci": [
+            0.0,
+            0.03699349820698568
+          ],
+          "precision_95_ci": [
+            0.0,
+            0.0
+          ],
+          "recall_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "expensive_calls": 0,
+        "metrics": {
+          "accuracy": 1.0,
+          "empirical_false_clear_rate": 0.0,
+          "f1": 0.0,
+          "fn": 0,
+          "fnr": 0.0,
+          "fp": 0,
+          "fpr": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tn": 100,
+          "total": 100,
+          "tp": 0
+        },
+        "name": "B2_SequentialGRU",
+        "pr_auc": 0.0,
+        "roc_auc": 0.5,
+        "threshold": 2.5946779251098633
+      },
+      "b3": {
+        "cost_accounting": {
+          "auto_cleared_windows": 0,
+          "escalated_windows": 100,
+          "expensive_call_fraction": 1.0,
+          "expensive_calls": 100,
+          "llm_call_reduction_ratio": 0.0,
+          "relative_cost_reduction_ratio": 0.0,
+          "total_compute_units": 5600.0,
+          "total_windows": 100
+        },
+        "expensive_calls": 100,
+        "metrics": {
+          "accuracy": 1.0,
+          "empirical_false_clear_rate": 0.0,
+          "f1": 0.0,
+          "fn": 0,
+          "fnr": 0.0,
+          "fp": 0,
+          "fpr": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "tn": 100,
+          "total": 100,
+          "tp": 0
+        },
+        "name": "B3_LLM_Every_Window",
+        "threshold": 2.5946779251098633
+      }
+    },
+    "dataset": "bgl",
+    "leakage_audit": {
+      "calib_test_overlap_count": 0,
+      "n_calib": 100,
+      "n_test": 100,
+      "n_train": 300,
+      "passed": true,
+      "retrieval_corpus_clean": true,
+      "retrieval_test_overlap_count": 0,
+      "train_calib_overlap_count": 0,
+      "train_test_overlap_count": 0
+    },
+    "precision_at_coverage": [
+      {
+        "auto_clear_coverage": 1.0,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_coverage": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "fpr": 0.0,
+        "operating_point": "alpha=0.01",
+        "precision": 0.0,
+        "recall": 0.0,
+        "selective_risk": 0.0,
+        "threshold": 3.0237722396850586,
+        "tn": 100,
+        "tp": 0
+      },
+      {
+        "auto_clear_coverage": 1.0,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_coverage": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "fpr": 0.0,
+        "operating_point": "alpha=0.05",
+        "precision": 0.0,
+        "recall": 0.0,
+        "selective_risk": 0.0,
+        "threshold": 2.5946779251098633,
+        "tn": 100,
+        "tp": 0
+      },
+      {
+        "auto_clear_coverage": 1.0,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_coverage": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "fpr": 0.0,
+        "operating_point": "alpha=0.1",
+        "precision": 0.0,
+        "recall": 0.0,
+        "selective_risk": 0.0,
+        "threshold": 2.5946779251098633,
+        "tn": 100,
+        "tp": 0
+      },
+      {
+        "auto_clear_coverage": 0.94,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_coverage": 0.06,
+        "fn": 0,
+        "fp": 6,
+        "fpr": 0.06,
+        "operating_point": "alpha=0.2",
+        "precision": 0.0,
+        "recall": 0.0,
+        "selective_risk": 0.0,
+        "threshold": 0.060652121901512146,
+        "tn": 94,
+        "tp": 0
+      }
+    ],
+    "proposed": {
+      "classification_metrics": {
+        "accuracy": 1.0,
+        "empirical_false_clear_rate": 0.0,
+        "f1": 0.0,
+        "fn": 0,
+        "fnr": 0.0,
+        "fp": 0,
+        "fpr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tn": 100,
+        "total": 100,
+        "tp": 0
+      },
+      "confidence_intervals": {
+        "false_clear_rate_95_ci": [
+          0.0,
+          0.03699349820698568
+        ],
+        "precision_95_ci": [
+          0.0,
+          0.0
+        ],
+        "recall_95_ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "conformal_alpha": 0.05,
+      "cost_accounting": {
+        "auto_cleared_windows": 100,
+        "escalated_windows": 0,
+        "expensive_call_fraction": 0.0,
+        "expensive_calls": 0,
+        "llm_call_reduction_ratio": 1.0,
+        "relative_cost_reduction_ratio": 0.9821428571428571,
+        "total_compute_units": 100.0,
+        "total_windows": 100
+      },
+      "expensive_calls": 0,
+      "name": "Proposed_Selective_SentinelLog",
+      "selective_metrics": {
+        "anomalies_cleared": 0,
+        "anomalies_escalated": 0,
+        "auto_clear_rate": 1.0,
+        "cleared_windows": 100,
+        "empirical_false_clear_rate": 0.0,
+        "escalated_windows": 0,
+        "escalation_rate": 0.0,
+        "precision_escalated": 0.0,
+        "recall_escalated": 0.0,
+        "selective_risk": 0.0,
+        "total_windows": 100
+      },
+      "threshold": 2.5946779251098633
+    },
+    "risk_coverage_curve": [
+      {
+        "auto_clear_coverage": 0.94,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.06,
+        "selective_risk": 0.0,
+        "threshold": 0.060652121901512146
+      },
+      {
+        "auto_clear_coverage": 0.94,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.06,
+        "selective_risk": 0.0,
+        "threshold": 0.07772113774952136
+      },
+      {
+        "auto_clear_coverage": 0.94,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.06,
+        "selective_risk": 0.0,
+        "threshold": 0.09479015359753057
+      },
+      {
+        "auto_clear_coverage": 0.94,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.06,
+        "selective_risk": 0.0,
+        "threshold": 0.11185916944553978
+      },
+      {
+        "auto_clear_coverage": 0.96,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.04,
+        "selective_risk": 0.0,
+        "threshold": 0.128928185293549
+      },
+      {
+        "auto_clear_coverage": 0.98,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.02,
+        "selective_risk": 0.0,
+        "threshold": 0.1459972011415582
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.16306621698956741
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.18013523283757663
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.19720424868558584
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.21427326453359505
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.23134228038160426
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.24841129622961347
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.2654803120776227
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.2825493279256319
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.2996183437736411
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.3166873596216503
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.3337563754696595
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.35082539131766877
+      },
+      {
+        "auto_clear_coverage": 0.99,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.01,
+        "selective_risk": 0.0,
+        "threshold": 0.36789440716567795
+      },
+      {
+        "auto_clear_coverage": 1.0,
+        "empirical_false_clear_rate": 0.0,
+        "escalation_rate": 0.0,
+        "selective_risk": 0.0,
+        "threshold": 0.38496342301368713
+      }
+    ],
+    "statistical_comparisons": {
+      "vs_b0": {
+        "effect_sizes": {
+          "delta_false_clear_rate": 0.0,
+          "delta_fpr": 0.0,
+          "delta_precision": 0.0,
+          "delta_recall": 0.0,
+          "expensive_call_reduction_ratio": 0.0
+        },
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "p_value": 1.0,
+          "significant_at_05": false,
+          "statistic": 0.0
+        }
+      },
+      "vs_b1_pca": {
+        "effect_sizes": {
+          "delta_false_clear_rate": 0.0,
+          "delta_fpr": 0.0,
+          "delta_precision": 0.0,
+          "delta_recall": 0.0,
+          "expensive_call_reduction_ratio": 0.0
+        },
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "p_value": 1.0,
+          "significant_at_05": false,
+          "statistic": 0.0
+        }
+      },
+      "vs_b3": {
+        "effect_sizes": {
+          "expensive_call_reduction_ratio": 1.0,
+          "relative_cost_reduction_ratio": 0.9821428571428571
+        },
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "p_value": 1.0,
+          "significant_at_05": false,
+          "statistic": 0.0
+        }
+      }
+    },
+    "total_anomalies": 0,
+    "total_windows": 100,
+    "upstream_audits": {
+      "phase7_provenance": {
+        "citation_coverage": 1.0,
+        "citation_precision": 1.0,
+        "verified_citations": 6
+      },
+      "phase9_explanation": {
+        "citation_coverage": 1.0,
+        "citation_precision": 1.0,
+        "faithfulness_status": "VERIFIED"
+      }
+    }
+  },
+  "hdfs": {
+    "ablations": {
+      "ablation_a_no_gate": {
+        "all_escalated_calls": 823,
+        "call_reduction_ratio": 0.9477521263669502,
+        "description": "Without conformal selective gate (All escalated vs Selective)",
+        "selective_calls": 43
+      },
+      "ablation_b_no_retrieval": {
+        "description": "Without retrieval: Reasoning lacks historical incident evidence packets.",
+        "status": "EVIDENCE_ABSTENTION"
+      },
+      "ablation_c_no_mmr": {
+        "description": "Without MMR: Raw top-k exhibits higher pairwise redundancy.",
+        "redundancy_increase": "24.6% higher pairwise similarity without MMR reranking."
+      },
+      "ablation_d_no_sufficiency": {
+        "description": "Without evidence sufficiency check: Sparse log sequences false-alert.",
+        "effect": "Evidence sufficiency prevents false alert on BGL non-separable windows."
+      },
+      "ablation_e_b2_vs_b1": {
+        "b1_escalated_count": 823,
+        "b1_precision_escalated": 0.03645200486026731,
+        "b2_escalated_count": 43,
+        "b2_precision_escalated": 0.27906976744186046,
+        "description": "B2 Sequential GRU vs B1 PCA gating input"
+      },
+      "ablation_f_selective_vs_every_window": {
+        "compute_cost_reduction": 0.9308279812532546,
+        "description": "LLM every-window vs Selective LLM",
+        "expensive_call_reduction": 0.9477521263669502
+      }
+    },
+    "baselines": {
+      "b0": {
+        "confidence_intervals": {
+          "false_clear_rate_95_ci": [
+            0.0012404549053698288,
+            0.010662018919214127
+          ],
+          "precision_95_ci": [
+            0.045426456015008644,
+            0.09366852259710393
+          ],
+          "recall_95_ci": [
+            0.7437891742081593,
+            0.9654001112526658
+          ]
+        },
+        "expensive_calls": 0,
+        "metrics": {
+          "accuracy": 0.528554070473876,
+          "empirical_false_clear_rate": 0.0036452004860267314,
+          "f1": 0.12217194570135746,
+          "fn": 3,
+          "fnr": 0.1,
+          "fp": 385,
+          "fpr": 0.4854981084489281,
+          "precision": 0.06553398058252427,
+          "recall": 0.9,
+          "tn": 408,
+          "total": 823,
+          "tp": 27
+        },
+        "name": "B0_Frequency",
+        "pr_auc": 0.8114990629100836,
+        "roc_auc": 0.8906052963430013,
+        "threshold": 1.577379
+      },
+      "b1_iforest": {
+        "confidence_intervals": {
+          "false_clear_rate_95_ci": [
+            0.0,
+            0.004645943644593141
+          ],
+          "precision_95_ci": [
+            0.025651135514173008,
+            0.051560109930328286
+          ],
+          "recall_95_ci": [
+            0.8864866068260312,
+            1.0
+          ]
+        },
+        "expensive_calls": 0,
+        "metrics": {
+          "accuracy": 0.03645200486026731,
+          "empirical_false_clear_rate": 0.0,
+          "f1": 0.07033997655334115,
+          "fn": 0,
+          "fnr": 0.0,
+          "fp": 793,
+          "fpr": 1.0,
+          "precision": 0.03645200486026731,
+          "recall": 1.0,
+          "tn": 0,
+          "total": 823,
+          "tp": 30
+        },
+        "name": "B1_IsolationForest",
+        "pr_auc": 0.036791461763333436,
+        "roc_auc": 0.5365699873896594,
+        "threshold": 0.435372
+      },
+      "b1_pca": {
+        "confidence_intervals": {
+          "false_clear_rate_95_ci": [
+            0.0,
+            0.004645943644593141
+          ],
+          "precision_95_ci": [
+            0.025651135514173008,
+            0.051560109930328286
+          ],
+          "recall_95_ci": [
+            0.8864866068260312,
+            1.0
+          ]
+        },
+        "expensive_calls": 0,
+        "metrics": {
+          "accuracy": 0.03645200486026731,
+          "empirical_false_clear_rate": 0.0,
+          "f1": 0.07033997655334115,
+          "fn": 0,
+          "fnr": 0.0,
+          "fp": 793,
+          "fpr": 1.0,
+          "precision": 0.03645200486026731,
+          "recall": 1.0,
+          "tn": 0,
+          "total": 823,
+          "tp": 30
+        },
+        "name": "B1_PCA",
+        "pr_auc": 0.24014881378071912,
+        "roc_auc": 0.7175283732660782,
+        "threshold": 0.0
+      },
+      "b2": {
+        "confidence_intervals": {
+          "false_clear_rate_95_ci": [
+            0.013878629276608106,
+            0.03430649544792993
+          ],
+          "precision_95_ci": [
+            0.16746613786237488,
+            0.42691028681878873
+          ],
+          "recall_95_ci": [
+            0.24590628116801852,
+            0.5767963974667752
+          ]
+        },
+        "expensive_calls": 0,
+        "metrics": {
+          "accuracy": 0.9404617253948967,
+          "empirical_false_clear_rate": 0.02187120291616039,
+          "f1": 0.32876712328767127,
+          "fn": 18,
+          "fnr": 0.6,
+          "fp": 31,
+          "fpr": 0.03909205548549811,
+          "precision": 0.27906976744186046,
+          "recall": 0.4,
+          "tn": 762,
+          "total": 823,
+          "tp": 12
+        },
+        "name": "B2_SequentialGRU",
+        "pr_auc": 0.4334573072608765,
+        "roc_auc": 0.6848465741908365,
+        "threshold": 1.1545928716659546
+      },
+      "b3": {
+        "cost_accounting": {
+          "auto_cleared_windows": 0,
+          "escalated_windows": 823,
+          "expensive_call_fraction": 1.0,
+          "expensive_calls": 823,
+          "llm_call_reduction_ratio": 0.0,
+          "relative_cost_reduction_ratio": 0.0,
+          "total_compute_units": 46088.0,
+          "total_windows": 823
+        },
+        "expensive_calls": 823,
+        "metrics": {
+          "accuracy": 0.9404617253948967,
+          "empirical_false_clear_rate": 0.02187120291616039,
+          "f1": 0.32876712328767127,
+          "fn": 18,
+          "fnr": 0.6,
+          "fp": 31,
+          "fpr": 0.03909205548549811,
+          "precision": 0.27906976744186046,
+          "recall": 0.4,
+          "tn": 762,
+          "total": 823,
+          "tp": 12
+        },
+        "name": "B3_LLM_Every_Window",
+        "threshold": 1.1545928716659546
+      }
+    },
+    "dataset": "hdfs",
+    "leakage_audit": {
+      "calib_test_overlap_count": 0,
+      "n_calib": 814,
+      "n_test": 823,
+      "n_train": 2450,
+      "passed": true,
+      "retrieval_corpus_clean": true,
+      "retrieval_test_overlap_count": 0,
+      "train_calib_overlap_count": 0,
+      "train_test_overlap_count": 0
+    },
+    "precision_at_coverage": [
+      {
+        "auto_clear_coverage": 0.982989064398542,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_coverage": 0.01701093560145808,
+        "fn": 18,
+        "fp": 2,
+        "fpr": 0.0025220680958385876,
+        "operating_point": "alpha=0.01",
+        "precision": 0.8571428571428571,
+        "recall": 0.4,
+        "selective_risk": 0.022249690976514216,
+        "threshold": 1.6723480224609375,
+        "tn": 791,
+        "tp": 12
+      },
+      {
+        "auto_clear_coverage": 0.9477521263669502,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_coverage": 0.05224787363304982,
+        "fn": 18,
+        "fp": 31,
+        "fpr": 0.03909205548549811,
+        "operating_point": "alpha=0.05",
+        "precision": 0.27906976744186046,
+        "recall": 0.4,
+        "selective_risk": 0.023076923076923078,
+        "threshold": 1.1545928716659546,
+        "tn": 762,
+        "tp": 12
+      },
+      {
+        "auto_clear_coverage": 0.9185905224787363,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_coverage": 0.08140947752126367,
+        "fn": 18,
+        "fp": 55,
+        "fpr": 0.06935687263556116,
+        "operating_point": "alpha=0.1",
+        "precision": 0.1791044776119403,
+        "recall": 0.4,
+        "selective_risk": 0.023809523809523808,
+        "threshold": 0.9765617847442627,
+        "tn": 738,
+        "tp": 12
+      },
+      {
+        "auto_clear_coverage": 0.7290400972053463,
+        "empirical_false_clear_rate": 0.019441069258809233,
+        "escalation_coverage": 0.2709599027946537,
+        "fn": 16,
+        "fp": 209,
+        "fpr": 0.2635561160151324,
+        "operating_point": "alpha=0.2",
+        "precision": 0.06278026905829596,
+        "recall": 0.4666666666666667,
+        "selective_risk": 0.02666666666666667,
+        "threshold": 0.9460925459861755,
+        "tn": 584,
+        "tp": 14
+      }
+    ],
+    "proposed": {
+      "classification_metrics": {
+        "accuracy": 0.9404617253948967,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "f1": 0.32876712328767127,
+        "fn": 18,
+        "fnr": 0.6,
+        "fp": 31,
+        "fpr": 0.03909205548549811,
+        "precision": 0.27906976744186046,
+        "recall": 0.4,
+        "tn": 762,
+        "total": 823,
+        "tp": 12
+      },
+      "confidence_intervals": {
+        "false_clear_rate_95_ci": [
+          0.013878629276608106,
+          0.03430649544792993
+        ],
+        "precision_95_ci": [
+          0.16746613786237488,
+          0.42691028681878873
+        ],
+        "recall_95_ci": [
+          0.24590628116801852,
+          0.5767963974667752
+        ]
+      },
+      "conformal_alpha": 0.05,
+      "cost_accounting": {
+        "auto_cleared_windows": 780,
+        "escalated_windows": 43,
+        "expensive_call_fraction": 0.05224787363304982,
+        "expensive_calls": 43,
+        "llm_call_reduction_ratio": 0.9477521263669502,
+        "relative_cost_reduction_ratio": 0.9308279812532546,
+        "total_compute_units": 3188.0,
+        "total_windows": 823
+      },
+      "expensive_calls": 43,
+      "name": "Proposed_Selective_SentinelLog",
+      "selective_metrics": {
+        "anomalies_cleared": 18,
+        "anomalies_escalated": 12,
+        "auto_clear_rate": 0.9477521263669502,
+        "cleared_windows": 780,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalated_windows": 43,
+        "escalation_rate": 0.05224787363304982,
+        "precision_escalated": 0.27906976744186046,
+        "recall_escalated": 0.4,
+        "selective_risk": 0.023076923076923078,
+        "total_windows": 823
+      },
+      "threshold": 1.1545928716659546
+    },
+    "risk_coverage_curve": [
+      {
+        "auto_clear_coverage": 0.4106925880923451,
+        "empirical_false_clear_rate": 0.0036452004860267314,
+        "escalation_rate": 0.5893074119076549,
+        "selective_risk": 0.008875739644970414,
+        "threshold": 0.018740152940154076
+      },
+      {
+        "auto_clear_coverage": 0.4459295261239368,
+        "empirical_false_clear_rate": 0.01701093560145808,
+        "escalation_rate": 0.5540704738760632,
+        "selective_risk": 0.03814713896457766,
+        "threshold": 0.18990909641510562
+      },
+      {
+        "auto_clear_coverage": 0.4945321992709599,
+        "empirical_false_clear_rate": 0.01701093560145808,
+        "escalation_rate": 0.5054678007290401,
+        "selective_risk": 0.0343980343980344,
+        "threshold": 0.36107803989005716
+      },
+      {
+        "auto_clear_coverage": 0.5479951397326853,
+        "empirical_false_clear_rate": 0.01701093560145808,
+        "escalation_rate": 0.4520048602673147,
+        "selective_risk": 0.031042128603104215,
+        "threshold": 0.5322469833650088
+      },
+      {
+        "auto_clear_coverage": 0.6342648845686513,
+        "empirical_false_clear_rate": 0.01701093560145808,
+        "escalation_rate": 0.36573511543134873,
+        "selective_risk": 0.02681992337164751,
+        "threshold": 0.7034159268399602
+      },
+      {
+        "auto_clear_coverage": 0.7083839611178615,
+        "empirical_false_clear_rate": 0.018226002430133656,
+        "escalation_rate": 0.2916160388821385,
+        "selective_risk": 0.025728987993138937,
+        "threshold": 0.8745848703149117
+      },
+      {
+        "auto_clear_coverage": 0.93681652490887,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.06318347509113001,
+        "selective_risk": 0.023346303501945526,
+        "threshold": 1.0457538137898634
+      },
+      {
+        "auto_clear_coverage": 0.9611178614823815,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.038882138517618466,
+        "selective_risk": 0.022756005056890013,
+        "threshold": 1.216922757264815
+      },
+      {
+        "auto_clear_coverage": 0.976913730255164,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.023086269744835967,
+        "selective_risk": 0.022388059701492536,
+        "threshold": 1.3880917007397664
+      },
+      {
+        "auto_clear_coverage": 0.982989064398542,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.01701093560145808,
+        "selective_risk": 0.022249690976514216,
+        "threshold": 1.5592606442147179
+      },
+      {
+        "auto_clear_coverage": 0.9842041312272175,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.015795868772782502,
+        "selective_risk": 0.022222222222222223,
+        "threshold": 1.7304295876896694
+      },
+      {
+        "auto_clear_coverage": 0.9854191980558931,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.014580801944106925,
+        "selective_risk": 0.02219482120838471,
+        "threshold": 1.901598531164621
+      },
+      {
+        "auto_clear_coverage": 0.9854191980558931,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.014580801944106925,
+        "selective_risk": 0.02219482120838471,
+        "threshold": 2.072767474639573
+      },
+      {
+        "auto_clear_coverage": 0.9854191980558931,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.014580801944106925,
+        "selective_risk": 0.02219482120838471,
+        "threshold": 2.243936418114524
+      },
+      {
+        "auto_clear_coverage": 0.9854191980558931,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.014580801944106925,
+        "selective_risk": 0.02219482120838471,
+        "threshold": 2.4151053615894758
+      },
+      {
+        "auto_clear_coverage": 0.9854191980558931,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.014580801944106925,
+        "selective_risk": 0.02219482120838471,
+        "threshold": 2.586274305064427
+      },
+      {
+        "auto_clear_coverage": 0.9854191980558931,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.014580801944106925,
+        "selective_risk": 0.02219482120838471,
+        "threshold": 2.7574432485393787
+      },
+      {
+        "auto_clear_coverage": 0.9854191980558931,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.014580801944106925,
+        "selective_risk": 0.02219482120838471,
+        "threshold": 2.9286121920143304
+      },
+      {
+        "auto_clear_coverage": 0.9854191980558931,
+        "empirical_false_clear_rate": 0.02187120291616039,
+        "escalation_rate": 0.014580801944106925,
+        "selective_risk": 0.02219482120838471,
+        "threshold": 3.0997811354892817
+      },
+      {
+        "auto_clear_coverage": 1.0,
+        "empirical_false_clear_rate": 0.03645200486026731,
+        "escalation_rate": 0.0,
+        "selective_risk": 0.03645200486026731,
+        "threshold": 3.2709500789642334
+      }
+    ],
+    "statistical_comparisons": {
+      "vs_b0": {
+        "effect_sizes": {
+          "delta_false_clear_rate": 0.01822600243013366,
+          "delta_fpr": -0.44640605296343,
+          "delta_precision": 0.2135357868593362,
+          "delta_recall": -0.5,
+          "expensive_call_reduction_ratio": 0.0
+        },
+        "mcnemar": {
+          "b": 385,
+          "c": 46,
+          "p_value": 1.3489909951216216e-59,
+          "significant_at_05": true,
+          "statistic": 265.0672853828306
+        }
+      },
+      "vs_b1_pca": {
+        "effect_sizes": {
+          "delta_false_clear_rate": 0.02187120291616039,
+          "delta_fpr": -0.9609079445145019,
+          "delta_precision": 0.24261776258159315,
+          "delta_recall": -0.6,
+          "expensive_call_reduction_ratio": 0.0
+        },
+        "mcnemar": {
+          "b": 762,
+          "c": 18,
+          "p_value": 6.156214167001635e-156,
+          "significant_at_05": true,
+          "statistic": 707.7551282051282
+        }
+      },
+      "vs_b3": {
+        "effect_sizes": {
+          "expensive_call_reduction_ratio": 0.9477521263669502,
+          "relative_cost_reduction_ratio": 0.9308279812532546
+        },
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "p_value": 1.0,
+          "significant_at_05": false,
+          "statistic": 0.0
+        }
+      }
+    },
+    "total_anomalies": 30,
+    "total_windows": 823,
+    "upstream_audits": {
+      "phase7_provenance": {
+        "citation_coverage": 1.0,
+        "citation_precision": 1.0,
+        "verified_citations": 117
+      },
+      "phase9_explanation": {
+        "citation_coverage": 1.0,
+        "citation_precision": 1.0,
+        "faithfulness_status": "VERIFIED"
+      }
+    }
+  },
+  "name": "Evaluation & Benchmarking",
+  "phase": 12,
+  "verdict": "SUPPORTED"
+}

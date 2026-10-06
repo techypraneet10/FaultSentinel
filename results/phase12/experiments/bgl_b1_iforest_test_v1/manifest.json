@@ -1,0 +1,32 @@
+{
+  "runtime_metadata": {
+    "git_commit": "b6358b057f3f3f6352cce2c8cd9bca192764aa5c",
+    "platform": "win32"
+  },
+  "scientific_hash": "95938fe99b41061e384c780c8cd670edb8216af60f82bc4cacd12c987e907280",
+  "scientific_payload": {
+    "dataset": "bgl",
+    "experiment_id": "bgl_b1_iforest_test_v1",
+    "metrics": {
+      "accuracy": 0.98,
+      "empirical_false_clear_rate": 0.0,
+      "f1": 0.0,
+      "fn": 0,
+      "fnr": 0.0,
+      "fp": 2,
+      "fpr": 0.02,
+      "precision": 0.0,
+      "recall": 0.0,
+      "tn": 98,
+      "total": 100,
+      "tp": 0
+    },
+    "model_name": "B1_IsolationForest",
+    "parameters": {
+      "threshold": 0.419321
+    },
+    "python_version": "3.12.4",
+    "seed": 42,
+    "split": "test"
+  }
+}
