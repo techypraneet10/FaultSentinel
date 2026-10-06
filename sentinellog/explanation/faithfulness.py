@@ -169,14 +169,22 @@ class FaithfulnessChecker:
 
                 # Verify all cited IDs belong to the bundle
                 valid_cids = [cid for cid in claim.citation_ids if cid in valid_bundle_cids]
-                if not valid_cids:
+                if len(valid_cids) != len(claim.citation_ids) or not valid_cids:
                     claim.supported = False
                     claim.support_score = 0.0
-                    claim.validation_notes.append("All cited citation IDs are invalid or not in bundle.")
+                    claim.validation_notes.append("One or more cited citation IDs are invalid or not in bundle.")
                     unsupported_claims.append(claim.text)
                     continue
 
-                # Verify lexical overlap with evidence text
+                # Verify bundle provenance is verified
+                if bundle and not bundle.all_verified:
+                    claim.supported = False
+                    claim.support_score = 0.0
+                    claim.validation_notes.append("Cited evidence bundle has unverified provenance.")
+                    unsupported_claims.append(claim.text)
+                    continue
+
+                # Verify lexical overlap with cited evidence text
                 cited_evidence_tokens = set()
                 for cid in valid_cids:
                     cited_evidence_tokens.update(bundle_text_tokens.get(cid, set()))
@@ -189,7 +197,7 @@ class FaithfulnessChecker:
 
                 claim.support_score = round(overlap_ratio, 4)
 
-                # A factual claim is supported if cited valid IDs and has non-zero overlap or valid signals
+                # A factual claim is supported if cited valid IDs and has sufficient lexical overlap or domain signal alignment
                 if overlap_ratio >= self.min_lexical_overlap or any(
                     sig_word in claim_tokens for sig_word in {"anomaly", "score", "escalation", "repeated", "window", "connection"}
                 ):
@@ -201,6 +209,28 @@ class FaithfulnessChecker:
                     unsupported_claims.append(claim.text)
             else:
                 # Non-factual claims (INTERPRETATION, UNCERTAINTY, RECOMMENDATION)
+                # Enforce: INTERPRETATION is citation-exempt ONLY when deriving from trusted Phase 8 metadata
+                if claim.claim_type == ClaimType.INTERPRETATION.value and not claim.citation_ids:
+                    external_fault_words = {
+                        "crash", "crashed", "power", "supply", "disk", "hardware",
+                        "reboot", "rebooted", "cable", "killed", "leak", "corrupted",
+                    }
+                    has_external_fault = any(w in claim_tokens for w in external_fault_words)
+                    has_phase8_meta = any(
+                        w in claim_tokens for w in {
+                            "rule", "rules", "classified", "decision", "severity", "confidence",
+                            "signal", "signals", "anomaly", "score", "escalation", "evidence",
+                            "sufficiency", "insufficient", "retrieval", "relevance", "alignment",
+                            "agreement", "conflict", "conflicts", "system", "deterministic",
+                        }
+                    )
+                    if has_external_fault and not has_phase8_meta:
+                        claim.supported = False
+                        claim.support_score = 0.0
+                        claim.validation_notes.append("Interpretive claim asserts external ungrounded events without citations.")
+                        unsupported_claims.append(claim.text)
+                        continue
+
                 claim.supported = True
                 claim.support_score = 1.0
 

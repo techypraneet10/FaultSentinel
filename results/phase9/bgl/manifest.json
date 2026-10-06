@@ -1,15 +1,15 @@
 {
   "artifact_hashes": {
-    "claims.jsonl": "7c746bf8bdc16329dd4b8bc63ba32468e3614d05c704e29abb9067e59825f130",
-    "explanations.jsonl": "33f7aa80cfb1c9be997d67bdb415c0f3ef4dd79a08bd52fc59d884a45ccf2177",
-    "metrics.json": "3fab12b0afff55fb45591a28fc49d2fc8b8daf12eb890aa5850046f91ec60005",
-    "validation.jsonl": "01bdbe79205cb6ee22b053f476f6d546434203b16a2450f74409cc637ba42473"
+    "claims.jsonl": "404f6bb819697fbe31bd1d84a7b0aa3df1f7bf6386c8332719e011ea049f4542",
+    "explanations.jsonl": "11d5af23015ce78ea80cb7dec0d35c38029b3bbbfae56b185389d0c5ad9b6bf2",
+    "metrics.json": "b69d23f46e9a6961c90971bf8e158715952d1c256c1de7830ceffd18b30cfdb0",
+    "validation.jsonl": "b3945cafa2ae687bc0c1b9d2c5bf7bd8b375cea82170cf5bee3575a8f77ee04b"
   },
   "calibration_used_for_fitting": false,
   "configuration_hash": "010aa3a36ab4e0b74794df3ea8c2f462a0a6672a05deca1c8d43df036eb4eb54",
   "dataset": "bgl",
   "explanation_engine_version": "0.9.0",
-  "git_commit": "4edcb9088886440628f83b0ad525e3b2a892db5f",
+  "git_commit": "f9a324ef81423aa4e8edfe1c9b32655ebc3d614f",
   "input_artifact_hashes": {
     "results/phase7/bgl/citations.jsonl": "29124ad3609c41682430115481a36b282ed06630cd5e3b68c3005862f7750fd1",
     "results/phase8/bgl/assessments.jsonl": "116638bbac895a80403f237fe46415688a39eaa23b8b9b4f3bf71cbd3f960ac8"

@@ -3,7 +3,7 @@
 - **Engine Version:** 0.9.0
 - **Prompt Version:** v1.0
 - **Configuration Hash:** `010aa3a36ab4e0b74794df3ea8c2f462a0a6672a05deca1c8d43df036eb4eb54`
-- **Git Commit:** `4edcb9088886440628f83b0ad525e3b2a892db5f`
+- **Git Commit:** `f9a324ef81423aa4e8edfe1c9b32655ebc3d614f`
 - **Rule 1 Invariant (Test Used):** `False` (Verified)
 - **Human Evaluation:** `NOT_AVAILABLE` (Rule 41)
 
@@ -11,8 +11,8 @@
 
 | Dataset | Escalated Windows | Successful Explanations | Abstentions | Citation Coverage | Citation Precision | Mean Latency (ms) |
 |---|---|---|---|---|---|---|
-| HDFS | 39 | 39 | 0 | 0.5000 | 1.0000 | 0.1 |
-| BGL | 2 | 2 | 0 | 0.5000 | 1.0000 | 0.1 |
+| HDFS | 39 | 39 | 0 | 1.0000 | 1.0000 | 0.1 |
+| BGL | 2 | 2 | 0 | 1.0000 | 1.0000 | 0.1 |
 
 ## Decision Immutability & Safety Cases
 

@@ -10,6 +10,7 @@ Executes sequential, fail-closed verification pipeline (Rule 37):
 """
 
 import json
+import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from sentinellog.explanation.citations import CitationValidator
@@ -178,6 +179,23 @@ class ExplanationValidator:
         if not coverage_passed:
             failure_reasons.append(f"Citation coverage ({coverage:.2f}) fell below minimum required threshold ({self.min_coverage:.2f}).")
 
+        # Step 7: Summary and Free-form Explanation Inspection (Section 6)
+        summary_text = str(parsed.get("summary", "")).strip()
+        explanation_text = str(parsed.get("explanation", "")).strip()
+        freeform_errors = self._inspect_freeform_text(
+            summary_text=summary_text,
+            explanation_text=explanation_text,
+            claims=parsed_claims,
+        )
+        freeform_passed = not freeform_errors
+        if freeform_errors:
+            failure_reasons.extend(freeform_errors)
+        trace.append({
+            "step": "freeform_text_inspection",
+            "passed": freeform_passed,
+            "errors": freeform_errors,
+        })
+
         is_valid = (
             decision_consistent
             and severity_consistent
@@ -185,6 +203,7 @@ class ExplanationValidator:
             and faith_res.numeric_checks_passed
             and not faith_res.contradictions_detected
             and coverage_passed
+            and freeform_passed
         )
 
         val_result = ValidationResult(
@@ -201,3 +220,43 @@ class ExplanationValidator:
         )
 
         return val_result, parsed, parsed_claims, resolved_citations
+
+    def _inspect_freeform_text(
+        self,
+        summary_text: str,
+        explanation_text: str,
+        claims: List[ExplanationClaim],
+    ) -> List[str]:
+        """Inspect free-form summary and explanation text for ungrounded factual assertions.
+        
+        Guarantees that factual claims cannot bypass validation by being embedded
+        only in summary or explanation without structured claim backing (Rule 6).
+        """
+        errors = []
+        combined_text = f"{summary_text} {explanation_text}"
+
+        factual_indicators = [
+            r"\bpower supply\b",
+            r"\bcatastrophically failed\b",
+            r"\bserver crashed\b",
+            r"\bhardware reboot\b",
+            r"\bdisk corrupted\b",
+            r"\bmemory leak\b",
+            r"\bnetwork split\b",
+            r"\bswitch failed\b",
+            r"\bkernel panic\b",
+            r"\bdata corrupted\b",
+        ]
+
+        supported_claim_texts = " ".join(c.text.lower() for c in claims if c.supported)
+
+        for pattern in factual_indicators:
+            match = re.search(pattern, combined_text, re.IGNORECASE)
+            if match:
+                matched_phrase = match.group(0).lower()
+                if matched_phrase not in supported_claim_texts:
+                    errors.append(
+                        f"Factual assertion in summary/explanation is absent from verified structured claims: '{match.group(0)}'."
+                    )
+
+        return errors

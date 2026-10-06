@@ -24,6 +24,7 @@ from sentinellog.explanation.orchestrator import (
 )
 from sentinellog.explanation.schemas import ExplanationResult
 from sentinellog.explanation.version import EXPLANATION_ENGINE_VERSION, PROMPT_VERSION
+from sentinellog.provenance.resolver import SourceResolver
 from sentinellog.provenance.schemas import CitationBundle
 from sentinellog.reasoning.schemas import IncidentAssessment
 from sentinellog.scoring.artifacts import (
@@ -80,6 +81,21 @@ def run_phase9_dataset(
     bundle_map = {b.query_id: b for b in bundles}
     print(f"[{clean_ds.upper()}] Loaded {len(assessments)} assessments and {len(bundles)} citation bundles.")
 
+    # Initialize SourceResolver to load authentic training log excerpts for citations
+    data_root = config.get("paths", {}).get("data_root", "data/processed")
+    resolver = SourceResolver(data_root=data_root)
+    raw_excerpts: Dict[str, str] = {}
+    for b in bundles:
+        for cit in b.citations:
+            if cit.citation_id not in raw_excerpts:
+                try:
+                    _, _, canon, _, _ = resolver.resolve_source(clean_ds, "train", cit.source_window_id)
+                    win_data = resolver._window_cache.get(clean_ds, {}).get(cit.source_window_id, {})
+                    raw_msgs = win_data.get("raw_messages", [])
+                    raw_excerpts[cit.citation_id] = canon + " " + " ".join(raw_msgs[:5])
+                except Exception:
+                    pass
+
     # Initialize Orchestrator
     orchestrator = ExplanationOrchestrator(config=config)
 
@@ -100,6 +116,7 @@ def run_phase9_dataset(
             citation_bundle=b,
             dataset=clean_ds,
             split="calibration",
+            raw_excerpts=raw_excerpts,
             input_artifact_hashes=input_artifact_hashes,
         )
         results.append(exp)

@@ -865,3 +865,252 @@ def test_phase8_regression_decisions():
                 bgl_decisions.append(a.decision)
     assert bgl_decisions.count("INSUFFICIENT_EVIDENCE") == 2
     assert len(bgl_decisions) == 2
+
+
+# ============================================================================
+# 12. MOCK PROVIDER & GROUNDING TEST CASES (A THROUGH K)
+# ============================================================================
+
+def test_case_a_all_factual_claims_correctly_cited(sample_assessment, sample_bundle):
+    """Case A: All factual claims correctly cited -> VERIFIED."""
+    checker = FaithfulnessChecker(coverage_threshold=0.7)
+    claim1 = ExplanationClaim(
+        claim_id="CLM-001",
+        text="The window exhibits repeated connection events.",
+        claim_type="OBSERVATION",
+        citation_ids=[sample_bundle.citations[0].citation_id],
+        is_factual=True,
+    )
+    claim2 = ExplanationClaim(
+        claim_id="CLM-002",
+        text="Historical evidence confirms repeated anomaly score escalation.",
+        claim_type="EVIDENCE",
+        citation_ids=[sample_bundle.citations[0].citation_id],
+        is_factual=True,
+    )
+    res, cov = checker.evaluate([claim1, claim2], sample_assessment, sample_bundle)
+    assert res.status == FaithfulnessStatus.VERIFIED.value
+    assert cov == 1.0
+
+
+def test_case_b_factual_claim_missing_citation(sample_assessment, sample_bundle):
+    """Case B: One factual claim missing citation -> validation failure / partial support."""
+    checker = FaithfulnessChecker(coverage_threshold=0.7)
+    claim1 = ExplanationClaim(
+        claim_id="CLM-001",
+        text="The window exhibits repeated connection events.",
+        claim_type="OBSERVATION",
+        citation_ids=[sample_bundle.citations[0].citation_id],
+        is_factual=True,
+    )
+    claim2 = ExplanationClaim(
+        claim_id="CLM-002",
+        text="Uncited observation regarding packet drop sequence.",
+        claim_type="EVIDENCE",
+        citation_ids=[],  # Missing citation
+        is_factual=True,
+    )
+    res, cov = checker.evaluate([claim1, claim2], sample_assessment, sample_bundle)
+    assert res.status == FaithfulnessStatus.PARTIALLY_SUPPORTED.value
+    assert cov == 0.5
+    assert not claim2.supported
+
+
+def test_case_c_factual_claim_nonexistent_citation(sample_bundle):
+    """Case C: Factual claim with nonexistent citation -> INVALID."""
+    cit_val = CitationValidator()
+    status, prec, resolved, errs = cit_val.validate_citations(["cit_does_not_exist_999"], sample_bundle)
+    assert status == CitationValidationStatus.INVALID
+    assert prec == 0.0
+    assert any("does not exist" in e for e in errs)
+
+
+def test_case_d_factual_claim_citing_wrong_bundle(sample_bundle):
+    """Case D: Factual claim citing wrong bundle -> INVALID."""
+    cit_val = CitationValidator()
+    foreign_bundle = copy.deepcopy(sample_bundle)
+    foreign_bundle.citations[0] = Citation(
+        citation_id="different_id_999",
+        citation_text="[foreign citation]",
+        chunk_id="chunk_foreign",
+        source_window_id="foreign_win",
+        dataset="hdfs",
+        split="train",
+        selected_rank=1,
+        retrieval_score=0.9,
+        selection_score=0.9,
+        source_content_hash="hash",
+        template_content_hash="hash",
+        provenance=sample_bundle.citations[0].provenance,
+    )
+    status, prec, resolved, errs = cit_val.validate_citations(
+        ["different_id_999"],
+        sample_bundle,
+    )
+    assert status == CitationValidationStatus.INVALID
+    assert prec == 0.0
+
+
+def test_case_e_interpretation_without_citation(sample_assessment, sample_bundle):
+    """Case E: Interpretation without citation allowed only if based on Phase 8 metadata."""
+    checker = FaithfulnessChecker()
+    # E1: Based on Phase 8 metadata -> allowed
+    claim_meta = ExplanationClaim(
+        claim_id="CLM-001",
+        text="Deterministic rules classified the window as INCIDENT based on signal alignment.",
+        claim_type="INTERPRETATION",
+        citation_ids=[],
+        is_factual=False,
+    )
+    res1, _ = checker.evaluate([claim_meta], sample_assessment, sample_bundle)
+    assert claim_meta.supported
+    assert res1.status == FaithfulnessStatus.VERIFIED.value
+
+    # E2: Asserting ungrounded external hardware event -> rejected
+    claim_external = ExplanationClaim(
+        claim_id="CLM-002",
+        text="The power supply failed and disk crashed unexpectedly.",
+        claim_type="INTERPRETATION",
+        citation_ids=[],
+        is_factual=False,
+    )
+    res2, _ = checker.evaluate([claim_external], sample_assessment, sample_bundle)
+    assert not claim_external.supported
+    assert any("external ungrounded events" in note for note in claim_external.validation_notes)
+
+
+def test_case_f_recommendation_without_citation(sample_assessment, sample_bundle):
+    """Case F: Recommendation without citation -> allowed."""
+    checker = FaithfulnessChecker()
+    claim = ExplanationClaim(
+        claim_id="CLM-001",
+        text="Inspect DataNode cluster configuration and rerun diagnostic baseline.",
+        claim_type="RECOMMENDATION",
+        citation_ids=[],
+        is_factual=False,
+    )
+    res, _ = checker.evaluate([claim], sample_assessment, sample_bundle)
+    assert claim.supported
+    assert res.status == FaithfulnessStatus.VERIFIED.value
+
+
+def test_case_g_unsupported_causal_claim():
+    """Case G: Unsupported causal claim -> rejected."""
+    raw_claims = [
+        {
+            "claim_id": "CLM-001",
+            "text": "The service failure was directly caused by corrupted block data.",
+            "claim_type": "OBSERVATION",
+            "citation_ids": ["cit_1"],
+        }
+    ]
+    extractor = ClaimExtractor()
+    parsed = extractor.parse_claims(raw_claims)
+    assert len(parsed[0].validation_notes) > 0
+    assert any("Causal assertion detected" in n for n in parsed[0].validation_notes)
+
+
+def test_case_h_numeric_mismatch(sample_assessment, sample_bundle):
+    """Case H: Numeric mismatch -> rejected."""
+    checker = FaithfulnessChecker()
+    claim = ExplanationClaim(
+        claim_id="CLM-001",
+        text="The anomaly score reached 8888.77 with 9999.0 errors.",
+        claim_type="OBSERVATION",
+        citation_ids=[sample_bundle.citations[0].citation_id],
+        is_factual=True,
+    )
+    res, _ = checker.evaluate([claim], sample_assessment, sample_bundle)
+    assert not res.numeric_checks_passed
+    assert any("Unverified numeric value" in n for n in claim.validation_notes)
+
+
+def test_case_i_multiple_factual_claims_in_one_sentence(sample_bundle):
+    """Case I: Multiple factual claims in one sentence -> each claim represented and grounded."""
+    raw_claims = [
+        {
+            "claim_id": "CLM-001",
+            "text": "DataNode connection terminated prematurely.",
+            "claim_type": "OBSERVATION",
+            "citation_ids": [sample_bundle.citations[0].citation_id],
+        },
+        {
+            "claim_id": "CLM-002",
+            "text": "Block replication failed across replica nodes.",
+            "claim_type": "EVIDENCE",
+            "citation_ids": [sample_bundle.citations[0].citation_id],
+        },
+    ]
+    extractor = ClaimExtractor()
+    parsed = extractor.parse_claims(raw_claims)
+    assert len(parsed) == 2
+    assert all(c.is_factual for c in parsed)
+    assert all(len(c.citation_ids) == 1 for c in parsed)
+
+
+def test_case_j_factual_claim_hidden_in_summary_or_explanation(sample_assessment, sample_bundle):
+    """Case J: Factual claim hidden in summary/explanation -> must not bypass validation."""
+    validator = ExplanationValidator()
+    raw_response = {
+        "summary": "Critical incident where server crashed and power supply catastrophically failed.",
+        "explanation": "Standard evaluation.",
+        "claims": [
+            {
+                "claim_id": "CLM-001",
+                "text": "The window exhibits repeated connection events.",
+                "claim_type": "OBSERVATION",
+                "citation_ids": [sample_bundle.citations[0].citation_id],
+            }
+        ],
+        "incident_decision": sample_assessment.decision,
+        "severity": sample_assessment.severity,
+        "confidence": sample_assessment.confidence,
+    }
+    val_res, _, _, _ = validator.validate(
+        raw_text=json.dumps(raw_response),
+        assessment=sample_assessment,
+        bundle=sample_bundle,
+    )
+    assert not val_res.is_valid
+    assert any("absent from verified structured claims" in r for r in val_res.failure_reasons)
+
+
+def test_case_k_bgl_insufficient_evidence_preservation():
+    """Case K: BGL INSUFFICIENT_EVIDENCE -> explanation must not invent an incident."""
+    checker = FaithfulnessChecker()
+    trace = ReasoningTrace(
+        rules_evaluated=["RULE-001"],
+        rules_fired=["RULE-001"],
+        signals={},
+        evidence_used=[],
+        conflicts=[],
+        final_decision="INSUFFICIENT_EVIDENCE",
+        final_severity="LOW",
+    )
+    bgl_assessment = IncidentAssessment(
+        dataset="bgl",
+        split="calibration",
+        window_id="bgl_window_001",
+        session_id=None,
+        decision="INSUFFICIENT_EVIDENCE",
+        severity="LOW",
+        confidence=0.5,
+        signal_summary={},
+        citation_ids=[],
+        reasoning_trace=trace,
+        evidence_contributions=[],
+        provenance_status="VERIFIED",
+        engine_version="0.8.0",
+        configuration_hash="cfg_bgl",
+    )
+    contradictory_claim = ExplanationClaim(
+        claim_id="CLM-001",
+        text="A confirmed incident occurred causing system crash.",
+        claim_type="OBSERVATION",
+        citation_ids=[],
+        is_factual=True,
+    )
+    res, _ = checker.evaluate([contradictory_claim], bgl_assessment, bundle=None)
+    assert res.status == FaithfulnessStatus.INVALID.value
+    assert len(res.contradictions_detected) > 0
+    assert any("INSUFFICIENT_EVIDENCE" in c for c in res.contradictions_detected)

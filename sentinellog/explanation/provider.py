@@ -120,6 +120,8 @@ class MockLLMProvider(BaseLLMProvider):
 
         if self.mode == "invalid_citation":
             cited_ids = ["CIT-FABRICATED-NONEXISTENT-99999"]
+        elif self.mode == "wrong_bundle":
+            cited_ids = ["0000000000000000000000000000000000000000000000000000000000000000"]
         elif self.mode == "missing_citation":
             cited_ids = []
         else:
@@ -130,16 +132,53 @@ class MockLLMProvider(BaseLLMProvider):
         uncertainties = []
         rec_action = "Monitor window metrics and verify downstream worker health."
 
-        if decision == "INSUFFICIENT_EVIDENCE":
+        if self.mode == "hidden_factual_in_summary":
+            summary = "The server power supply catastrophically failed causing hardware reboot."
+            claims.append({
+                "text": f"Deterministic rules classified the window as {decision}.",
+                "citation_ids": [],
+                "claim_type": "INTERPRETATION",
+            })
+            uncertainties.append("Uncertainties remain.")
+        elif self.mode == "interpretation_with_external_fact":
+            summary = f"Automated triage classified the window as {decision}."
+            claims.append({
+                "text": "The server power supply catastrophically failed causing hardware reboot.",
+                "citation_ids": [],
+                "claim_type": "INTERPRETATION",
+            })
+            uncertainties.append("Root cause unproven.")
+        elif self.mode == "causal_claim":
+            summary = f"Automated triage classified the window as {decision}."
+            claims.append({
+                "text": "The server crashed because of a memory leak.",
+                "citation_ids": cited_ids,
+                "claim_type": "EVIDENCE",
+            })
+            uncertainties.append("Root cause unproven.")
+        elif self.mode == "partial_support":
+            summary = f"Triage assessment confirmed {decision} ({severity} severity)."
+            claims.append({
+                "text": "The window exhibits repeated DataNode block transmission and packet receiver events.",
+                "citation_ids": cited_ids,
+                "claim_type": "OBSERVATION",
+            })
+            claims.append({
+                "text": "A secondary factual event occurred without evidence.",
+                "citation_ids": [],  # Missing citation
+                "claim_type": "EVIDENCE",
+            })
+            uncertainties.append("Partial evidence only.")
+        elif decision == "INSUFFICIENT_EVIDENCE":
             summary = "Elevated anomaly signals were observed, but retrieved evidence is insufficient to confirm an incident."
             if cited_ids:
                 claims.append({
-                    "text": "The sequential anomaly score triggered selective escalation.",
+                    "text": "The query window exhibits kernel RAS events and elevated sequential anomaly scores.",
                     "citation_ids": cited_ids,
                     "claim_type": "OBSERVATION",
                 })
                 claims.append({
-                    "text": "Retrieved historical log chunks showed negligible relevance or contradictory patterns.",
+                    "text": "Retrieved historical training logs reflect standard kernel RAS messages and fail to corroborate an established incident.",
                     "citation_ids": cited_ids,
                     "claim_type": "EVIDENCE",
                 })
@@ -154,6 +193,11 @@ class MockLLMProvider(BaseLLMProvider):
                     "citation_ids": [],
                     "claim_type": "INTERPRETATION",
                 })
+            claims.append({
+                "text": "Deterministic rules classified the window as INSUFFICIENT_EVIDENCE due to low retrieval relevance.",
+                "citation_ids": [],
+                "claim_type": "INTERPRETATION",
+            })
             uncertainties.append("Available log sequences do not contain sufficient evidence to characterize a specific failure mode.")
             rec_action = "Collect additional telemetry and host logs for the affected time window."
         elif self.mode == "unsupported_claim":
@@ -184,12 +228,12 @@ class MockLLMProvider(BaseLLMProvider):
             summary = f"Triage assessment confirmed {decision} ({severity} severity) supported by retrieved historical evidence."
             if cited_ids:
                 claims.append({
-                    "text": "The window exhibits repeated connection and data transfer events consistent with historical patterns.",
+                    "text": "The window exhibits repeated DataNode block transmission and packet receiver events.",
                     "citation_ids": cited_ids,
                     "claim_type": "OBSERVATION",
                 })
                 claims.append({
-                    "text": f"Retrieved evidence chunk corroborates the observed sequence.",
+                    "text": "Historical training chunk documents identical DataNode block transfer and packet responder sequences.",
                     "citation_ids": cited_ids,
                     "claim_type": "EVIDENCE",
                 })
@@ -197,7 +241,7 @@ class MockLLMProvider(BaseLLMProvider):
                 claims.append({
                     "text": f"The query window produced elevated anomaly indicators consistent with {decision}.",
                     "citation_ids": [],
-                    "claim_type": "OBSERVATION",
+                    "claim_type": "INTERPRETATION",
                 })
             claims.append({
                 "text": f"Deterministic rules classified the window as {decision} based on signal alignment.",
