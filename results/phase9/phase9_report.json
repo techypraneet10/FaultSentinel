@@ -1,0 +1,96 @@
+{
+  "configuration_hash": "010aa3a36ab4e0b74794df3ea8c2f462a0a6672a05deca1c8d43df036eb4eb54",
+  "datasets": {
+    "bgl": {
+      "artifact_hashes": {
+        "claims.jsonl": "7c746bf8bdc16329dd4b8bc63ba32468e3614d05c704e29abb9067e59825f130",
+        "explanations.jsonl": "33f7aa80cfb1c9be997d67bdb415c0f3ef4dd79a08bd52fc59d884a45ccf2177",
+        "manifest.json": "09e21cfe46743e6618e305f445657d76dabe658d97b435c8b85d54d4b601c2c0",
+        "metrics.json": "3fab12b0afff55fb45591a28fc49d2fc8b8daf12eb890aa5850046f91ec60005",
+        "validation.jsonl": "01bdbe79205cb6ee22b053f476f6d546434203b16a2450f74409cc637ba42473"
+      },
+      "config_hash": "010aa3a36ab4e0b74794df3ea8c2f462a0a6672a05deca1c8d43df036eb4eb54",
+      "dataset": "bgl",
+      "duration_seconds": 0.001,
+      "git_commit": "4edcb9088886440628f83b0ad525e3b2a892db5f",
+      "metrics": {
+        "abstentions": 0,
+        "citation_coverage": 0.5,
+        "citation_precision": 1.0,
+        "dataset": "bgl",
+        "decision_consistency_failures": 0,
+        "explanation_engine_version": "0.9.0",
+        "factual_claims": 4,
+        "faithfulness_distribution": {
+          "PARTIALLY_SUPPORTED": 2
+        },
+        "human_evaluation": "NOT_AVAILABLE",
+        "mean_latency_ms": 0.07,
+        "prompt_version": "v1.0",
+        "provider_failures": 0,
+        "split": "calibration",
+        "successful_generations": 2,
+        "supported_factual_claims": 2,
+        "total_attempted": 2,
+        "total_claims": 4,
+        "total_input_tokens": 688,
+        "total_output_tokens": 180,
+        "total_retries": 0,
+        "total_tokens": 868,
+        "unsupported_claim_rate": 0.5,
+        "validation_failures": 0
+      },
+      "phase8_commit": "973da9d3367a8d9975790bd94e12e0d8b01f3b23",
+      "total_windows": 2
+    },
+    "hdfs": {
+      "artifact_hashes": {
+        "claims.jsonl": "7d0832b1d4ea0212ac79c621d9f494e61c25f4597f003cace0fc65aca23ff917",
+        "explanations.jsonl": "ec70a6b7092b71f5e0117b3a451ff4fdb1a689a0b8a17d88e68549ad558d7501",
+        "manifest.json": "1fa55760232e7010ff5a6128311b85f1d748929d4efe9cb8f1fd7ce61ecf68eb",
+        "metrics.json": "dbbaf11177aa1c991e7f477a0f9bfeb9de81591e796ba8418efb82c8288841b9",
+        "validation.jsonl": "c5337ebf520accea8271f05981c576a876dfcd607f7fcaf57325de7c4c82f086"
+      },
+      "config_hash": "010aa3a36ab4e0b74794df3ea8c2f462a0a6672a05deca1c8d43df036eb4eb54",
+      "dataset": "hdfs",
+      "duration_seconds": 0.011,
+      "git_commit": "4edcb9088886440628f83b0ad525e3b2a892db5f",
+      "metrics": {
+        "abstentions": 0,
+        "citation_coverage": 0.5,
+        "citation_precision": 1.0,
+        "dataset": "hdfs",
+        "decision_consistency_failures": 0,
+        "explanation_engine_version": "0.9.0",
+        "factual_claims": 78,
+        "faithfulness_distribution": {
+          "PARTIALLY_SUPPORTED": 39
+        },
+        "human_evaluation": "NOT_AVAILABLE",
+        "mean_latency_ms": 0.06,
+        "prompt_version": "v1.0",
+        "provider_failures": 0,
+        "split": "calibration",
+        "successful_generations": 39,
+        "supported_factual_claims": 39,
+        "total_attempted": 39,
+        "total_claims": 117,
+        "total_input_tokens": 11973,
+        "total_output_tokens": 4017,
+        "total_retries": 0,
+        "total_tokens": 15990,
+        "unsupported_claim_rate": 0.5,
+        "validation_failures": 0
+      },
+      "phase8_commit": "973da9d3367a8d9975790bd94e12e0d8b01f3b23",
+      "total_windows": 39
+    }
+  },
+  "explanation_engine_version": "0.9.0",
+  "git_commit": "4edcb9088886440628f83b0ad525e3b2a892db5f",
+  "human_evaluation": "NOT_AVAILABLE",
+  "prompt_version": "v1.0",
+  "report_title": "SentinelLog Phase 9: LLM Explanation & Orchestration Report",
+  "test_used": false,
+  "timestamp_utc": "2026-10-06T11:48:17.425950+00:00"
+}

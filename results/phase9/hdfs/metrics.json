@@ -1,0 +1,27 @@
+{
+  "abstentions": 0,
+  "citation_coverage": 0.5,
+  "citation_precision": 1.0,
+  "dataset": "hdfs",
+  "decision_consistency_failures": 0,
+  "explanation_engine_version": "0.9.0",
+  "factual_claims": 78,
+  "faithfulness_distribution": {
+    "PARTIALLY_SUPPORTED": 39
+  },
+  "human_evaluation": "NOT_AVAILABLE",
+  "mean_latency_ms": 0.06,
+  "prompt_version": "v1.0",
+  "provider_failures": 0,
+  "split": "calibration",
+  "successful_generations": 39,
+  "supported_factual_claims": 39,
+  "total_attempted": 39,
+  "total_claims": 117,
+  "total_input_tokens": 11973,
+  "total_output_tokens": 4017,
+  "total_retries": 0,
+  "total_tokens": 15990,
+  "unsupported_claim_rate": 0.5,
+  "validation_failures": 0
+}

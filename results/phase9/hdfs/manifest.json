@@ -1,0 +1,22 @@
+{
+  "artifact_hashes": {
+    "claims.jsonl": "7d0832b1d4ea0212ac79c621d9f494e61c25f4597f003cace0fc65aca23ff917",
+    "explanations.jsonl": "ec70a6b7092b71f5e0117b3a451ff4fdb1a689a0b8a17d88e68549ad558d7501",
+    "metrics.json": "dbbaf11177aa1c991e7f477a0f9bfeb9de81591e796ba8418efb82c8288841b9",
+    "validation.jsonl": "c5337ebf520accea8271f05981c576a876dfcd607f7fcaf57325de7c4c82f086"
+  },
+  "calibration_used_for_fitting": false,
+  "configuration_hash": "010aa3a36ab4e0b74794df3ea8c2f462a0a6672a05deca1c8d43df036eb4eb54",
+  "dataset": "hdfs",
+  "explanation_engine_version": "0.9.0",
+  "git_commit": "4edcb9088886440628f83b0ad525e3b2a892db5f",
+  "input_artifact_hashes": {
+    "results/phase7/hdfs/citations.jsonl": "0c266005b2e1f561e8fe2726489cc365a32ac238a3048d0cdfe9355fd3e99597",
+    "results/phase8/hdfs/assessments.jsonl": "bebcfc52f67252394da8d97268d7559d0f18ca1fe0a975bb6c22e27dfe9931bf"
+  },
+  "phase8_commit": "973da9d3367a8d9975790bd94e12e0d8b01f3b23",
+  "prompt_version": "v1.0",
+  "split": "calibration",
+  "test_used": false,
+  "total_windows_assessed": 39
+}
