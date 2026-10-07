@@ -83,3 +83,11 @@ results/**/b2_model.pt
 models/*
 !models/.gitkeep
 checkpoints/
+
+# Terraform state and local directories
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+!*.example.tfvars

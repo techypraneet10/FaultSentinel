@@ -1,0 +1,83 @@
+name: SentinelLog CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  validate-and-test:
+    name: Build, Verify & Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "frontend/package-lock.json"
+
+      - name: 2. Install Python & Frontend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          cd frontend && npm ci && cd ..
+
+      - name: 3. Run Backend Test Suite (Pytest)
+        run: |
+          python -m pytest tests/
+
+      - name: 4. Run Frontend Test Suite (Vitest)
+        run: |
+          cd frontend && npm test -- --run && cd ..
+
+      - name: 5. Run Frontend Typecheck (tsc)
+        run: |
+          cd frontend && npm run typecheck && cd ..
+
+      - name: 6. Run Frontend Lint (ESLint)
+        run: |
+          cd frontend && npm run lint && cd ..
+
+      - name: 7. Verify Python Bytecode Compilation (compileall)
+        run: |
+          python -m compileall sentinellog tests
+
+      - name: 8. Execute Security Test Suite (Phase 14)
+        run: |
+          python -m pytest tests/test_security.py
+
+      - name: 9. Deterministic Repository Secret Scan
+        run: |
+          python -c "from sentinellog.security.secret_scanner import scan_repository; findings = scan_repository('.'); assert len(findings) == 0, f'High-confidence secrets found: {findings}'"
+
+      - name: 10. Dependency Vulnerability Audit
+        run: |
+          cd frontend && npm audit --audit-level=high --omit=dev && cd ..
+
+      - name: 11. Build Docker Runtime Image
+        run: |
+          docker build -t sentinellog:ci-test .
+
+      - name: 12. Container Security Verification
+        run: |
+          docker run --rm sentinellog:ci-test python -c "import os; assert os.getuid() == 10001, 'Container must run as non-root user 10001'"
+
+      - name: 13. Validate Release Manifests & Artifacts
+        run: |
+          python -c "from sentinellog.deployment import get_release_metadata; meta = get_release_metadata('production'); assert meta.version == '0.15.0'"

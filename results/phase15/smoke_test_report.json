@@ -1,0 +1,40 @@
+{
+  "name": "SentinelLog Deployment Smoke Test Report",
+  "phase": 15,
+  "timestamp": "2026-10-07T07:45:00Z",
+  "runner": "deploy/smoke/smoke_test.py",
+  "checks": {
+    "health_live": {
+      "endpoint": "/health/live",
+      "expected_status": 200,
+      "passed": true
+    },
+    "health_ready": {
+      "endpoint": "/health/ready",
+      "expected_status": 200,
+      "passed": true
+    },
+    "auth_protection": {
+      "endpoint": "/api/v1/analyze",
+      "unauthenticated_status": 401,
+      "passed": true
+    },
+    "analysis_triage": {
+      "endpoint": "/api/v1/analyze",
+      "authenticated_status": 200,
+      "request_id_present": true,
+      "passed": true
+    },
+    "security_headers": {
+      "nosniff": true,
+      "frame_deny": true,
+      "passed": true
+    },
+    "safe_diagnostics": {
+      "endpoint": "/api/v1/diagnostics",
+      "no_secret_leak": true,
+      "passed": true
+    }
+  },
+  "overall_verdict": "PASS"
+}

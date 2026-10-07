@@ -1,0 +1,71 @@
+# ==============================================================================
+# SentinelLog Production Configuration
+# ==============================================================================
+# Hardened production environment: Real secret injection via AWS Secrets Manager,
+# multi-AZ Fargate compute, Aurora pgvector, Qdrant Cloud, and strict TLS.
+# NO secrets or internal IP addresses are committed to this file.
+
+environment: "production"
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  api_version: "v1"
+  request_timeout_sec: 30.0
+
+security:
+  auth_enabled: true
+  enforce_production_mode: true
+  cors_allowed_origins:
+    - "https://sentinellog.internal"
+    - "https://triage.sentinellog.internal"
+  max_request_bytes: 1048576  # 1 MB
+  trusted_proxies:
+    - "10.0.0.0/16"  # Production VPC CIDR
+  api_key_env: "SENTINELLOG_API_KEY"
+  analyst_api_key_env: "SENTINELLOG_ANALYST_API_KEY"
+  operator_api_key_env: "SENTINELLOG_OPERATOR_API_KEY"
+
+ratelimit:
+  enabled: true
+  backend: "redis"
+  redis_url_env: "SENTINELLOG_REDIS_URL"
+  requests_per_window: 600
+  window_seconds: 60
+
+storage:
+  backend: "s3"
+  bucket_name_env: "SENTINELLOG_S3_BUCKET_PRODUCTION"
+  region: "us-east-1"
+  versioning_required: true
+
+database:
+  backend: "aurora_postgres"
+  required: true
+  host_env: "SENTINELLOG_DB_HOST_PRODUCTION"
+  port: 5432
+  name: "sentinellog_production"
+  user_env: "SENTINELLOG_DB_USER_PRODUCTION"
+  password_env: "SENTINELLOG_DB_PASSWORD_PRODUCTION"
+  tls_required: true
+  pool_size: 20
+
+vector_db:
+  backend: "qdrant"
+  required: true
+  url_env: "SENTINELLOG_QDRANT_URL_PRODUCTION"
+  api_key_env: "SENTINELLOG_QDRANT_API_KEY_PRODUCTION"
+  collection: "sentinellog_production"
+
+explanation:
+  provider: "openai"
+  model_name: "gpt-4o-mini"
+  timeout_sec: 15.0
+  api_key_env: "SENTINELLOG_LLM_API_KEY"
+
+observability:
+  json_logging: true
+  metrics_enabled: true
+  tracing_exporter: "otlp"
+  otlp_endpoint_env: "SENTINELLOG_OTLP_ENDPOINT"

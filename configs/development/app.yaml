@@ -1,0 +1,54 @@
+# ==============================================================================
+# SentinelLog Development Configuration
+# ==============================================================================
+# Local development environment: Permissive developer defaults, local disk,
+# mock providers, in-memory telemetry, and no production credentials.
+
+environment: "development"
+
+server:
+  host: "127.0.0.1"
+  port: 8000
+  debug: true
+  api_version: "v1"
+  request_timeout_sec: 30.0
+
+security:
+  auth_enabled: false
+  enforce_production_mode: false
+  cors_allowed_origins:
+    - "http://localhost:5173"
+    - "http://127.0.0.1:5173"
+  max_request_bytes: 1048576  # 1 MB
+  trusted_proxies:
+    - "127.0.0.1"
+    - "::1"
+
+ratelimit:
+  enabled: true
+  backend: "memory"
+  requests_per_window: 120
+  window_seconds: 60
+
+storage:
+  backend: "local"
+  data_root: "data/processed"
+  results_root: "results"
+
+database:
+  backend: "none"
+  required: false
+
+vector_db:
+  backend: "local_mock"
+  required: false
+
+explanation:
+  provider: "mock"
+  model_name: "mock-deterministic-v1"
+  timeout_sec: 15.0
+
+observability:
+  json_logging: false
+  metrics_enabled: true
+  tracing_exporter: "in_memory"

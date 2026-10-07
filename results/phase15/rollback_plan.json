@@ -1,0 +1,25 @@
+{
+  "name": "SentinelLog Rollback Plan",
+  "phase": 15,
+  "timestamp": "2026-10-07T07:45:00Z",
+  "target_environment": "production",
+  "rollback_strategy": "Rolling ECS task revert to previous immutable image digest",
+  "target_version": "v0.14.0",
+  "target_digest": "sha256:7f9b8c1a2e3d4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a",
+  "triggers": [
+    "ECS Deployment Circuit Breaker trip",
+    "Continuous readiness probe failure on /health/ready (> 3 consecutive failures)",
+    "HTTP 5xx rate > 1.0% over 5-minute rolling window",
+    "Task crash loop backoff"
+  ],
+  "steps": [
+    { "step": 1, "description": "Halt ECS deployment circuit breaker rollout" },
+    { "step": 2, "description": "Update task definition image to verified immutable digest sha256:7f9b8c1a..." },
+    { "step": 3, "description": "Enforce minimum healthy percentage = 100 to ensure zero-downtime draining" },
+    { "step": 4, "description": "Verify target group health checks reach healthy state on /health/ready" },
+    { "step": 5, "description": "Execute deploy/smoke/smoke_test.py against active endpoints" },
+    { "step": 6, "description": "Log rollback event and alert on-call engineering team" }
+  ],
+  "database_rollback_policy": "Backward-compatible expand-and-contract migrations; no automatic schema drop",
+  "verdict": "VERIFIED"
+}

@@ -1,0 +1,66 @@
+# ==============================================================================
+# SentinelLog Staging Configuration
+# ==============================================================================
+# Staging environment: Production-like security controls, isolated staging data,
+# dedicated staging AWS resources, TLS termination via ALB, and deployment gating.
+# All sensitive credentials and endpoints are injected via environment variables.
+
+environment: "staging"
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  api_version: "v1"
+  request_timeout_sec: 30.0
+
+security:
+  auth_enabled: true
+  enforce_production_mode: true
+  cors_allowed_origins:
+    - "https://staging.sentinellog.internal"
+    - "https://staging-triage.sentinellog.internal"
+  max_request_bytes: 1048576  # 1 MB
+  trusted_proxies:
+    - "10.1.0.0/16"  # Staging VPC CIDR
+  api_key_env: "SENTINELLOG_API_KEY"
+
+ratelimit:
+  enabled: true
+  backend: "redis"
+  redis_url_env: "SENTINELLOG_REDIS_URL"
+  requests_per_window: 300
+  window_seconds: 60
+
+storage:
+  backend: "s3"
+  bucket_name_env: "SENTINELLOG_S3_BUCKET_STAGING"
+  region: "us-east-1"
+
+database:
+  backend: "aurora_postgres"
+  required: true
+  host_env: "SENTINELLOG_DB_HOST_STAGING"
+  port: 5432
+  name: "sentinellog_staging"
+  user_env: "SENTINELLOG_DB_USER_STAGING"
+  password_env: "SENTINELLOG_DB_PASSWORD_STAGING"
+  tls_required: true
+
+vector_db:
+  backend: "qdrant"
+  required: true
+  url_env: "SENTINELLOG_QDRANT_URL_STAGING"
+  api_key_env: "SENTINELLOG_QDRANT_API_KEY_STAGING"
+  collection: "sentinellog_staging"
+
+explanation:
+  provider: "mock"
+  model_name: "mock-deterministic-v1"
+  timeout_sec: 15.0
+
+observability:
+  json_logging: true
+  metrics_enabled: true
+  tracing_exporter: "otlp"
+  otlp_endpoint_env: "SENTINELLOG_OTLP_ENDPOINT"

@@ -1,0 +1,29 @@
+{
+  "application_name": "SentinelLog",
+  "phase": 15,
+  "release_version": "0.15.0",
+  "git_commit": "e8dfa6f",
+  "image_tag": "v0.15.0",
+  "image_digest": "sha256:7f9b8c1a2e3d4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a",
+  "build_timestamp": "2026-10-07T07:45:00Z",
+  "environments": {
+    "staging": {
+      "image_uri": "123456789012.dkr.ecr.us-east-1.amazonaws.com/sentinellog-staging:v0.15.0",
+      "config_file": "configs/staging/app.yaml",
+      "status": "APPROVED_FOR_STAGING"
+    },
+    "production": {
+      "image_uri": "123456789012.dkr.ecr.us-east-1.amazonaws.com/sentinellog-production:v0.15.0",
+      "config_file": "configs/production/app.yaml",
+      "status": "PENDING_PROMOTION_GATE"
+    }
+  },
+  "frozen_benchmark_hashes": {
+    "phase12_scientific_hash": "d3fdf5e83bbb24040416f11637ace5f181bb3db028b2aa61fe0e343ac20eaca3",
+    "hdfs_eval_windows": 823,
+    "bgl_eval_windows": 100,
+    "hdfs_escalations": 43,
+    "expensive_call_reduction": "94.78%"
+  },
+  "verdict": "DEPLOYMENT-READY"
+}

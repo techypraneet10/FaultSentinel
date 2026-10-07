@@ -1,0 +1,69 @@
+{
+  "name": "SentinelLog Deployment Architecture",
+  "version": "1.0.0",
+  "phase": 15,
+  "cloud_provider": "AWS",
+  "topology": {
+    "dns": "Amazon Route 53",
+    "load_balancer": {
+      "type": "Application Load Balancer (ALB)",
+      "listeners": [
+        { "port": 80, "protocol": "HTTP", "action": "Redirect to HTTPS:443" },
+        { "port": 443, "protocol": "HTTPS", "ssl_policy": "ELBSecurityPolicy-TLS13-1-2-2021-06" }
+      ],
+      "health_check": {
+        "path": "/health/ready",
+        "matcher": "200",
+        "interval_seconds": 15
+      }
+    },
+    "compute": {
+      "platform": "AWS ECS Fargate",
+      "cluster_name": "sentinellog-production-cluster",
+      "task_family": "sentinellog-production",
+      "task_user": "10001:10001",
+      "cpu_units": 2048,
+      "memory_mb": 4096,
+      "desired_task_count": 4,
+      "min_healthy_percent": 100,
+      "max_percent": 200,
+      "circuit_breaker_rollback": true
+    },
+    "networking": {
+      "vpc_cidr": "10.0.0.0/16",
+      "availability_zones": ["us-east-1a", "us-east-1b"],
+      "public_subnets": ["10.0.1.0/24", "10.0.2.0/24"],
+      "private_subnets": ["10.0.10.0/24", "10.0.20.0/24"],
+      "egress": "NAT Gateway for external LLM/Qdrant APIs"
+    },
+    "databases": {
+      "relational": {
+        "engine": "Aurora PostgreSQL Serverless v2 (pgvector)",
+        "network": "Private subnets strictly",
+        "encryption": "AWS KMS",
+        "backup_retention_days": 30
+      },
+      "vector_index": {
+        "service": "Qdrant Cloud",
+        "protocol": "TLS / HTTPS",
+        "auth": "API key injected from Secrets Manager"
+      }
+    },
+    "storage": {
+      "type": "Amazon S3",
+      "access": "Block all public access enabled",
+      "encryption": "AES256",
+      "versioning": true
+    },
+    "rate_limiting": {
+      "service": "Amazon ElastiCache Redis",
+      "mode": "Distributed sliding-window with bounded memory fallback"
+    },
+    "secrets": {
+      "manager": "AWS Secrets Manager",
+      "rotation_support": true,
+      "zero_committed_credentials": true
+    }
+  },
+  "verdict": "DEPLOYMENT-READY"
+}
