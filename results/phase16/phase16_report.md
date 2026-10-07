@@ -16,7 +16,7 @@ The final release verdict is **`CONDITIONALLY DEPLOYMENT-READY`**.
 | :--- | :--- | :--- |
 | **Product Name** | FaultSentinel | Brand migration verified across UI, schemas, docs |
 | **Release Version** | `0.15.0` | Semantic versioning in `sentinellog/deployment/metadata.py` |
-| **Git Commit SHA** | `350bad8742db14fd9cfa48d5b31e3bccab646205` | Verified via `git rev-parse HEAD` |
+| **Git Commit SHA** | `9453e2ddd3acc7394f1a50237238a79c05e1fb92` | Verified via `git rev-parse HEAD` |
 | **Working Tree State** | Clean (`True`) | Verified via `git status` (zero uncommitted files) |
 | **Container Image Tag** | `v0.15.0` | Pinned in release manifests and task definitions |
 | **Immutable Image Digest** | `sha256:7f9b8c1a2e3d4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a` | Explicit SHA-256 digest reference |
@@ -24,7 +24,7 @@ The final release verdict is **`CONDITIONALLY DEPLOYMENT-READY`**.
 | **Frontend Version** | `0.11.0` | React 18, TypeScript, Vite production bundle |
 | **Docker Engine** | `29.8.1` | Local container daemon |
 | **Terraform CLI** | `NOT_AVAILABLE` | Config files verified; binary uninstalled locally |
-| **Validation Timestamp** | `2026-10-07T13:28:49Z` | ISO 8601 UTC timestamp |
+| **Validation Timestamp** | `2026-10-07T13:29:48Z` | ISO 8601 UTC timestamp |
 
 ---
 
@@ -56,9 +56,9 @@ Validation was conducted on the authoritative host system:
 
 Live HTTP requests were executed against the FastAPI application instance:
 
-1. **Liveness Probe (`/health/live`):** Returned HTTP 200 `status: ok` (21.82 ms).
-2. **Readiness Probe (`/health/ready`):** Returned HTTP 200 `status: ready` with dependency-aware checks (18.6 ms).
-3. **Observability Health (`/health/observability`):** Returned HTTP 200 `status: ok` (7.17 ms).
+1. **Liveness Probe (`/health/live`):** Returned HTTP 200 `status: ok` (23.72 ms).
+2. **Readiness Probe (`/health/ready`):** Returned HTTP 200 `status: ready` with dependency-aware checks (17.42 ms).
+3. **Observability Health (`/health/observability`):** Returned HTTP 200 `status: ok` (6.5 ms).
 4. **Candidate SLI Diagnostics (`/api/v1/diagnostics`):** Returned HTTP 200 with runtime error budgets and candidate SLIs.
 5. **Prometheus Exposition (`/metrics`):** Returned standard OpenMetrics text format with cardinality bounds.
 6. **Escalation Path (HDFS Incident):**
@@ -68,7 +68,7 @@ Live HTTP requests were executed against the FastAPI application instance:
    - Dual-hash provenance verified source block boundaries.
    - Deterministic reasoner evaluated signals $\rightarrow$ authoritative decision `INCIDENT`, severity `HIGH`.
    - LLM explainer generated technical report $\rightarrow$ Faithfulness checker verified 100% of claims against evidence citations.
-   - HTTP 200 returned with structured claims, citations, and metadata (6.77 ms).
+   - HTTP 200 returned with structured claims, citations, and metadata (7.66 ms).
 7. **Selective Auto-Clear Path (Normal Window):**
    - Anomaly score evaluated within gate $\rightarrow$ `AUTO-CLEAR`.
    - Expensive LLM generation and retrieval safely bypassed.
@@ -138,8 +138,8 @@ Scientific artifacts from Phase 12 were validated for strict reproducibility:
 - **API Median Latency:** 8.78 ms
 - **API p95 Latency:** 10.65 ms
 - **Telemetry Overhead:** 0.18 ms median overhead
-- **Liveness Probe Latency:** 21.82 ms
-- **Readiness Probe Latency:** 18.6 ms
+- **Liveness Probe Latency:** 23.72 ms
+- **Readiness Probe Latency:** 17.42 ms
 - **Cardinality Controls:** Prometheus metrics bounded with filtered label sets; trace buffer capped at 10,000 spans.
 
 ---
@@ -183,7 +183,7 @@ Scientific artifacts from Phase 12 were validated for strict reproducibility:
 
 | Gate | Status | Evidence | Blocker |
 | :--- | :---: | :--- | :---: |
-| **Repository integrity** | PASS | Clean Git tree, commit 350bad8 | No |
+| **Repository integrity** | PASS | Clean Git tree, commit 9453e2d | No |
 | **Automated backend tests** | PASS | 450 / 450 pytest tests passed in 62.60s | No |
 | **Frontend validation** | PASS | 50 / 50 vitest tests passed, clean tsc/eslint/vite build | No |
 | **Scientific regression** | PASS | Phase 12 HDFS (823, 94.78% red.) & BGL benchmarks preserved | No |
@@ -221,7 +221,7 @@ Release:
 0.15.0
 
 Git:
-350bad8742db14fd9cfa48d5b31e3bccab646205
+9453e2ddd3acc7394f1a50237238a79c05e1fb92
 
 Image:
 sha256:7f9b8c1a2e3d4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a

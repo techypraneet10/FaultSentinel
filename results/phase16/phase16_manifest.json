@@ -3,10 +3,10 @@
   "phase": 16,
   "product": "FaultSentinel",
   "release_version": "0.15.0",
-  "git_commit": "350bad8742db14fd9cfa48d5b31e3bccab646205",
+  "git_commit": "9453e2ddd3acc7394f1a50237238a79c05e1fb92",
   "image_digest": "sha256:7f9b8c1a2e3d4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a",
   "verdict": "CONDITIONALLY DEPLOYMENT-READY",
-  "timestamp": "2026-10-07T13:28:49Z",
+  "timestamp": "2026-10-07T13:29:48Z",
   "artifacts": [
     "phase16_manifest.json",
     "release_candidate.json",

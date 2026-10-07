@@ -4,32 +4,32 @@
     {
       "step": "Liveness Probe",
       "status": "PASS",
-      "latency_ms": 21.82
+      "latency_ms": 23.72
     },
     {
       "step": "Readiness Probe",
       "status": "PASS",
-      "latency_ms": 18.6
+      "latency_ms": 17.42
     },
     {
       "step": "Observability Probe",
       "status": "PASS",
-      "latency_ms": 7.17
+      "latency_ms": 6.5
     },
     {
       "step": "Diagnostics Inspection",
       "status": "PASS",
-      "latency_ms": 4.78
+      "latency_ms": 6.04
     },
     {
       "step": "Prometheus Metrics",
       "status": "PASS",
-      "latency_ms": 6.61
+      "latency_ms": 5.0
     },
     {
       "step": "OpenAPI Documentation",
       "status": "PASS",
-      "latency_ms": 32.34
+      "latency_ms": 32.25
     },
     {
       "step": "Escalation Path (HDFS Incident)",
@@ -38,33 +38,33 @@
       "severity": "HIGH",
       "faithfulness": "VERIFIED",
       "citations_count": 3,
-      "latency_ms": 6.77
+      "latency_ms": 7.66
     },
     {
       "step": "Selective Triage Auto-Clear (Normal Window)",
       "status": "PASS",
       "decision": "NORMAL",
       "severity": "LOW",
-      "latency_ms": 9.15
+      "latency_ms": 10.22
     },
     {
       "step": "BGL Safety Scenario (Insufficient Evidence Handling)",
       "status": "PASS",
       "decision": "INSUFFICIENT_EVIDENCE",
       "severity": "LOW",
-      "latency_ms": 6.98
+      "latency_ms": 5.81
     }
   ],
   "latencies": {
-    "health_live_ms": 21.82,
-    "health_ready_ms": 18.6,
-    "health_observability_ms": 7.17,
-    "diagnostics_ms": 4.78,
-    "metrics_ms": 6.61,
-    "openapi_ms": 32.34,
-    "escalate_analysis_ms": 6.77,
-    "auto_clear_analysis_ms": 9.15,
-    "bgl_safety_analysis_ms": 6.98
+    "health_live_ms": 23.72,
+    "health_ready_ms": 17.42,
+    "health_observability_ms": 6.5,
+    "diagnostics_ms": 6.04,
+    "metrics_ms": 5.0,
+    "openapi_ms": 32.25,
+    "escalate_analysis_ms": 7.66,
+    "auto_clear_analysis_ms": 10.22,
+    "bgl_safety_analysis_ms": 5.81
   },
   "evidence_grounding_verified": true,
   "decision_immutability_verified": true

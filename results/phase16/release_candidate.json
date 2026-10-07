@@ -2,8 +2,8 @@
   "product": "FaultSentinel",
   "phase": 16,
   "release_version": "0.15.0",
-  "git_commit": "350bad8742db14fd9cfa48d5b31e3bccab646205",
-  "git_commit_short": "350bad8",
+  "git_commit": "9453e2ddd3acc7394f1a50237238a79c05e1fb92",
+  "git_commit_short": "9453e2d",
   "working_tree_clean": true,
   "image_tag": "v0.15.0",
   "image_digest": "sha256:7f9b8c1a2e3d4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a",
@@ -14,6 +14,6 @@
   "deployment_target": "AWS ECS Fargate / ALB / Aurora PostgreSQL / S3",
   "environment": "production",
   "configuration_version": "v1.0.0",
-  "validation_timestamp": "2026-10-07T13:28:49Z",
+  "validation_timestamp": "2026-10-07T13:29:48Z",
   "status": "CONDITIONALLY DEPLOYMENT-READY"
 }
