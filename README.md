@@ -1834,17 +1834,8 @@ Areas of interest:
 
 ---
 
-# License
+## License
 
-See the repository's license configuration for the authoritative licensing terms.
+FaultSentinel is licensed under the [MIT License](LICENSE).
 
----
-
-<p align="center">
-  <strong>FaultSentinel</strong><br/>
-  Calibrated AI Incident Triage & Evidence-Grounded Root Cause Analysis
-</p>
-
-<p align="center">
-  <sub>AI should not only produce an answer. It should make the path to that answer inspectable.</sub>
-</p>
+Copyright © 2026 Praneet.
