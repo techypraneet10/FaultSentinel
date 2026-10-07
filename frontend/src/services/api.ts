@@ -110,4 +110,108 @@ export const apiService = {
     });
     return handleResponse<ObservabilityHealthResponse>(res);
   },
+
+  /* v1.1 Workbench APIs */
+  async fetchIncidentReplay(incidentId: string, dataset: string = 'hdfs', signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/replay/${encodeURIComponent(incidentId)}?dataset=${dataset}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async fetchSampleReplay(scenarioType: string = 'incident', dataset: string = 'hdfs', signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/replay/sample/${encodeURIComponent(scenarioType)}?dataset=${dataset}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async simulateCounterfactual(payload: any, signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/incidents/counterfactual`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async listFaultScenarios(signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/fault-injection/scenarios`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async runFaultScenario(scenarioId: string, environment: string = 'local', signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/fault-injection/run`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ scenario_id: scenarioId, environment }),
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async evaluateCalibrationDrift(dataset: string = 'hdfs', simulateDrift: boolean = false, signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/calibration/drift?dataset=${dataset}&simulate_drift=${simulateDrift}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async fetchEvidenceGraph(incidentId: string, dataset: string = 'hdfs', signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/evidence/${encodeURIComponent(incidentId)}/graph?dataset=${dataset}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async fetchDecisionPassport(incidentId: string, dataset: string = 'hdfs', signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/incidents/${encodeURIComponent(incidentId)}/passport?dataset=${dataset}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async verifyDecisionPassport(incidentId: string, passport: any, signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/incidents/${encodeURIComponent(incidentId)}/passport/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ passport }),
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async submitHumanReview(incidentId: string, review: any, signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/incidents/${encodeURIComponent(incidentId)}/review`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(review),
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
+
+  async fetchHumanReviewsSummary(signal?: AbortSignal): Promise<any> {
+    const res = await fetch(`${BASE_URL}/api/v1/incidents/reviews/summary`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal,
+    });
+    return handleResponse<any>(res);
+  },
 };

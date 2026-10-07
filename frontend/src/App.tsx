@@ -10,6 +10,12 @@ import { EvaluationLabPage } from './pages/EvaluationLabPage';
 import { CostIntelligencePage } from './pages/CostIntelligencePage';
 import { ModelObservatoryPage } from './pages/ModelObservatoryPage';
 import { ArchitecturePage } from './pages/ArchitecturePage';
+import { IncidentReplayPage } from './pages/IncidentReplayPage';
+import { FaultInjectionPage } from './pages/FaultInjectionPage';
+import { CalibrationDriftPage } from './pages/CalibrationDriftPage';
+import { EvidenceGraphPage } from './pages/EvidenceGraphPage';
+import { DecisionPassportPage } from './pages/DecisionPassportPage';
+import { RecruiterWalkthroughPage } from './pages/RecruiterWalkthroughPage';
 import { useHealth } from './hooks/useHealth';
 import { AnalyzeResponse, DatasetType } from './types';
 
@@ -50,6 +56,16 @@ export const App: React.FC = () => {
       {activeTab === 'observatory' && <ModelObservatoryPage />}
       {activeTab === 'architecture' && <ArchitecturePage />}
       {activeTab === 'status' && <ApiStatusPage />}
+
+      {/* v1.1 Investigation & Reliability Workbench */}
+      {activeTab === 'replay' && <IncidentReplayPage />}
+      {activeTab === 'fault-lab' && <FaultInjectionPage />}
+      {activeTab === 'calibration-health' && <CalibrationDriftPage />}
+      {activeTab === 'evidence-graph' && <EvidenceGraphPage />}
+      {activeTab === 'passport' && <DecisionPassportPage />}
+      {activeTab === 'walkthrough' && (
+        <RecruiterWalkthroughPage onNavigateTab={setActiveTab} />
+      )}
     </MainLayout>
   );
 };

@@ -76,6 +76,36 @@ export const Header: React.FC<HeaderProps> = ({
           title: 'System Architecture & Dataflow',
           subtitle: 'End-to-end processing pipeline from raw logs to verified explanations',
         };
+      case 'walkthrough':
+        return {
+          title: 'Engineering Walkthrough Tour',
+          subtitle: 'A structured 3-minute architectural demonstration of FaultSentinel',
+        };
+      case 'replay':
+        return {
+          title: 'Incident Replay Lab',
+          subtitle: 'Observable step-by-step playback of recorded pipeline decisions',
+        };
+      case 'fault-lab':
+        return {
+          title: 'Reliability & Fault Injection Lab',
+          subtitle: 'Controlled dependency failure simulations and safety assertion verifications',
+        };
+      case 'calibration-health':
+        return {
+          title: 'Calibration Health & Drift Monitor',
+          subtitle: 'Observational Population Stability Index tracking over anomaly score distributions',
+        };
+      case 'evidence-graph':
+        return {
+          title: 'Evidence Graph & Provenance DAG',
+          subtitle: 'Cryptographic inspection connecting decisions to citations and source logs',
+        };
+      case 'passport':
+        return {
+          title: 'Decision Passport & Audit Record',
+          subtitle: 'Cryptographically signed audit document binding triage decisions to provenance',
+        };
       case 'status':
         return {
           title: 'Configuration & Telemetry',

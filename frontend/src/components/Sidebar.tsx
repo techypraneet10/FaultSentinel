@@ -11,6 +11,12 @@ import {
   Network,
   Sliders,
   Shield,
+  Compass,
+  PlayCircle,
+  Flame,
+  Activity,
+  GitFork,
+  FileKey,
 } from 'lucide-react';
 import { ConnectionState } from '../types';
 
@@ -39,6 +45,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const navItems: NavItem[] = [
     {
+      id: 'walkthrough',
+      label: 'Recruiter Tour',
+      icon: <Compass size={15} />,
+      testId: 'nav-walkthrough',
+      badge: 'Start Here',
+    },
+    {
       id: 'overview',
       label: 'Overview',
       icon: <LayoutDashboard size={15} />,
@@ -50,6 +63,41 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: <Zap size={15} />,
       testId: 'nav-analyze',
       badge: 'Interactive',
+    },
+    {
+      id: 'replay',
+      label: 'Incident Replay',
+      icon: <PlayCircle size={15} />,
+      testId: 'nav-replay',
+      badge: 'v1.1',
+    },
+    {
+      id: 'fault-lab',
+      label: 'Fault Injection',
+      icon: <Flame size={15} />,
+      testId: 'nav-fault-lab',
+      badge: 'Chaos',
+    },
+    {
+      id: 'calibration-health',
+      label: 'Calibration Health',
+      icon: <Activity size={15} />,
+      testId: 'nav-calibration-health',
+      badge: 'Drift',
+    },
+    {
+      id: 'evidence-graph',
+      label: 'Evidence Graph',
+      icon: <GitFork size={15} />,
+      testId: 'nav-evidence-graph',
+      badge: 'DAG',
+    },
+    {
+      id: 'passport',
+      label: 'Decision Passport',
+      icon: <FileKey size={15} />,
+      testId: 'nav-passport',
+      badge: 'Audit',
     },
     {
       id: 'incidents',
