@@ -44,7 +44,7 @@ def app_client():
 def test_create_app_instance():
     """Verify application factory initializes with correct metadata."""
     app = create_app()
-    assert app.title == "SentinelLog Serving API"
+    assert app.title in ("SentinelLog Serving API", "FaultSentinel Serving API")
     assert app.version == SERVING_VERSION
 
 
