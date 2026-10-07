@@ -1,0 +1,14 @@
+{
+  "metrics": {
+    "request_latency_overhead_median_ms": 0.18,
+    "analysis_request_median_latency_ms": 8.78,
+    "analysis_request_p95_latency_ms": 10.65,
+    "backend_tests_passed": 355,
+    "frontend_tests_passed": 50,
+    "phase13_tests_passed": 46,
+    "phase12_hdfs_escalation_rate": 0.0522,
+    "phase12_hdfs_recall": 0.4000,
+    "phase12_hdfs_expensive_call_reduction": 0.9478,
+    "phase12_bgl_expensive_calls": 0
+  }
+}

@@ -1,0 +1,25 @@
+# SentinelLog Phase 13 Observability & Reliability Configuration
+observability:
+  service_name: "sentinellog"
+  environment: "development"
+  log_level: "INFO"
+  json_logging: true
+  redaction_enabled: true
+
+metrics:
+  enabled: true
+  endpoint: "/metrics"
+  export_process_metrics: true
+
+tracing:
+  enabled: true
+  sample_rate: 1.0
+  exporter: "in_memory"
+  max_buffer_size: 1000
+  otlp_endpoint: null
+
+reliability:
+  request_timeout_sec: 30.0
+  llm_timeout_sec: 15.0
+  max_retries: 2
+  fail_closed: true

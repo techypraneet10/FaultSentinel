@@ -4,6 +4,8 @@ import logging
 import time
 from typing import Any, Dict, List, Optional
 
+from sentinellog.observability.metrics import get_metrics_registry
+from sentinellog.observability.tracing import trace_span
 from sentinellog.serving.api.schemas import (
     AnalyzeRequest,
     AnalyzeResponse,
@@ -42,18 +44,75 @@ class AnalysisService:
         if request.options:
             opts_dict = request.options.model_dump(exclude_none=True)
 
-        # 3. Invoke pipeline coordination
-        try:
-            assessment, bundle, exp = self.pipeline_service.process_analysis(
-                dataset=clean_ds,
-                logs=request.logs,
-                options=opts_dict,
-            )
-        except Exception as e:
-            if isinstance(e, (InvalidRequestError, UnsupportedDatasetError, PipelineServingError)):
-                raise e
-            logger.exception(f"Pipeline error during analysis (request_id={request_id}): {e}")
-            raise PipelineServingError("Incident triage pipeline encountered an unrecoverable internal error.")
+        # 3. Invoke pipeline coordination with telemetry
+        registry = get_metrics_registry()
+        with trace_span("analysis", attributes={"dataset": clean_ds}) as span_analysis:
+            try:
+                assessment, bundle, exp = self.pipeline_service.process_analysis(
+                    dataset=clean_ds,
+                    logs=request.logs,
+                    options=opts_dict,
+                )
+            except Exception as e:
+                try:
+                    registry.get_counter("analysis_count").inc(1.0, dataset=clean_ds, status="failure")
+                    registry.get_counter("analysis_errors").inc(1.0, dataset=clean_ds, stage="pipeline")
+                except Exception:
+                    pass
+                if isinstance(e, (InvalidRequestError, UnsupportedDatasetError, PipelineServingError)):
+                    raise e
+                logger.exception(f"Pipeline error during analysis (request_id={request_id}): {e}")
+                raise PipelineServingError("Incident triage pipeline encountered an unrecoverable internal error.")
+
+            # Record analysis success metrics & span attributes
+            duration_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
+            try:
+                registry.get_counter("analysis_count").inc(1.0, dataset=clean_ds, status="success")
+                registry.get_histogram("analysis_latency").observe(duration_ms, dataset=clean_ds)
+                registry.get_counter("decisions_total").inc(1.0, dataset=clean_ds, decision=assessment.decision)
+                
+                # Gate metrics
+                gate_decision = "AUTO-CLEAR"
+                if assessment.reasoning_trace and assessment.reasoning_trace.signals:
+                    esc_sig = assessment.reasoning_trace.signals.get("selective_escalation_state")
+                    if esc_sig and isinstance(esc_sig, dict):
+                        gate_decision = str(esc_sig.get("value", "AUTO-CLEAR")).upper()
+
+                if gate_decision == "ESCALATE":
+                    registry.get_counter("escalation_count").inc(1.0, dataset=clean_ds)
+                else:
+                    registry.get_counter("auto_clear_count").inc(1.0, dataset=clean_ds)
+                
+                # Update observed escalation rate gauge
+                ac = registry.get_counter("auto_clear_count").get(dataset=clean_ds)
+                esc = registry.get_counter("escalation_count").get(dataset=clean_ds)
+                if (ac + esc) > 0:
+                    registry.get_gauge("escalation_rate").set(round(esc / (ac + esc), 4), dataset=clean_ds)
+
+                # Provenance & Explanation metrics
+                if bundle:
+                    registry.get_counter("provenance_count").inc(1.0, dataset=clean_ds, status="success")
+                    registry.get_counter("provenance_verified_total").inc(float(len(bundle.citations)), dataset=clean_ds)
+                
+                registry.get_counter("explanation_count").inc(1.0, dataset=clean_ds, status="success")
+                if exp.explanation_status == "SUCCESS":
+                    registry.get_counter("explanation_generated_total").inc(1.0, dataset=clean_ds)
+                elif exp.explanation_status == "ABSTAINED":
+                    registry.get_counter("explanation_skipped_total").inc(1.0, dataset=clean_ds)
+                else:
+                    registry.get_counter("explanation_failed_total").inc(1.0, dataset=clean_ds)
+
+                if exp.faithfulness_status == "VERIFIED":
+                    registry.get_counter("faithfulness_verified_total").inc(1.0, dataset=clean_ds)
+                elif exp.faithfulness_status in ("UNVERIFIED", "FAILED"):
+                    registry.get_counter("faithfulness_failed_total").inc(1.0, dataset=clean_ds)
+            except Exception:
+                pass
+
+            span_analysis.set_attribute("decision", assessment.decision)
+            span_analysis.set_attribute("severity", assessment.severity)
+            span_analysis.set_attribute("escalation", gate_decision)
+            span_analysis.set_attribute("explanation_status", exp.explanation_status)
 
         # 4. Decision Immutability Invariant Verification (Rule 13)
         if exp.incident_decision != assessment.decision:

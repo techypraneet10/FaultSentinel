@@ -1,0 +1,16 @@
+{
+  "matrix": [
+    {"stage": "normal_request", "tested": true, "status": "pass"},
+    {"stage": "malformed_request", "tested": true, "status": "pass"},
+    {"stage": "oversized_request", "tested": true, "status": "pass"},
+    {"stage": "provider_timeout", "tested": true, "status": "pass"},
+    {"stage": "provider_error", "tested": true, "status": "pass"},
+    {"stage": "retrieval_failure", "tested": true, "status": "pass"},
+    {"stage": "provenance_failure", "tested": true, "status": "pass"},
+    {"stage": "reasoning_failure", "tested": true, "status": "pass"},
+    {"stage": "telemetry_metrics_failure", "tested": true, "status": "pass"},
+    {"stage": "telemetry_tracing_failure", "tested": true, "status": "pass"},
+    {"stage": "readiness_probe", "tested": true, "status": "pass"},
+    {"stage": "liveness_probe", "tested": true, "status": "pass"}
+  ]
+}

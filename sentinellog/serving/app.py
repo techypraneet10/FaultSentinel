@@ -5,10 +5,11 @@ from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from sentinellog.observability.logging import configure_structured_logging
+from sentinellog.observability.middleware import ObservabilityMiddleware
 from sentinellog.serving.api.routes import api_router
 from sentinellog.serving.config import ServingConfig, get_default_config
 from sentinellog.serving.errors.handlers import register_exception_handlers
-from sentinellog.serving.middleware.request_id import RequestIdMiddleware
 from sentinellog.serving.middleware.security import SecurityHeadersMiddleware
 from sentinellog.serving.version import (
     API_DESCRIPTION,
@@ -28,12 +29,8 @@ def create_app(config: Optional[ServingConfig] = None) -> FastAPI:
     """
     cfg = config or get_default_config()
 
-    # Configure root logging level
-    log_level = getattr(logging, cfg.server.log_level.upper(), logging.INFO)
-    logging.basicConfig(
-        level=log_level,
-        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    )
+    # Configure structured logging
+    configure_structured_logging()
 
     app = FastAPI(
         title=API_TITLE,
@@ -60,8 +57,8 @@ def create_app(config: Optional[ServingConfig] = None) -> FastAPI:
         max_request_bytes=cfg.server.max_request_bytes,
     )
 
-    # 3. Request ID & Structured Logging Middleware
-    app.add_middleware(RequestIdMiddleware)
+    # 3. Observability & Request Correlation Middleware
+    app.add_middleware(ObservabilityMiddleware)
 
     # 4. Centralized Exception Handlers
     register_exception_handlers(app)
