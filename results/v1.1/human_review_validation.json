@@ -1,0 +1,20 @@
+{
+  "validation_timestamp": "2026-10-07T15:01:33.725334+00:00",
+  "feature": "HUMAN_ADJUDICATION_STORE",
+  "total_reviews": 3,
+  "human_agreement_rate": 0.3333,
+  "decisions_breakdown": {
+    "CONFIRM": 1,
+    "REJECT": 1,
+    "NEEDS_REVIEW": 1
+  },
+  "rejection_reasons": {
+    "Agreed with machine triage": 1,
+    "False Positive": 1
+  },
+  "safety_invariant": {
+    "scientific_pipeline_modified": false,
+    "policy": "Human feedback is strictly observational and does not alter scientific calibration."
+  },
+  "status": "PASS"
+}

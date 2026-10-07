@@ -1,0 +1,17 @@
+{
+  "benchmark_timestamp": "2026-10-07T15:01:33.725334+00:00",
+  "metrics_ms": {
+    "replay_generation_avg_ms": 0.09,
+    "drift_evaluation_avg_ms": 3.65,
+    "evidence_graph_build_avg_ms": 0.08,
+    "passport_generation_avg_ms": 0.04
+  },
+  "sla_compliance": {
+    "target_ms": 100.0,
+    "replay_compliant": true,
+    "drift_compliant": true,
+    "graph_compliant": true,
+    "passport_compliant": true
+  },
+  "status": "PASS"
+}

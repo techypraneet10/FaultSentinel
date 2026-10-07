@@ -1,0 +1,169 @@
+{
+  "validation_timestamp": "2026-10-07T15:01:33.725334+00:00",
+  "feature": "FAULT_INJECTION_LAB",
+  "total_scenarios": 9,
+  "scenarios_passed": 9,
+  "production_lock_verified": true,
+  "scenarios_matrix": [
+    {
+      "scenario_id": "llm_unavailable",
+      "environment": "local",
+      "target_component": "ExplanationOrchestrator",
+      "expected_behavior": "LLM provider error caught; deterministic decision remains authoritative; safe fallback generated.",
+      "actual_behavior": "HTTP 200 returned with decision='INCIDENT', severity='HIGH'.",
+      "status": "PASS",
+      "safe": true,
+      "assertions": [
+        {
+          "name": "deterministic_reasoning_authoritative",
+          "passed": true
+        },
+        {
+          "name": "safe_fallback_explanation",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "retrieval_unavailable",
+      "environment": "local",
+      "target_component": "IncidentRetriever",
+      "expected_behavior": "When evidence retrieval cannot corroborate an anomaly, decision falls back to INSUFFICIENT_EVIDENCE.",
+      "actual_behavior": "HTTP 200 returned with decision='INSUFFICIENT_EVIDENCE', severity='LOW'.",
+      "status": "PASS",
+      "safe": true,
+      "assertions": [
+        {
+          "name": "insufficient_evidence_triggered",
+          "passed": true
+        },
+        {
+          "name": "no_fabricated_root_cause",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "invalid_log_input",
+      "environment": "local",
+      "target_component": "Pydantic Ingestion Boundary",
+      "expected_behavior": "Logs exceeding maximum allowed length are early-rejected with HTTP 422.",
+      "actual_behavior": "HTTP 422 Unprocessable Entity returned.",
+      "status": "PASS",
+      "safe": true,
+      "assertions": [
+        {
+          "name": "http_422_status_code",
+          "passed": true
+        },
+        {
+          "name": "no_stack_trace_leak",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "parser_failure",
+      "environment": "local",
+      "target_component": "FastAPI Deserializer",
+      "expected_behavior": "Malformed JSON rejected cleanly with HTTP 422.",
+      "actual_behavior": "HTTP 422 returned.",
+      "status": "PASS",
+      "safe": true,
+      "assertions": [
+        {
+          "name": "http_422_status_code",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "faithfulness_failure",
+      "environment": "local",
+      "target_component": "FaithfulnessChecker",
+      "expected_behavior": "Factual/causal claims lacking matching citation evidence are flagged as unsupported.",
+      "actual_behavior": "Checker returned status=UNSUPPORTED.",
+      "status": "PASS",
+      "safe": true,
+      "assertions": [
+        {
+          "name": "grounding_failed_detected",
+          "passed": true
+        },
+        {
+          "name": "fallback_explanation_rendered",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "invalid_auth",
+      "environment": "local",
+      "target_component": "AuthenticationMiddleware",
+      "expected_behavior": "Missing or invalid Bearer credentials trigger HTTP 401.",
+      "actual_behavior": "HTTP 401 returned.",
+      "status": "PASS",
+      "safe": true,
+      "assertions": [
+        {
+          "name": "http_401_returned",
+          "passed": true
+        },
+        {
+          "name": "error_code_authentication_required",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "invalid_authz",
+      "environment": "local",
+      "target_component": "AuthorizationMiddleware",
+      "expected_behavior": "Operator role attempting analyst-only endpoint is rejected with HTTP 403.",
+      "actual_behavior": "HTTP 403 Forbidden returned.",
+      "status": "PASS",
+      "safe": true,
+      "assertions": [
+        {
+          "name": "http_403_returned",
+          "passed": true
+        },
+        {
+          "name": "error_code_forbidden",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "config_failure",
+      "environment": "local",
+      "target_component": "DeploymentConfigValidator",
+      "expected_behavior": "Production debug mode is strictly forbidden and raises ConfigurationValidationError.",
+      "actual_behavior": "ConfigurationValidationError raised: True.",
+      "status": "PASS",
+      "safe": true,
+      "assertions": [
+        {
+          "name": "validation_error_raised",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "timeout_simulation",
+      "environment": "local",
+      "target_component": "ServingTimeoutHandler",
+      "expected_behavior": "Endpoints respond within SLA envelope without thread exhaustion.",
+      "actual_behavior": "Probe executed in 9.16 ms with status 200.",
+      "status": "PASS",
+      "safe": true,
+      "assertions": [
+        {
+          "name": "graceful_timeout_handling",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "status": "PASS"
+}

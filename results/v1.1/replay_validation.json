@@ -1,0 +1,37 @@
+{
+  "validation_timestamp": "2026-10-07T15:01:33.725334+00:00",
+  "feature": "INCIDENT_REPLAY_LAB",
+  "stages_validated": 11,
+  "stage_names": [
+    "Raw Log Ingestion",
+    "Drain3 Template Parser",
+    "Sliding Window Aggregator",
+    "B2 LSTM Anomaly Scorer",
+    "Conformal Selective Gate",
+    "Vector Index Retrieval",
+    "MMR Evidence Selection",
+    "Dual-Hash Provenance Verifier",
+    "Deterministic Decision Rules",
+    "Grounded Technical Explainer",
+    "Programmatic Faithfulness Checker"
+  ],
+  "replay_total_latency_ms": 70.4,
+  "conformal_gate_decision": "ESCALATE",
+  "counterfactual_analysis": {
+    "analysis_type": "COUNTERFACTUAL",
+    "is_counterfactual": true,
+    "incident_id": "inc_cf_sample",
+    "dataset": "hdfs",
+    "actual_score": 1.37,
+    "hypothetical_score": 0.85,
+    "conformal_threshold": 1.15459,
+    "target_alpha": 0.05,
+    "actual_decision": "ESCALATE",
+    "hypothetical_decision": "AUTO_CLEAR",
+    "margin": -0.3046,
+    "decision_changed": true,
+    "audit_notice": "COUNTERFACTUAL SIMULATION ONLY \u2014 DOES NOT ALTER PRODUCTION TRIAGE",
+    "difference_summary": "Under hypothetical score 0.8500, the decision shifted from ESCALATE to AUTO_CLEAR."
+  },
+  "status": "PASS"
+}

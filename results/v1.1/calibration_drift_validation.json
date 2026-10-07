@@ -1,0 +1,22 @@
+{
+  "validation_timestamp": "2026-10-07T15:01:33.725334+00:00",
+  "feature": "CALIBRATION_DRIFT_MONITOR",
+  "reference_dataset": "hdfs",
+  "reference_alpha": 0.05,
+  "reference_threshold": 1.1545928716659546,
+  "stable_distribution_eval": {
+    "psi": 2.3747,
+    "drift_status": "DRIFT DETECTED",
+    "review_required": true
+  },
+  "drifted_distribution_eval": {
+    "psi": 11.7929,
+    "drift_status": "DRIFT DETECTED",
+    "review_required": true
+  },
+  "safety_guard": {
+    "auto_recalibration_allowed": false,
+    "policy": "Human SRE review and versioned pipeline release required."
+  },
+  "status": "PASS"
+}

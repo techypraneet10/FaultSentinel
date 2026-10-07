@@ -1,0 +1,14 @@
+{
+  "validation_timestamp": "2026-10-07T15:01:33.725334+00:00",
+  "feature": "DECISION_PASSPORT",
+  "incident_id": "hdfs_inc_78129",
+  "all_fields_present": true,
+  "cryptographic_verification": [
+    true,
+    "Decision passport signature verified valid."
+  ],
+  "decision_hash": "ef7ccfaf71eb2690cd4638bed18b8e17f274ba22890a89d8bf1f341589653d5b",
+  "evidence_hash": "ca7ac4c1d2aa0289",
+  "configuration_hash": "30c5e64b390ea6ad",
+  "status": "PASS"
+}

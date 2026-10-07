@@ -1,0 +1,42 @@
+{
+  "release": "FaultSentinel v1.1",
+  "release_version": "1.1.0",
+  "release_timestamp": "2026-10-07T15:01:33.725334+00:00",
+  "product_positioning": "AI Incident Investigation & Reliability Workbench",
+  "components": [
+    "Incident Replay Lab",
+    "Reliability & Fault Injection Lab",
+    "Calibration Drift Monitor",
+    "Evidence Graph & Provenance Topology",
+    "Decision Passport Generator",
+    "Human SRE Adjudication Store",
+    "Recruiter Walkthrough Tour"
+  ],
+  "test_summary": {
+    "backend_tests": 520,
+    "frontend_tests": 50,
+    "total_tests": 570,
+    "failures": 0
+  },
+  "safety_commitments": {
+    "rule_1_test_set_protection": true,
+    "rule_25_no_auto_recalibration": true,
+    "downstream_llm_immutability": true,
+    "production_fault_injection_lock": true
+  },
+  "artifacts": [
+    "results/v1.1/v1_1_manifest.json",
+    "results/v1.1/replay_validation.json",
+    "results/v1.1/fault_injection_validation.json",
+    "results/v1.1/failure_matrix.json",
+    "results/v1.1/calibration_drift_validation.json",
+    "results/v1.1/evidence_graph_validation.json",
+    "results/v1.1/decision_passport_validation.json",
+    "results/v1.1/human_review_validation.json",
+    "results/v1.1/security_validation.json",
+    "results/v1.1/regression_report.json",
+    "results/v1.1/performance_report.json",
+    "results/v1.1/v1_1_report.md"
+  ],
+  "status": "RELEASE_READY"
+}

@@ -1,0 +1,22 @@
+{
+  "validation_timestamp": "2026-10-07T15:01:33.725334+00:00",
+  "feature": "EVIDENCE_GRAPH",
+  "incident_id": "hdfs_inc_78129",
+  "node_count": 11,
+  "edge_count": 10,
+  "node_types": [
+    "Decision",
+    "Score",
+    "Evidence",
+    "Provenance",
+    "Retrieved Chunk",
+    "LLM Claim",
+    "Incident",
+    "Reasoning Claim",
+    "Citation",
+    "Source Log",
+    "Window"
+  ],
+  "provenance_integrity_status": "PROVENANCE_TRACEABLE",
+  "status": "PASS"
+}

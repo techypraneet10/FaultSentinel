@@ -1,0 +1,32 @@
+[
+  {
+    "incident_id": "inc_test_101",
+    "machine_decision": "INCIDENT",
+    "human_decision": "CONFIRM",
+    "reason": "Agreed with machine triage",
+    "notes": "",
+    "reviewer_id": "sre_alice",
+    "timestamp": "2026-10-07T15:01:38.194275+00:00",
+    "scientific_pipeline_modified": false
+  },
+  {
+    "incident_id": "inc_test_102",
+    "machine_decision": "INCIDENT",
+    "human_decision": "REJECT",
+    "reason": "False Positive",
+    "notes": "",
+    "reviewer_id": "sre_bob",
+    "timestamp": "2026-10-07T15:01:38.195273+00:00",
+    "scientific_pipeline_modified": false
+  },
+  {
+    "incident_id": "inc_test_103",
+    "machine_decision": "INCIDENT",
+    "human_decision": "NEEDS_REVIEW",
+    "reason": null,
+    "notes": "",
+    "reviewer_id": "sre_charlie",
+    "timestamp": "2026-10-07T15:01:38.197278+00:00",
+    "scientific_pipeline_modified": false
+  }
+]
