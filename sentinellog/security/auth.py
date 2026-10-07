@@ -124,4 +124,19 @@ def authorize_request(role: str, path: str) -> tuple[bool, Optional[str]]:
             return True, None
         return False, "Endpoint requires 'operator' or 'admin' role."
 
+    if path.startswith("/api/v1/fault-injection"):
+        if role in ("operator", "admin"):
+            return True, None
+        return False, "Endpoint requires 'operator' or 'admin' role."
+
+    if (
+        path.startswith("/api/v1/replay")
+        or path.startswith("/api/v1/evidence")
+        or path.startswith("/api/v1/calibration")
+        or path.startswith("/api/v1/incidents")
+    ):
+        if role in ("analyst", "operator", "admin"):
+            return True, None
+        return False, "Endpoint requires 'analyst', 'operator', or 'admin' role."
+
     return False, "Access denied for this role."
