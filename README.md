@@ -1,10 +1,11 @@
-# SentinelLog
+# FaultSentinel
 
-Calibrated Selective Prediction for LLM-Assisted Incident Triage over System Logs.
+**AI-Assisted Incident Intelligence — Calibrated AI Incident Triage & Evidence-Grounded Root Cause Analysis**
+*(Formerly SentinelLog research prototype)*
 
 ## Overview
 
-SentinelLog investigates a cost-aware, reliability-calibrated cascade for automated incident triage over unstructured system logs:
+FaultSentinel investigates a cost-aware, reliability-calibrated cascade for automated incident triage over unstructured system logs:
 - **Log Parsing**: Structural template extraction using Drain3 with regex masking and frozen training vocabulary.
 - **Anomaly Scoring**: Fast classical baselines (B0 Frequency Rarity, B1 PCA Reconstruction, B1 Isolation Forest) and lightweight sequential modeling (B2 Sequential GRU).
 - **Calibrated Selective Escalation**: Conformal prediction gating to selectively escalate high-uncertainty or ambiguous windows to expensive LLM reasoning under empirical risk control.

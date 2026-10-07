@@ -1,5 +1,5 @@
 /**
- * Core TypeScript types for SentinelLog Operator Dashboard.
+ * Core TypeScript types for FaultSentinel Command Center.
  * Strictly synchronized with Phase 10 API contracts in sentinellog/serving/api/schemas.py.
  */
 
@@ -111,3 +111,46 @@ export interface ApiErrorResponse {
 }
 
 export type ConnectionState = 'connected' | 'degraded' | 'offline' | 'checking';
+
+export interface CandidateSlis {
+  request_success_rate: number;
+  total_requests_observed: number;
+  total_analyses_observed: number;
+  total_escalated_observed: number;
+  total_auto_cleared_observed: number;
+  observed_escalation_rate: number;
+}
+
+export interface ObservabilityHealthResponse {
+  status: string;
+  telemetry: {
+    logging: string;
+    metrics: string;
+    tracing: string;
+  };
+}
+
+export interface DiagnosticsResponse {
+  service: string;
+  environment: string;
+  api_title: string;
+  api_version: string;
+  serving_version: string;
+  pipeline_version: string;
+  python_version: string;
+  uptime_seconds: number;
+  observability: {
+    metrics_enabled: boolean;
+    tracing_enabled: boolean;
+    json_logging_enabled: boolean;
+    redaction_enabled: boolean;
+    tracing_exporter: string;
+    sample_rate: number;
+  };
+  process_resources?: {
+    memory: { status: string; max_rss_kb?: number };
+    cpu: { status: string };
+  };
+  candidate_slis: CandidateSlis;
+  notice: string;
+}

@@ -4,7 +4,7 @@ import { App } from '../App';
 import { apiService, ApiError } from '../services/api';
 import { AnalyzeResponse } from '../types';
 
-describe('SentinelLog Operator Dashboard Integration Tests', () => {
+describe('FaultSentinel Operator Dashboard Integration Tests', () => {
   const mockHdfsResponse: AnalyzeResponse = {
     request_id: 'hdfs-req-12345',
     status: 'success',

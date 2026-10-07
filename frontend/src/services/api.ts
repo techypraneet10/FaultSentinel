@@ -5,6 +5,8 @@ import {
   HealthReadyResponse,
   RootMetadataResponse,
   ApiErrorResponse,
+  DiagnosticsResponse,
+  ObservabilityHealthResponse,
 } from '../types';
 
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
@@ -89,5 +91,23 @@ export const apiService = {
       signal,
     });
     return handleResponse<AnalyzeResponse>(res);
+  },
+
+  async fetchDiagnostics(signal?: AbortSignal): Promise<DiagnosticsResponse> {
+    const res = await fetch(`${BASE_URL}/api/v1/diagnostics`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal,
+    });
+    return handleResponse<DiagnosticsResponse>(res);
+  },
+
+  async healthObservability(signal?: AbortSignal): Promise<ObservabilityHealthResponse> {
+    const res = await fetch(`${BASE_URL}/health/observability`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      signal,
+    });
+    return handleResponse<ObservabilityHealthResponse>(res);
   },
 };

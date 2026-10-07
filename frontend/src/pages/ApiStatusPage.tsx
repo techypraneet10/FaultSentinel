@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { apiService, ApiError } from '../services/api';
-import { HealthReadyResponse, RootMetadataResponse } from '../types';
+import { HealthReadyResponse, RootMetadataResponse, DiagnosticsResponse } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
 
 export const ApiStatusPage: React.FC = () => {
   const [liveStatus, setLiveStatus] = useState<string>('checking');
   const [readyData, setReadyData] = useState<HealthReadyResponse | null>(null);
   const [metadata, setMetadata] = useState<RootMetadataResponse | null>(null);
+  const [diagnostics, setDiagnostics] = useState<DiagnosticsResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -23,13 +24,20 @@ export const ApiStatusPage: React.FC = () => {
 
       const meta = await apiService.fetchRootMetadata();
       setMetadata(meta);
+
+      try {
+        const diag = await apiService.fetchDiagnostics();
+        setDiagnostics(diag);
+      } catch {
+        // Diagnostics optional
+      }
     } catch (err) {
       if (err instanceof ApiError) {
         setErrorMessage(`HTTP ${err.status}: ${err.message} (${err.code})`);
       } else if (err instanceof Error) {
         setErrorMessage(err.message);
       } else {
-        setErrorMessage('Failed to connect to SentinelLog API backend.');
+        setErrorMessage('Failed to connect to FaultSentinel API backend.');
       }
       setLiveStatus('offline');
       setReadyData(null);
@@ -43,7 +51,7 @@ export const ApiStatusPage: React.FC = () => {
   }, []);
 
   return (
-    <div data-testid="api-status-page">
+    <div data-testid="api-status-page" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div className="panel">
         <div className="panel-header">
           <span className="panel-title">FastAPI Backend Health & Service Telemetry</span>
@@ -133,6 +141,43 @@ export const ApiStatusPage: React.FC = () => {
                   <StatusBadge status={checkVal === 'ok' ? 'OPERATIONAL' : 'ERROR'} />
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {diagnostics && diagnostics.candidate_slis && (
+          <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid var(--color-border-subtle)' }}>
+            <h4 style={{ fontSize: 12, textTransform: 'uppercase', color: 'var(--color-text-secondary)', marginBottom: 12 }}>
+              Observed Telemetry Candidate SLIs (/api/v1/diagnostics)
+            </h4>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+              <div className="panel" style={{ backgroundColor: 'var(--color-bg-base)', marginBottom: 0 }}>
+                <span className="decision-metric-label">Request Success Rate</span>
+                <div style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-success)', marginTop: 4 }}>
+                  {(diagnostics.candidate_slis.request_success_rate * 100).toFixed(1)}%
+                </div>
+              </div>
+              <div className="panel" style={{ backgroundColor: 'var(--color-bg-base)', marginBottom: 0 }}>
+                <span className="decision-metric-label">Observed Analyses</span>
+                <div style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-text-pure)', marginTop: 4 }}>
+                  {diagnostics.candidate_slis.total_analyses_observed}
+                </div>
+              </div>
+              <div className="panel" style={{ backgroundColor: 'var(--color-bg-base)', marginBottom: 0 }}>
+                <span className="decision-metric-label">Observed Escalation Rate</span>
+                <div style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-warning)', marginTop: 4 }}>
+                  {(diagnostics.candidate_slis.observed_escalation_rate * 100).toFixed(1)}%
+                </div>
+              </div>
+              <div className="panel" style={{ backgroundColor: 'var(--color-bg-base)', marginBottom: 0 }}>
+                <span className="decision-metric-label">Process Uptime</span>
+                <div style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--color-text-code)', marginTop: 4 }}>
+                  {diagnostics.uptime_seconds.toFixed(0)}s
+                </div>
+              </div>
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', marginTop: 8 }}>
+              {diagnostics.notice}
             </div>
           </div>
         )}

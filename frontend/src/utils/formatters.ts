@@ -1,5 +1,5 @@
 /**
- * Formatting helpers for SentinelLog Operator Dashboard.
+ * Formatting helpers for FaultSentinel Command Center.
  */
 
 export function formatBytes(bytes: number): string {

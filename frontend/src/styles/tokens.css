@@ -1,64 +1,82 @@
 :root {
-  /* Surface colors - Technical Dark Theme */
-  --color-bg-base: #0b0d13;
-  --color-bg-surface: #121620;
-  --color-bg-surface-raised: #181d2a;
-  --color-bg-surface-overlay: #1e2436;
+  /* Surface colors - Technical Black & Grayscale Palette */
+  --color-bg-base: #050505;
+  --color-bg-surface: #0a0a0a;
+  --color-bg-surface-raised: #101010;
+  --color-bg-surface-elevated: #151515;
+  --color-bg-surface-overlay: #1c1c1c;
 
   /* Borders */
-  --color-border-subtle: #222838;
-  --color-border-default: #2d354a;
-  --color-border-active: #485475;
+  --color-border-subtle: #1a1a1a;
+  --color-border-default: #242424;
+  --color-border-active: #383838;
+  --color-border-focus: #525252;
 
   /* Typography */
-  --color-text-primary: #f1f4fa;
-  --color-text-secondary: #9da7be;
-  --color-text-muted: #64708d;
-  --color-text-code: #89ddff;
+  --color-text-pure: #ffffff;
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #666666;
+  --color-text-code: #e5e5e5;
 
-  /* Semantic - Decisions & States */
-  --color-incident-text: #ff6b6b;
-  --color-incident-bg: #2d1217;
-  --color-incident-border: #801d24;
+  /* Semantic Colors - Strictly for System Meaning, Not Decoration */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-critical: #ef4444;
+  --color-info: #60a5fa;
 
-  --color-suspicious-text: #fcc419;
-  --color-suspicious-bg: #292004;
-  --color-suspicious-border: #75550a;
+  /* Incident / Critical State */
+  --color-incident-text: #ef4444;
+  --color-incident-bg: #1c0909;
+  --color-incident-border: #4d1515;
 
-  --color-insufficient-text: #9aa5b8;
-  --color-insufficient-bg: #161b24;
-  --color-insufficient-border: #3b4556;
+  /* Suspicious / Warning State */
+  --color-suspicious-text: #f59e0b;
+  --color-suspicious-bg: #1a1304;
+  --color-suspicious-border: #4e3506;
 
-  --color-verified-text: #51cf66;
-  --color-verified-bg: #0d2616;
-  --color-verified-border: #1b5e20;
+  /* Insufficient Evidence / Auto-clear / Neutral State */
+  --color-insufficient-text: #a3a3a3;
+  --color-insufficient-bg: #0f0f0f;
+  --color-insufficient-border: #242424;
 
-  --color-rejected-text: #ff6b6b;
-  --color-rejected-bg: #2d1217;
-  --color-rejected-border: #801d24;
+  /* Verified / Grounded State */
+  --color-verified-text: #22c55e;
+  --color-verified-bg: #07190d;
+  --color-verified-border: #144722;
 
-  --color-info-text: #4dabf7;
-  --color-info-bg: #0c2138;
-  --color-info-border: #184e77;
+  /* Rejected / Unfaithful State */
+  --color-rejected-text: #ef4444;
+  --color-rejected-bg: #1c0909;
+  --color-rejected-border: #4d1515;
 
-  /* Typography */
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  /* Informational State */
+  --color-info-text: #60a5fa;
+  --color-info-bg: #091729;
+  --color-info-border: #163861;
+
+  /* Technical Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, Menlo, monospace;
 
   /* Spacing */
+  --space-2xs: 2px;
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 24px;
   --space-xl: 32px;
+  --space-2xl: 48px;
 
-  /* Radii */
+  /* Radii - Sharp & Technical */
+  --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;
 
   /* Transitions */
   --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.2s ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
