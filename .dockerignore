@@ -1,0 +1,30 @@
+# Git and repository metadata
+.git/
+.gitignore
+.gitattributes
+
+# Environment and secrets
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.token
+
+# Python byte-code and virtual environments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Frontend builds and node_modules
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# Local temp and logs
+*.log
+scratch/
+tmp/

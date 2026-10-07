@@ -240,7 +240,13 @@ class MetricsRegistry:
         self.create_counter("faithfulness_verified_total", "Total faithful explanations", ["dataset"])
         self.create_counter("faithfulness_failed_total", "Total unfaithful explanations", ["dataset"])
 
-        # 4. LLM Operational Metrics
+        # 4. Security & Hardening Metrics (Phase 14)
+        self.create_counter("authentication_failures_total", "Total failed authentication attempts")
+        self.create_counter("authorization_denials_total", "Total authorization rejections")
+        self.create_counter("rate_limit_exceeded_total", "Total requests rejected due to rate limits")
+        self.create_counter("request_validation_failures_total", "Total input validation rejections", ["endpoint"])
+
+        # 5. LLM Operational Metrics
         self.create_counter("llm_requests_total", "Total LLM API requests invoked", ["provider", "status"])
         self.create_counter("llm_success_total", "Total successful LLM API calls", ["provider"])
         self.create_counter("llm_failure_total", "Total failed LLM API calls", ["provider"])

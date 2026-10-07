@@ -10,7 +10,7 @@ from sentinellog.observability.middleware import ObservabilityMiddleware
 from sentinellog.serving.api.routes import api_router
 from sentinellog.serving.config import ServingConfig, get_default_config
 from sentinellog.serving.errors.handlers import register_exception_handlers
-from sentinellog.serving.middleware.security import SecurityHeadersMiddleware
+from sentinellog.security.middleware import SecurityHardeningMiddleware
 from sentinellog.serving.version import (
     API_DESCRIPTION,
     API_TITLE,
@@ -42,20 +42,28 @@ def create_app(config: Optional[ServingConfig] = None) -> FastAPI:
     )
 
     # 1. CORS Configuration (Explicit origins, no wildcard default)
+    from sentinellog.security.config import get_security_config
+    sec_cfg = get_security_config()
     if cfg.server.cors_origins:
+        allowed_origins = list(cfg.server.cors_origins)
+    elif sec_cfg.cors_allowed_origins:
+        allowed_origins = list(sec_cfg.cors_allowed_origins)
+    else:
+        allowed_origins = []
+
+    if allowed_origins:
+        if sec_cfg.enforce_production_mode and "*" in allowed_origins:
+            raise ValueError("Security violation: Wildcard CORS ('*') is strictly forbidden in hardened production mode.")
         app.add_middleware(
             CORSMiddleware,
-            allow_origins=cfg.server.cors_origins,
+            allow_origins=allowed_origins,
             allow_credentials=True,
             allow_methods=["GET", "POST", "OPTIONS"],
             allow_headers=["*"],
         )
 
-    # 2. Security Headers & Payload Size Middleware
-    app.add_middleware(
-        SecurityHeadersMiddleware,
-        max_request_bytes=cfg.server.max_request_bytes,
-    )
+    # 2. Security Hardening Middleware (Auth, Rate Limits, Headers, Body Size)
+    app.add_middleware(SecurityHardeningMiddleware)
 
     # 3. Observability & Request Correlation Middleware
     app.add_middleware(ObservabilityMiddleware)

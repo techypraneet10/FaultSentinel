@@ -1,0 +1,34 @@
+# SentinelLog Phase 14 Security Configuration Template
+# Copy to configs/security.yaml or load via SENTINELLOG_SECURITY_CONFIG_PATH
+# NEVER commit real production secrets to this or any configuration file.
+
+security:
+  # API Authentication Settings
+  auth_enabled: false
+  api_key: "CHANGE_ME_IN_PRODUCTION_MIN_16_CHARS"
+  analyst_api_key: null
+  operator_api_key: null
+
+  # CORS Settings (explicit list of authorized origins; never '*' in production)
+  cors_allowed_origins:
+    - "http://localhost:5173"
+    - "http://127.0.0.1:5173"
+
+  # Request Size Limits (protects against memory exhaustion DoS)
+  max_request_bytes: 1048576  # 1 MB maximum payload
+
+  # Sliding Window Rate Limiting
+  rate_limit_enabled: true
+  rate_limit_requests: 120    # Max requests per window
+  rate_limit_window_seconds: 60  # Sliding window duration in seconds
+
+  # Trusted Reverse Proxies (only these IPs can set X-Forwarded-For)
+  trusted_proxies:
+    - "127.0.0.1"
+    - "::1"
+
+  # Debug Mode (strictly forbidden in hardened production environments)
+  debug: false
+
+  # Hardened Mode Enforcement (enforces strict invariants: no wildcards, no debug)
+  enforce_production_mode: false

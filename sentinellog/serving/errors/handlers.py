@@ -75,6 +75,11 @@ async def validation_error_handler(request: Request, exc: RequestValidationError
     message = "Request validation failed. Verify request body parameters." if not has_unsupported_dataset else "Requested dataset is unsupported."
 
     logger.info(f"Validation failure on {request.method} {request.url.path} (request_id={req_id}): {error_details}")
+    try:
+        from sentinellog.observability.metrics import get_metrics_registry
+        get_metrics_registry().get_counter("request_validation_failures_total").inc(1.0, endpoint=request.url.path)
+    except Exception:
+        pass
     return _format_error_response(
         code=code,
         message=message,

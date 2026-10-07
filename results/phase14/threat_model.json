@@ -1,0 +1,104 @@
+{
+  "name": "SentinelLog Threat Model",
+  "version": "1.0.0",
+  "phase": 14,
+  "trust_boundaries": [
+    {
+      "boundary_id": "TB-01",
+      "name": "Perimeter / Ingress Boundary",
+      "description": "Boundary between untrusted external clients/browsers and FastAPI HTTP ingress",
+      "controls": [
+        "Constant-time token authentication (hmac.compare_digest)",
+        "Sliding-window rate limiting with bounded history table (max 10000 entries)",
+        "Early request payload size bounding (max 1 MB / HTTP 413)",
+        "Security response headers (nosniff, DENY, no-referrer, CSP, conditional HSTS)",
+        "Explicit non-wildcard CORS origin validation"
+      ]
+    },
+    {
+      "boundary_id": "TB-02",
+      "name": "Application Services Boundary",
+      "description": "Boundary between serving layer and authoritative triage pipeline",
+      "controls": [
+        "Pydantic strict schema validation (extra='forbid', max record limits)",
+        "Ground truth label leakage prevention (FORBIDDEN_LABEL_KEYS guard)",
+        "Authoritative Phase 8 deterministic reasoning isolated from LLM output",
+        "Phase 9 grounded claim-level citation validation"
+      ]
+    },
+    {
+      "boundary_id": "TB-03",
+      "name": "Internal Assets & Providers Boundary",
+      "description": "Boundary safeguarding local filesystem, telemetry storage, and LLM providers",
+      "controls": [
+        "PathValidator strict root containment (data/, results/, configs/)",
+        "Rejection of directory traversal tokens (.., %2e%2e, absolute escapes)",
+        "Redaction of Authorization headers and sensitive keys from logs and traces",
+        "Non-root unprivileged container execution (UID 10001)"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "asset_id": "AST-01",
+      "name": "API Credentials",
+      "category": "Secrets",
+      "sensitivity": "HIGH",
+      "protection": "Zero-secrets policy, constant-time verification, no logging"
+    },
+    {
+      "asset_id": "AST-02",
+      "name": "Model & Calibration Artifacts",
+      "category": "Artifacts",
+      "sensitivity": "CRITICAL",
+      "protection": "Read-only access, deterministic pipeline execution, strict root validation"
+    },
+    {
+      "asset_id": "AST-03",
+      "name": "Frozen Evaluation Benchmarks",
+      "category": "Data",
+      "sensitivity": "CRITICAL",
+      "protection": "Rule 1 & Rule 88 immutability protection, results/phase12 integrity"
+    },
+    {
+      "asset_id": "AST-04",
+      "name": "System Logs & Evidence",
+      "category": "Input",
+      "sensitivity": "MEDIUM",
+      "protection": "Treated strictly as untrusted text, no shell or SQL execution, prompt quotation sandboxing"
+    },
+    {
+      "asset_id": "AST-05",
+      "name": "Telemetry & Observability",
+      "category": "Observability",
+      "sensitivity": "MEDIUM",
+      "protection": "Sanitized Prometheus metrics, bounded cardinality, zero secret exposition"
+    }
+  ],
+  "threat_actors": [
+    {
+      "actor_id": "ACT-01",
+      "name": "Unauthenticated Internet Client",
+      "capabilities": "Network scanning, DoS flooding, unauthenticated probe attacks",
+      "status": "MITIGATED"
+    },
+    {
+      "actor_id": "ACT-02",
+      "name": "Malicious Authenticated User",
+      "capabilities": "Privilege escalation attempts, diagnostic access, rate limit evasion",
+      "status": "MITIGATED"
+    },
+    {
+      "actor_id": "ACT-03",
+      "name": "Adversarial Log Injector",
+      "capabilities": "Embedded prompt injection, HTML/XSS injection, system command strings in logs",
+      "status": "MITIGATED"
+    },
+    {
+      "actor_id": "ACT-04",
+      "name": "Path Traversal Attacker",
+      "capabilities": "Injecting ../ or absolute paths to read .env or system credentials",
+      "status": "MITIGATED"
+    }
+  ]
+}
