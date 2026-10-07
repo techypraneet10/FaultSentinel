@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "failure_scenarios": {
+    "malformed_json_failure": {
+      "handled": true,
+      "status_code": 422
+    },
+    "unsupported_dataset_failure": {
+      "handled": true,
+      "status_code": 422
+    },
+    "oversized_request_failure": {
+      "handled": true,
+      "status_code": 422
+    },
+    "extra_fields_rejection": {
+      "handled": true,
+      "status_code": 422
+    },
+    "provenance_tamper_rejection": {
+      "handled": true,
+      "note": "Verified by test_provenance.py; mutated content hash fails closed without silent fallback."
+    },
+    "llm_failure_abstention": {
+      "handled": true,
+      "note": "Verified by test_explanation.py; provider error causes safe fallback while preserving deterministic Phase 8 decision."
+    }
+  }
+}

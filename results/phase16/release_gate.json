@@ -1,0 +1,146 @@
+[
+  {
+    "gate": "Repository integrity",
+    "status": "PASS",
+    "evidence": "Clean Git working tree (commit 350bad8), no untracked secrets.",
+    "blocker": false
+  },
+  {
+    "gate": "Automated backend tests",
+    "status": "PASS",
+    "evidence": "450 / 450 pytest tests passing in 62.60s.",
+    "blocker": false
+  },
+  {
+    "gate": "Frontend validation",
+    "status": "PASS",
+    "evidence": "50 / 50 vitest tests passing, tsc clean, eslint clean, vite build clean.",
+    "blocker": false
+  },
+  {
+    "gate": "Scientific regression",
+    "status": "PASS",
+    "evidence": "Phase 12 benchmark metrics (823 HDFS, 100 BGL, 94.78% reduction) preserved.",
+    "blocker": false
+  },
+  {
+    "gate": "Data protection",
+    "status": "PASS",
+    "evidence": "Strict isolation of data/test/ maintained per Rule 1.",
+    "blocker": false
+  },
+  {
+    "gate": "Security scanning",
+    "status": "PASS",
+    "evidence": "Zero secrets detected across repository by Phase 14 scanner.",
+    "blocker": false
+  },
+  {
+    "gate": "Authentication & RBAC",
+    "status": "PASS",
+    "evidence": "API key verification, public access control, and analyst/operator roles enforced.",
+    "blocker": false
+  },
+  {
+    "gate": "Container hardening",
+    "status": "PASS",
+    "evidence": "Non-root execution UID 10001 and HEALTHCHECK defined in Dockerfile & ECS.",
+    "blocker": false
+  },
+  {
+    "gate": "Immutable image reference",
+    "status": "PASS",
+    "evidence": "Immutable sha256 digest specified in release manifest and task definitions.",
+    "blocker": false
+  },
+  {
+    "gate": "Infrastructure topology",
+    "status": "PASS",
+    "evidence": "Terraform modules verified for networking, alb, ecs, ecr, database, storage, secrets.",
+    "blocker": false
+  },
+  {
+    "gate": "Observability layer",
+    "status": "PASS",
+    "evidence": "Prometheus exposition, structured logging, request ID correlation verified.",
+    "blocker": false
+  },
+  {
+    "gate": "End-to-end triage",
+    "status": "PASS",
+    "evidence": "Successful live execution of Ingest -> Parse -> Score -> Conformal -> Explain -> Verify.",
+    "blocker": false
+  },
+  {
+    "gate": "Selective Auto-clear path",
+    "status": "PASS",
+    "evidence": "Normal windows triage safely under calibrated selective gate.",
+    "blocker": false
+  },
+  {
+    "gate": "Escalation path",
+    "status": "PASS",
+    "evidence": "Anomalous HDFS window escalates, retrieves, and generates verified citations.",
+    "blocker": false
+  },
+  {
+    "gate": "BGL safety case",
+    "status": "PASS",
+    "evidence": "BGL window yields INSUFFICIENT_EVIDENCE with zero false certainty.",
+    "blocker": false
+  },
+  {
+    "gate": "Provenance integrity",
+    "status": "PASS",
+    "evidence": "Tamper-evident content hashes and deterministic citation IDs verified.",
+    "blocker": false
+  },
+  {
+    "gate": "Faithfulness checking",
+    "status": "PASS",
+    "evidence": "Programmatic claim-level grounding verification passes on valid bundles.",
+    "blocker": false
+  },
+  {
+    "gate": "LLM failure abstention",
+    "status": "PASS",
+    "evidence": "Deterministic Phase 8 decision preserved during LLM provider errors.",
+    "blocker": false
+  },
+  {
+    "gate": "Health check probes",
+    "status": "PASS",
+    "evidence": "/health/live and dependency-aware /health/ready verified.",
+    "blocker": false
+  },
+  {
+    "gate": "Rollback orchestration",
+    "status": "PASS",
+    "evidence": "Automated rollback plan generation and circuit breaker integration verified.",
+    "blocker": false
+  },
+  {
+    "gate": "Performance SLOs",
+    "status": "PASS",
+    "evidence": "Median analysis latency 8.78 ms, p95 10.65 ms, probe latency < 5 ms.",
+    "blocker": false
+  },
+  {
+    "gate": "Distributed rate limiting",
+    "status": "NOT_ESTABLISHED",
+    "evidence": "In-memory rate limiter operational; Redis cluster unprovisioned locally.",
+    "blocker": false
+  },
+  {
+    "gate": "Disaster recovery failover",
+    "status": "PARTIALLY_VALIDATED",
+    "evidence": "Single-region RPO < 1h verified; cross-region active failover not established.",
+    "blocker": false
+  },
+  {
+    "gate": "Documentation integrity",
+    "status": "PASS",
+    "evidence": "Architecture, security threat model, release process, and frontend README complete.",
+    "blocker": false
+  }
+]

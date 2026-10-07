@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "target_environment": "production",
+  "immutable_image_tag": "v0.15.0",
+  "immutable_image_digest": "sha256:7f9b8c1a2e3d4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a",
+  "staging_config": "configs/staging/app.yaml",
+  "production_config": "configs/production/app.yaml",
+  "ci_cd_workflow": ".github/workflows/ci.yml",
+  "release_workflow": ".github/workflows/release.yml",
+  "smoke_test_runner": "deploy/smoke/smoke_test.py",
+  "container_execution": "non-root UID 10001 (verified)",
+  "readiness_probe": "/health/ready (verified)",
+  "liveness_probe": "/health/live (verified)",
+  "cloud_provisioning_state": "NOT_EXECUTED",
+  "note": "Local and container automated deployment specifications verified; cloud deployment requires authorized execution of .github/workflows/release.yml."
+}

@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "product_rebrand": "FaultSentinel (verified)",
+  "tagline": "AI-Assisted Incident Intelligence \u2014 Calibrated AI Incident Triage",
+  "test_results": {
+    "test_runner": "Vitest v2.1.9",
+    "test_files": 4,
+    "tests_collected": 50,
+    "tests_passed": 50,
+    "tests_failed": 0
+  },
+  "typecheck": "tsc --noEmit clean (0 errors)",
+  "lint": "eslint clean (0 errors, 0 warnings)",
+  "production_bundle": {
+    "build_tool": "Vite v5.4.21",
+    "js_bundle_size_kb": 291.02,
+    "js_gzip_size_kb": 78.65,
+    "css_bundle_size_kb": 14.12,
+    "css_gzip_size_kb": 3.12
+  },
+  "workspaces_verified": [
+    "Overview / Command Center",
+    "Live Triage",
+    "Incidents",
+    "Anomaly Explorer",
+    "Explanations / Review",
+    "Evaluation Lab",
+    "Cost Intelligence",
+    "Model Observatory",
+    "Architecture",
+    "Configuration"
+  ]
+}

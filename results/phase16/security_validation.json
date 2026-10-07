@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "details": {
+    "secret_scan": {
+      "violations": 0,
+      "passed": true,
+      "findings": []
+    },
+    "auth_rbac": {
+      "passed": true,
+      "public_accessible": true,
+      "unauthorized_401": true,
+      "operator_analyze_403": true,
+      "analyst_analyze_200": true,
+      "analyst_diagnostics_403": true,
+      "admin_diagnostics_200": true
+    },
+    "prompt_injection_defense": {
+      "passed": true,
+      "credential_exfiltration_blocked": true,
+      "override_blocked": true
+    },
+    "path_traversal_protection": {
+      "passed": true,
+      "dot_dot_rejected": true
+    },
+    "rate_limiting": {
+      "in_memory_operational": true,
+      "distributed_redis_state": "NOT_ESTABLISHED",
+      "note": "Local and container in-memory sliding window rate limiting is active and verified. Redis cluster deployment is architected in Terraform but unprovisioned in local environment."
+    },
+    "input_validation": {
+      "oversized_log_rejected": true,
+      "empty_logs_rejected": true,
+      "label_leakage_rejected": true
+    }
+  }
+}

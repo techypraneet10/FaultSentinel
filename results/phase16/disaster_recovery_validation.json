@@ -1,0 +1,11 @@
+{
+  "status": "PARTIALLY_VALIDATED",
+  "rpo_target": "< 1 hour",
+  "rto_target": "< 2 hours",
+  "database_recovery": "Aurora PostgreSQL automated continuous backups and point-in-time recovery",
+  "model_and_artifact_recovery": "S3 versioned private bucket with cross-zone durability",
+  "infrastructure_recovery": "Declarative Terraform infrastructure modules",
+  "multi_region_failover": "NOT_ESTABLISHED",
+  "risk_classification": "NON_BLOCKING_ACCEPTED_RISK",
+  "rationale": "Single-region multi-AZ topology is architected and validated; active-active multi-region failover is documented as a future expansion."
+}

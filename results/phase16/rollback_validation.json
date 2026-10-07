@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "rollback_automation": "deploy.scripts.rollback.execute_rollback",
+  "rollback_triggers": [
+    "ECS Deployment Circuit Breaker trigger",
+    "Container crash loop backoff",
+    "Readiness probe consecutive failure threshold",
+    "5xx server error rate exceeding 1.0% over 5-minute evaluation window"
+  ],
+  "rollback_strategy": "Rolling reversion to prior immutable container digest with zero downtime",
+  "dry_run_plan_verified": true
+}

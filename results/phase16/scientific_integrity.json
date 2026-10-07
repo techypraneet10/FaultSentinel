@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "frozen_benchmark_hash": "d3fdf5e83bbb24040416f11637ace5f181bb3db028b2aa61fe0e343ac20eaca3",
+  "scientific_hash_verified": true,
+  "artifact_hashes": {
+    "phase12_report.md": "aead612cc20c6a97074fb241da471179b70bedcbb5c7eb6a872a9ab6617ce066",
+    "phase12_summary.json": "b2e3293cdee6dc1ac96c573e5361b0e1165d5a7f737e0a08dd82938c9981cd08",
+    "phase12_metrics.csv": "df5238e4b64bffa02744984f55c6f28f34c16c29beaabf2055a0a715c36c3d69",
+    "phase12_metrics.json": "03d1d9969deaf37d32023a61df0e96185a62c7003c034e39b9ba3e6c46401b1c",
+    "precision_comparison_hdfs.svg": "76c3e6947ed4033f08cef877d58bc8d1f8e26f6acc743fbc23dc80de3c3e944a",
+    "llm_call_reduction.svg": "b976350a67c5e3333219b7b7d13a671ca87eee1dfca244ca96247ffe5b6eb83e",
+    "precision_coverage_hdfs.svg": "a21dbe9e8a99faf048d0bfc0781f4c905ed4942eb29274ce578c69f9739960d0",
+    "hdfs_predictions.json": "949dfb36990a284af92e2c038e5e6fe074a1f7153c0becea762f5144f09bce25",
+    "bgl_predictions.json": "6034aa6ee40543d92b9420132a55e1a98a8c788445d68d52131d84a00aa80b78"
+  },
+  "hdfs_evaluation": {
+    "verified": true,
+    "total_windows": 823,
+    "total_anomalies": 30,
+    "escalations": 43,
+    "coverage_pct": 5.22,
+    "tp": 12,
+    "fp": 31,
+    "tn": 762,
+    "fn": 18,
+    "precision": 0.2791,
+    "recall": 0.4,
+    "expensive_calls": 43,
+    "expensive_call_reduction_pct": 94.78
+  },
+  "bgl_safety_evaluation": {
+    "verified": true,
+    "total_windows": 100,
+    "tp": 0,
+    "fp": 0,
+    "tn": 100,
+    "fn": 0,
+    "expensive_calls": 0,
+    "note": "Negative evidence slice; 0 anomalies, zero false alarms, precision/recall undefined as expected."
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "journey_steps": [
+    {
+      "step": "Liveness Probe",
+      "status": "PASS",
+      "latency_ms": 21.82
+    },
+    {
+      "step": "Readiness Probe",
+      "status": "PASS",
+      "latency_ms": 18.6
+    },
+    {
+      "step": "Observability Probe",
+      "status": "PASS",
+      "latency_ms": 7.17
+    },
+    {
+      "step": "Diagnostics Inspection",
+      "status": "PASS",
+      "latency_ms": 4.78
+    },
+    {
+      "step": "Prometheus Metrics",
+      "status": "PASS",
+      "latency_ms": 6.61
+    },
+    {
+      "step": "OpenAPI Documentation",
+      "status": "PASS",
+      "latency_ms": 32.34
+    },
+    {
+      "step": "Escalation Path (HDFS Incident)",
+      "status": "PASS",
+      "decision": "INCIDENT",
+      "severity": "HIGH",
+      "faithfulness": "VERIFIED",
+      "citations_count": 3,
+      "latency_ms": 6.77
+    },
+    {
+      "step": "Selective Triage Auto-Clear (Normal Window)",
+      "status": "PASS",
+      "decision": "NORMAL",
+      "severity": "LOW",
+      "latency_ms": 9.15
+    },
+    {
+      "step": "BGL Safety Scenario (Insufficient Evidence Handling)",
+      "status": "PASS",
+      "decision": "INSUFFICIENT_EVIDENCE",
+      "severity": "LOW",
+      "latency_ms": 6.98
+    }
+  ],
+  "latencies": {
+    "health_live_ms": 21.82,
+    "health_ready_ms": 18.6,
+    "health_observability_ms": 7.17,
+    "diagnostics_ms": 4.78,
+    "metrics_ms": 6.61,
+    "openapi_ms": 32.34,
+    "escalate_analysis_ms": 6.77,
+    "auto_clear_analysis_ms": 9.15,
+    "bgl_safety_analysis_ms": 6.98
+  },
+  "evidence_grounding_verified": true,
+  "decision_immutability_verified": true
+}
